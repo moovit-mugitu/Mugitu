@@ -20,7 +20,7 @@ public class Averia {
 
     @ManyToOne
     @JoinColumn(name = "tipo_averia")
-    private Usuario tipoAveria;
+    private TipoAveria tipoAveria;
 
     @Column(name = "fecha_inicio")
     private Date fechaInicio;
@@ -30,7 +30,7 @@ public class Averia {
 
     public Averia(){}
 
-    public Averia(Long averiaId, Bici bici, Usuario tipoAveria, Date fechaInicio, Date fechaFin) {
+    public Averia(Long averiaId, Bici bici, TipoAveria tipoAveria, Date fechaInicio, Date fechaFin) {
         this.averiaId = averiaId;
         this.bici = bici;
         this.tipoAveria = tipoAveria;
@@ -54,11 +54,11 @@ public class Averia {
         this.bici = bici;
     }
 
-    public Usuario getTipoAveria() {
+    public TipoAveria getTipoAveria() {
         return tipoAveria;
     }
 
-    public void setTipoAveria(Usuario tipoAveria) {
+    public void setTipoAveria(TipoAveria tipoAveria) {
         this.tipoAveria = tipoAveria;
     }
 

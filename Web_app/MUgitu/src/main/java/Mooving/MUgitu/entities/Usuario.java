@@ -47,14 +47,15 @@ public class Usuario {
     @Column(name = "fecha_nacimiento")
     private Date fecha_nacimiento;
 
-    @Column(name = "tipo_usuario")
-    private Integer tipo_usuario;
+    @ManyToOne
+    @JoinColumn(name = "tipo_usuario_id")
+    private TipoUsuario tipo_usuario;
 
     public Usuario(){
 
     }
 
-    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, String tarjeta_pago, String numero_seguridad, Date fecha_caducidad, Integer sexo, String password, Date fecha_nacimiento, Integer tipo_usuario) {
+    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, String tarjeta_pago, String numero_seguridad, Date fecha_caducidad, Integer sexo, String password, Date fecha_nacimiento, TipoUsuario tipo_usuario) {
         this.userId = userId;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -166,11 +167,11 @@ public class Usuario {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public Integer getTipo_usuario() {
+    public TipoUsuario getTipo_usuario() {
         return tipo_usuario;
     }
 
-    public void setTipo_usuario(Integer tipo_usuario) {
+    public void setTipo_usuario(TipoUsuario tipo_usuario) {
         this.tipo_usuario = tipo_usuario;
     }
 }

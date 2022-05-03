@@ -22,6 +22,39 @@ public class Estacion {
     @Column(name = "activa")
     private Boolean activa;
 
+    @Column(name = "latitud")
+    private Double latitud;
+
+    @Column(name = "longitud")
+    private Double longitud;
+
+    public Estacion(){}
+
+    public Estacion(Long id, String nombre, Integer plazas, Boolean activa, Double latitud, Double longitud) {
+        this.id = id;
+        this.nombre = nombre;
+        this.plazas = plazas;
+        this.activa = activa;
+        this.latitud = latitud;
+        this.longitud = longitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
     public Long getId() {
         return id;
     }
@@ -54,10 +87,4 @@ public class Estacion {
         this.activa = activa;
     }
 
-/*
-  TODO [JPA Buddy] create field to map the 'coordenadas' column
-   Available actions: Define target Java type | Uncomment as is | Remove column mapping
-  @Column(name = "coordenadas", columnDefinition = "GEOMETRY(65535)")
-  private Object coordenadas;
-*/
 }
