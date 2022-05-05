@@ -6,16 +6,18 @@ import Mooving.MUgituApi.entities.TipoUsuario;
 import Mooving.MUgituApi.entities.Usuario;
 import Mooving.MUgituApi.security.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.websocket.server.PathParam;
 
 @Controller
 @RequestMapping("/user")
@@ -29,11 +31,38 @@ public class UserApi {
     public UserApi() {
     }
 
-    @PostMapping(path="/add")
-    public Usuario createNewUser (Usuario user) {
-        user.setTipo_usuario(tipoUsuarioDao.getTipoUsuario(TipoUsuario.USER));
-        usuarioDao.addUser(user);
+    @GetMapping(path="/email/{email}")
+    public ResponseEntity<Usuario>  getUserByEmail(@PathVariable("email") String mail) {
+        Usuario usuario = usuarioDao.getUsuarioByEmail(mail);
+        return ResponseEntity.ok(usuario);
+    }
 
-        return user;
+    @GetMapping(path="/id/{id}")
+    public ResponseEntity<Usuario> getUserById (@PathVariable("id") long id) {
+        Usuario usuario = usuarioDao.getUser(id);
+        return ResponseEntity.ok(usuario);
+    }
+
+    @PostMapping(path="/register")
+    public ResponseEntity<String> createNewUser (@RequestBody Usuario usuario) {
+        String error = checkUserDuplicated(usuario);
+
+        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder(SecurityConfiguration.ENCRYPT_STRENGTH);
+        usuario.setPassword(encrypt.encode(usuario.getPassword()));
+        if(error.length()==0)usuarioDao.addUser(usuario);
+
+        return ResponseEntity.ok(error);
+    }
+
+    private String checkUserDuplicated(Usuario user) {
+        String errorStr = "User already exists: ";
+        if (usuarioDao.getUsuarioByEmail(user.getCorreo()) != null) {
+            errorStr += "Email already in use";
+        } else if (usuarioDao.getUserByDNI(user.getDNI()) != null) {
+            errorStr += "DNI already in use";
+        } else {
+            errorStr = "";
+        }
+        return errorStr;
     }
 }

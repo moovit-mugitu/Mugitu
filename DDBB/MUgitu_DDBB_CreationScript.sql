@@ -36,7 +36,8 @@ create table usuario(
 	sexo int,
 	password nvarchar(128),
 	fecha_nacimiento date,
-	tipo_usuario_id int
+	tipo_usuario_id int,
+	verificado boolean
 );
 
 create table notificacion_averia(

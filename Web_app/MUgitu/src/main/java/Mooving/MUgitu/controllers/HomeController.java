@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 
 @Controller
 public class HomeController implements ServletContextAware {
+    public final static String BASE_PATH = "http://localhost:8000/MUgitu/REST/api";
 
     private ServletContext servletContext;
 
@@ -21,6 +22,12 @@ public class HomeController implements ServletContextAware {
 
     @GetMapping("/login")
     public String login() {
+        return "login";
+    }
+
+    @PostMapping("/prueba")
+    public String prueba() {
+        System.out.println("alalala");
         return "login";
     }
 

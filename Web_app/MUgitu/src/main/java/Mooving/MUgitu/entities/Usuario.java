@@ -3,12 +3,11 @@ package Mooving.MUgitu.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name= "usuario")
-public class Usuario implements Serializable {
+public class Usuario {
     @Id
     @GenericGenerator(name="user" , strategy="increment")
     @GeneratedValue(generator="user")
@@ -48,15 +47,17 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_nacimiento")
     private Date fecha_nacimiento;
 
+    @Column(name = "verificado")
+    private boolean verificado;
+
     @ManyToOne
     @JoinColumn(name = "tipo_usuario_id")
     private TipoUsuario tipo_usuario;
 
     public Usuario(){
-
     }
 
-    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, String tarjeta_pago, String numero_seguridad, Date fecha_caducidad, Integer sexo, String password, Date fecha_nacimiento, TipoUsuario tipo_usuario) {
+    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, String tarjeta_pago, String numero_seguridad, Date fecha_caducidad, Integer sexo, String password, Date fecha_nacimiento, Boolean verificado, TipoUsuario tipo_usuario) {
         this.userId = userId;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -69,6 +70,7 @@ public class Usuario implements Serializable {
         this.sexo = sexo;
         this.password = password;
         this.fecha_nacimiento = fecha_nacimiento;
+        this.verificado = verificado;
         this.tipo_usuario = tipo_usuario;
     }
 
@@ -174,5 +176,13 @@ public class Usuario implements Serializable {
 
     public void setTipo_usuario(TipoUsuario tipo_usuario) {
         this.tipo_usuario = tipo_usuario;
+    }
+
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.verificado = verificado;
     }
 }
