@@ -1,4 +1,4 @@
-package Mooving.MUgitu.security;
+package Mooving.MUgituApi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //Filter pages based on the authority or role the user has
-                .antMatchers("/user/add").permitAll()
+                .antMatchers(ADMIN_MATCHERS).hasRole("ADMIN")
+                .antMatchers(USER_MATCHERS).hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 //Login control

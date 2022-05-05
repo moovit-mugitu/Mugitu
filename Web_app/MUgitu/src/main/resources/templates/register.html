@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{register.htmlTitle}"></title>
+</head>
+
+<body>
+<!--    <header th:replace="include.html :: headercontent"></header>-->
+    <h4 th:text="${error}" class="container errorMsg"></h4>
+    <div class="container-fluid d-flex justify-content-center align-items-center">
+        <div class="card p-3 text-center py-4 m-4">
+            <form name="register-form" th:action="@{/user/add}" th:object="${user}" method="post">
+                <h4 th:text="#{register.createAccount}"></h4>
+                <div> <span th:text="#{register.alreadyAccount}"></span> <a href="/login" class="text-primary" th:text="#{register.signIn}"></a> </div>
+                <div class="input-group px-3 mt-3">
+                    <input type="text" class="form-control" th:field="*{nombre}" th:placeholder="#{register.firstName}" aria-label="Username" required>
+                    <input type="text" class="form-control" th:field="*{apellidos}" th:placeholder="#{register.lastName}" aria-label="Server" required>
+                </div>
+                <div class="row mt-3 px-3">
+                    <div class="col-md-6"><input type="password" class="form-control" th:placeholder="#{register.password}" value="" name="password" required></div>
+                    <div class="col-md-6"><input type="password" class="form-control" th:placeholder="#{register.repeatPassword}" value="" name="passwordRep" required></div>
+                </div>
+                <div class="mt-3 px-3"> 
+                    <input class="form-control" th:field="*{correo}" type="email" th:placeholder="#{register.email}" required>
+                </div>
+                <div class="row mt-3 px-3">
+                    <div class="col-md-6">
+                        <input type="text" th:field="*{telefono}" class="form-control" th:placeholder="#{register.phone}" value="" name="phone" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" th:field="*{sexo}" class="form-control" th:placeholder="#{register.sex}" value="" name="sex" required>
+                    </div>
+                </div>
+                <div class="mt-3 px-3"><label class="labels" th:placeholder="#{register.birthDate}"></label><input type="date"
+                                                                                            class="form-control" placeholder="username" th:value="${user.fecha_nacimiento}" th:field="*{fecha_nacimiento}" required></div>
+                <hr>
+                <h5 class="text-start mt-3 px-3" th:text="#{register.idCard}"><span class="fs-6 text-secondary"></span></h5>
+                <div class="mt-3 px-3">
+                    <input class="form-control" th:field="*{DNI}" th:placeholder="#{register.idCardNumber}"><br>
+                </div>
+                <hr>
+
+                <div class="mt-3 px-3">
+                    <input class="form-control" th:field="*{tarjeta_pago}" type="text" th:placeholder="#{register.credCard}" required>
+                </div>
+                <button class="btn salmon btn-signup text-uppercase mt-4" type="submit" th:text="#{register.signUp}">Signup</button>
+                <div class="px-3">
+                    <div class="mt-2 form-check d-flex flex-row"> <input class="form-check-input" type="checkbox" value="" id="services" required> <label class="form-check-label ms-2" for="services" th:text="#{register.termsAgree}"></label> </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<!--    <footer th:replace="include.html :: footercontent"></footer>-->
+</body>
+</html>

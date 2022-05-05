@@ -1,4 +1,4 @@
-package Mooving.MUgitu.entities;
+package Mooving.MUgituApi.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
