@@ -30,9 +30,6 @@ create table usuario(
 	correo nvarchar(128),
 	telefono nvarchar(16),
 	DNI nvarchar(16),
-	tarjeta_pago nvarchar(16),
-	numero_seguridad nvarchar(3),
-	fecha_caducidad date,
 	sexo int,
 	password nvarchar(128),
 	fecha_nacimiento date,
@@ -122,9 +119,9 @@ INSERT INTO tipo_usuario (tipo_user_id, descripcion)
 VALUES (1,'ADMIN'),(2,'USER');
 
 #Añadir usuarios básicos, ADMIN y USER con la password igual que el nombre
-INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id) VALUES 
-('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1),
-('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2);
+INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1, true),
+('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
 
 #Añadir tipo de averias LEVE; MODERADA, GRABE
 INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES

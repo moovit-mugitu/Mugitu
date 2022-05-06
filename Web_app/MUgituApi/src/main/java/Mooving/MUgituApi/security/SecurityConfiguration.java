@@ -25,8 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final static int REMEMBER_ME_TIME = 86400;  //1 day
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_MATCHERS = {"/admin"};
-    private final static String[] USER_MATCHERS = {"/user"};
+    //private final static String[] ADMIN_MATCHERS = {"/admin"};
+    //private final static String[] USER_MATCHERS = {"/user"};
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -40,8 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //Filter pages based on the authority or role the user has
-                .antMatchers(ADMIN_MATCHERS).hasRole("ADMIN")
-                .antMatchers(USER_MATCHERS).hasRole("USER")
+                //.antMatchers("/user/pruebaPermisos").hasRole("ADMIN")
+                //.antMatchers(USER_MATCHERS).hasRole("USER")
                 .anyRequest().permitAll()
                 .and()
                 //Login control

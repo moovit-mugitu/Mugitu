@@ -26,23 +26,24 @@
                 </div>
                 <div class="row mt-3 px-3">
                     <div class="col-md-6">
-                        <input type="text" th:field="*{telefono}" class="form-control" th:placeholder="#{register.phone}" value="" name="phone" required>
+                        <input type="text" th:field="*{telefono}" class="form-control" th:placeholder="#{register.phone}" value="" name="phone" required minlength="9" maxlength="9">
                     </div>
                     <div class="col-md-6">
-                        <input type="text" th:field="*{sexo}" class="form-control" th:placeholder="#{register.sex}" value="" name="sex" required>
+<!--                        <input type="text" th:field="*{sexo}" class="form-control" th:placeholder="#{register.sex}" value="" name="sex" required>-->
+                        <select name="sex" th:field="*{sexo}">
+                            <option value="0" th:text="#{sex.woman}" selected></option>
+                            <option value="1" th:text="#{sex.man}"></option>
+                            <option value="2" th:text="#{sex.noBinary}"></option>
+                        </select>
                     </div>
+
                 </div>
                 <div class="mt-3 px-3"><label class="labels" th:placeholder="#{register.birthDate}"></label><input type="date"
                                                                                             class="form-control" placeholder="username" th:value="${user.fecha_nacimiento}" th:field="*{fecha_nacimiento}" required></div>
                 <hr>
                 <h5 class="text-start mt-3 px-3" th:text="#{register.idCard}"><span class="fs-6 text-secondary"></span></h5>
                 <div class="mt-3 px-3">
-                    <input class="form-control" th:field="*{DNI}" th:placeholder="#{register.idCardNumber}"><br>
-                </div>
-                <hr>
-
-                <div class="mt-3 px-3">
-                    <input class="form-control" th:field="*{tarjeta_pago}" type="text" th:placeholder="#{register.credCard}" required>
+                    <input class="form-control" th:field="*{DNI}" th:placeholder="#{register.idCardNumber}" minlength="9" maxlength="9"><br>
                 </div>
                 <button class="btn salmon btn-signup text-uppercase mt-4" type="submit" th:text="#{register.signUp}">Signup</button>
                 <div class="px-3">

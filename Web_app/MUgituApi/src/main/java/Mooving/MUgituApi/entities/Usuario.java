@@ -3,7 +3,7 @@ package Mooving.MUgituApi.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name= "usuario")
@@ -29,15 +29,6 @@ public class Usuario {
     @Column(name = "DNI")
     private String DNI;
 
-    @Column(name = "tarjeta_pago")
-    private String tarjeta_pago;
-
-    @Column(name = "numero_seguridad")
-    private String numero_seguridad;
-
-    @Column(name = "fecha_caducidad")
-    private Date fecha_caducidad;
-
     @Column(name = "sexo")
     private Integer sexo;
 
@@ -54,19 +45,22 @@ public class Usuario {
     @JoinColumn(name = "tipo_usuario_id")
     private TipoUsuario tipo_usuario;
 
+    private enum Sex {
+        Woman,
+        Man,
+        NoBinary;
+    }
+
     public Usuario(){
     }
 
-    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, String tarjeta_pago, String numero_seguridad, Date fecha_caducidad, Integer sexo, String password, Date fecha_nacimiento, Boolean verificado, TipoUsuario tipo_usuario) {
+    public Usuario(Long userId, String nombre, String apellidos, String correo, String telefono, String DNI, Integer sexo, String password, Date fecha_nacimiento, Boolean verificado, TipoUsuario tipo_usuario) {
         this.userId = userId;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correo = correo;
         this.telefono = telefono;
         this.DNI = DNI;
-        this.tarjeta_pago = tarjeta_pago;
-        this.numero_seguridad = numero_seguridad;
-        this.fecha_caducidad = fecha_caducidad;
         this.sexo = sexo;
         this.password = password;
         this.fecha_nacimiento = fecha_nacimiento;
@@ -120,30 +114,6 @@ public class Usuario {
 
     public void setDNI(String DNI) {
         this.DNI = DNI;
-    }
-
-    public String getTarjeta_pago() {
-        return tarjeta_pago;
-    }
-
-    public void setTarjeta_pago(String tarjeta_pago) {
-        this.tarjeta_pago = tarjeta_pago;
-    }
-
-    public String getNumero_seguridad() {
-        return numero_seguridad;
-    }
-
-    public void setNumero_seguridad(String numero_seguridad) {
-        this.numero_seguridad = numero_seguridad;
-    }
-
-    public Date getFecha_caducidad() {
-        return fecha_caducidad;
-    }
-
-    public void setFecha_caducidad(Date fecha_caducidad) {
-        this.fecha_caducidad = fecha_caducidad;
     }
 
     public Integer getSexo() {

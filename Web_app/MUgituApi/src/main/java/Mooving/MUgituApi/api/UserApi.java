@@ -5,6 +5,8 @@ import Mooving.MUgituApi.dao.user.UsuarioDao;
 import Mooving.MUgituApi.entities.TipoUsuario;
 import Mooving.MUgituApi.entities.Usuario;
 import Mooving.MUgituApi.security.SecurityConfiguration;
+import jdk.jfr.DataAmount;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.MediaType;
@@ -18,8 +20,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserApi {
 
@@ -43,6 +46,12 @@ public class UserApi {
         return ResponseEntity.ok(usuario);
     }
 
+    @GetMapping(path="/all")
+    public ResponseEntity<List<Usuario>> getAllUsers () {
+        List<Usuario> usuario = usuarioDao.getAllUsers();
+        return ResponseEntity.ok(usuario);
+    }
+
     @PostMapping(path="/register")
     public ResponseEntity<String> createNewUser (@RequestBody Usuario usuario) {
         String error = checkUserDuplicated(usuario);
@@ -52,6 +61,18 @@ public class UserApi {
         if(error.length()==0)usuarioDao.addUser(usuario);
 
         return ResponseEntity.ok(error);
+    }
+
+    @PostMapping(path="/guardarAlgo")
+    public ResponseEntity<?> guardadYDevolverVOid (@RequestBody CustomEntity customEntity) {
+        //Codigooo
+        return ResponseEntity.ok().build();
+    }
+
+    @Data
+    class CustomEntity{
+        String name;
+        String surname;
     }
 
     private String checkUserDuplicated(Usuario user) {
