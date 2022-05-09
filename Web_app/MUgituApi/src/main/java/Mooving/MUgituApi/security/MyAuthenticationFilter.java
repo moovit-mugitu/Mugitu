@@ -1,4 +1,4 @@
-package Mooving.MUgitu.security;
+package Mooving.MUgituApi.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +23,10 @@ import java.util.stream.Collectors;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
-@Slf4j
 public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    public final static String AlgorithmKey = "secretStringForAlgorithm";
+    public final static String RolesString = "roles";
 
     private final AuthenticationManager authenticationManager;
 
@@ -35,8 +36,8 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("txtUsername");
-        String password = request.getParameter("txtPassword");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
         return authenticationManager.authenticate(authenticationToken);
@@ -46,12 +47,12 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         //Habria que tenerlo encriptado y desencriptar para obtener el "secret" bueno
-        Algorithm algorithm = Algorithm.HMAC256("secretStringForAlgorithm".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(AlgorithmKey.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))   //Dura 10 mins
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim(RolesString, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refreshToken = JWT.create()

@@ -4,13 +4,16 @@ import Mooving.MUgituApi.dao.tipoUser.TipoUsuarioDao;
 import Mooving.MUgituApi.dao.user.UsuarioDao;
 import Mooving.MUgituApi.entities.TipoUsuario;
 import Mooving.MUgituApi.entities.Usuario;
+import Mooving.MUgituApi.security.MyUserDetails;
 import Mooving.MUgituApi.security.SecurityConfiguration;
 import jdk.jfr.DataAmount;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,15 +38,23 @@ public class UserApi {
     }
 
     @GetMapping(path="/email/{email}")
-    public ResponseEntity<Usuario>  getUserByEmail(@PathVariable("email") String mail) {
-        Usuario usuario = usuarioDao.getUsuarioByEmail(mail);
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<Usuario>  getUserByEmail(@PathVariable("email") String mail, Authentication authentication) {
+        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+        if(user.getUsername().equals(mail)){
+            Usuario usuario = usuarioDao.getUsuarioByEmail(mail);
+            return ResponseEntity.ok(usuario);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @GetMapping(path="/id/{id}")
-    public ResponseEntity<Usuario> getUserById (@PathVariable("id") long id) {
-        Usuario usuario = usuarioDao.getUser(id);
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<Usuario> getUserById (@PathVariable("id") long id, Authentication authentication) {
+        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+        if(user.getUser().getUserId() == id){
+            Usuario usuario = usuarioDao.getUser(id);
+            return ResponseEntity.ok(usuario);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @GetMapping(path="/all")
