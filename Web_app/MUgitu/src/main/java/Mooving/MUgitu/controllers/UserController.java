@@ -55,7 +55,7 @@ public class UserController {
 
     @GetMapping(path = "/all")
     public List<Usuario> getAllUsers() {
-        Usuario[] respuesta  = RestRequests.RESTgetRequest("/user/pruebaPermisos",Usuario[].class);
+        Usuario[] respuesta  = RestRequests.RESTgetRequest("/user/all",Usuario[].class);
 
         return new ArrayList<>(Arrays.asList(respuesta));
     }

@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,24 +26,26 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
 public class UserApi {
 
-    @Autowired
-    UsuarioDao usuarioDao;
-    @Autowired
-    TipoUsuarioDao tipoUsuarioDao;
+    final UsuarioDao usuarioDao;
+    final TipoUsuarioDao tipoUsuarioDao;
 
-    public UserApi() {
+    public UserApi(UsuarioDao usuarioDao, TipoUsuarioDao tipoUsuarioDao) {
+        this.usuarioDao = usuarioDao;
+        this.tipoUsuarioDao = tipoUsuarioDao;
     }
 
     @GetMapping(path="/email/{email}")
     public ResponseEntity<Usuario>  getUserByEmail(@PathVariable("email") String mail, Authentication authentication) {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        if(user.getUsername().equals(mail)){
+        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
+        if(checkPermission(user, mail, "mail")){
             Usuario usuario = usuarioDao.getUsuarioByEmail(mail);
+            if(usuario == null) return ResponseEntity.notFound().build();
             return ResponseEntity.ok(usuario);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -49,18 +53,24 @@ public class UserApi {
 
     @GetMapping(path="/id/{id}")
     public ResponseEntity<Usuario> getUserById (@PathVariable("id") long id, Authentication authentication) {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        if(user.getUser().getUserId() == id){
+        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
+        if(checkPermission(user, String.valueOf(id), "id")){
             Usuario usuario = usuarioDao.getUser(id);
+            if(usuario == null) return ResponseEntity.notFound().build();
             return ResponseEntity.ok(usuario);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @GetMapping(path="/all")
-    public ResponseEntity<List<Usuario>> getAllUsers () {
-        List<Usuario> usuario = usuarioDao.getAllUsers();
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<List<Usuario>> getAllUsers (Authentication authentication) {
+        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
+        if(checkPermission(user, null, "all")){
+            List<Usuario> usuarios = usuarioDao.getAllUsers();
+            if(usuarios == null) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(usuarios);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @PostMapping(path="/register")
@@ -74,6 +84,11 @@ public class UserApi {
         return ResponseEntity.ok(error);
     }
 
+
+
+
+
+
     @PostMapping(path="/guardarAlgo")
     public ResponseEntity<?> guardadYDevolverVOid (@RequestBody CustomEntity customEntity) {
         //Codigooo
@@ -86,6 +101,8 @@ public class UserApi {
         String surname;
     }
 
+
+    //Verification functions
     private String checkUserDuplicated(Usuario user) {
         String errorStr = "User already exists: ";
         if (usuarioDao.getUsuarioByEmail(user.getCorreo()) != null) {
@@ -96,5 +113,28 @@ public class UserApi {
             errorStr = "";
         }
         return errorStr;
+    }
+    private boolean checkPermission(Usuario applicant, String requestedUser, String identifier){
+        boolean permited = false;
+        switch (identifier) {
+            case "id":
+                if(applicant.getUserId().equals(Long.valueOf(requestedUser)) ||
+                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
+                    permited = true;
+                }
+                break;
+            case "mail":
+                if(applicant.getCorreo().equals(requestedUser) ||
+                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
+                    permited = true;
+                }
+                break;
+            case "all":
+                if(applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
+                    permited = true;
+                }
+                break;
+        }
+        return permited;
     }
 }

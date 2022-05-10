@@ -54,9 +54,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
                 .antMatchers(GET, USER_GET_MATCHERS).hasRole("USER")
-                .antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
+                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
-                .antMatchers(POST, USER_POST_MATCHERS).hasRole("ADMIN")
+                //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         //Creation of JWT...

@@ -60,8 +60,6 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30*60*1000))   //Dura 30 mins
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
-        /*response.setHeader("accessToken", accessToken);
-        response.setHeader("refreshToken", refreshToken);*/
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
         tokens.put("refreshToken", refreshToken);

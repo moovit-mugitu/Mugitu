@@ -32,9 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public final static int ENCRYPT_STRENGTH = 10;
 
     private final static String[] ADMIN_GET_MATCHERS = {"/user/all"};
-    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**"};
-    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
-    private final static String[] EVERYONE_GET_MATCHERS = {"/","/index","/home","/login", "/user/register"};
+    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**"};
+    private final static String[] AUTHENTICATED_GET_MATCHERS = {"/mainPage"};
+    private final static String[] EVERYONE_GET_MATCHERS = {"/prueba", "/css/**", "/images/**", "/js/**", "/","/index","/home","/login", "/user/register"};
 
     private final static String[] ADMIN_POST_MATCHERS = {""};
     private final static String[] USER_POST_MATCHERS = {""};
@@ -56,19 +56,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
                 .antMatchers(GET, USER_GET_MATCHERS).hasRole("USER")
-                .antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
+                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
-                .antMatchers(POST, USER_POST_MATCHERS).hasRole("ADMIN")
+                //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         //Login control
         http.formLogin()
                 .loginPage("/login").permitAll()
-                .loginProcessingUrl("/login_process")
+                .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/mainPage")
                 .and()
         //Logout control
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -105,7 +105,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    public static PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder(ENCRYPT_STRENGTH);
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
+
 }
