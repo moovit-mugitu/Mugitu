@@ -1,6 +1,9 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Usuario;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,14 +25,6 @@ public class UserController {
         model.addAttribute("user", new Usuario());
 
         return "register";
-    }
-
-    @GetMapping(path = "/pruebaPermisos")
-    @ResponseBody
-    public String pruebaREST() {
-        String respuesta  = RestRequests.RESTgetRequest("/user/pruebaPermisos",String.class);
-
-        return respuesta;
     }
 
     @PostMapping(path = "/register")
@@ -54,22 +49,28 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
+    @ResponseBody
     public List<Usuario> getAllUsers() {
-        Usuario[] respuesta  = RestRequests.RESTgetRequest("/user/all",Usuario[].class);
+        ResponseEntity<Usuario[]> response = RestRequests.RestRequestWithHeaders(
+                "/user/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario[].class);
 
-        return new ArrayList<>(Arrays.asList(respuesta));
+        return new ArrayList<>(Arrays.asList(response.getBody()));
     }
     @GetMapping(path = "/id/{id}")
+    @ResponseBody
     public Usuario getUserById(@PathVariable("id") long id) {
-        Usuario respuesta  = RestRequests.RESTgetRequest("/user/id/"+id,Usuario.class);
+        ResponseEntity<Usuario> responseUser = RestRequests.RestRequestWithHeaders(
+                "/user/id/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario.class);
 
-        return respuesta;
+        return responseUser.getBody();
     }
     @GetMapping(path = "/email/{email}")
+    @ResponseBody
     public Usuario getUserByEmail(@PathVariable("email") String email) {
-        Usuario respuesta  = RestRequests.RESTgetRequest("/user/email/"+email,Usuario.class);
+        ResponseEntity<Usuario> responseUser = RestRequests.RestRequestWithHeaders(
+                "/user/email/"+email, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario.class);
 
-        return respuesta;
+        return responseUser.getBody();
     }
 
     private boolean passwordsMatch(WebRequest request) {

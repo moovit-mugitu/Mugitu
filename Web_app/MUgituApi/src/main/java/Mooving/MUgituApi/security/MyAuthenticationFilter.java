@@ -28,6 +28,9 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
     public final static String AlgorithmKey = "secretStringForAlgorithm";
     public final static String RolesString = "roles";
 
+    public final static long ACCESS_TOKEN_DURATION = 10*1000;              //10 secs
+    public final static long REFRESH_TOKEN_DURATION = 10*1000/*30L*24*60*60*1000*/;   //30 days
+
     private final AuthenticationManager authenticationManager;
 
     public MyAuthenticationFilter(AuthenticationManager authenticationManager){
@@ -50,14 +53,14 @@ public class MyAuthenticationFilter extends UsernamePasswordAuthenticationFilter
         Algorithm algorithm = Algorithm.HMAC256(AlgorithmKey.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10*60*1000))   //Dura 10 mins
+                .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_DURATION))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim(RolesString, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30*60*1000))   //Dura 30 mins
+                .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_DURATION))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         Map<String, String> tokens = new HashMap<>();

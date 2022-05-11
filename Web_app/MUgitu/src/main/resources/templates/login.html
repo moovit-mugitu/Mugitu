@@ -12,6 +12,7 @@
                 <div class="notify-messages">
                     <div class="alert alert-danger" th:if="${param.error}" th:text="#{login.invalidLogin}"></div>
                     <div class="alert alert-success" th:if="${param.logout}" th:text="#{login.logOut}"></div>
+                    <div class="alert alert-danger" th:if="${param.expired}" th:text="#{login.expiredSession}"></div>
                 </div>
                 <div id="login-row" class="row justify-content-center align-items-center">
                     <div id="login-column" class="col-md-6">
@@ -32,9 +33,9 @@
                                 <input type="password" id="password" name="password" placeholder="Password"
                                     class="form-control">
                                 <div class="form-group">
-                                    <label for="checkRememberMe" class="text-info"><span th:text="#{login.rememberMe}"></span> <span>
+                                    <!--<label for="checkRememberMe" class="text-info"><span th:text="#{login.rememberMe}"></span> <span>
                                             <input id="checkRememberMe" name="checkRememberMe"
-                                                type="checkbox"></span></label><br>
+                                                type="checkbox"></span></label><br>-->
                                     <div class="buttons-div d-flex justify-content-center m-3">
                                         <input type="submit" name="submit" class="btn btn-login m-2 trackGrafana" grafanaId="12" th:value="#{login.logIn}">
                                         <a href="/user/register" class="btn salmon text-center m-2 trackGrafana" grafanaId="13"th:text="#{login.register}"></a>

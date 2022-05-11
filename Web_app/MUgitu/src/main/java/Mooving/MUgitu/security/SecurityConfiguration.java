@@ -33,13 +33,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final static String[] ADMIN_GET_MATCHERS = {"/user/all"};
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**"};
-    private final static String[] AUTHENTICATED_GET_MATCHERS = {"/mainPage"};
-    private final static String[] EVERYONE_GET_MATCHERS = {"/prueba", "/css/**", "/images/**", "/js/**", "/","/index","/home","/login", "/user/register"};
+    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
+    private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
+            "/","/index","/home","/login", "/user/register", "/mainPage"};
 
     private final static String[] ADMIN_POST_MATCHERS = {""};
     private final static String[] USER_POST_MATCHERS = {""};
     private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
-    private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register", "/login_process"};
+    private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -55,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //Filter pages based on the authority or role the user has
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
-                .antMatchers(GET, USER_GET_MATCHERS).hasRole("USER")
+                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
                 //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
                 //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")

@@ -53,10 +53,9 @@ public class HomeController implements ServletContextAware {
         return "login";
     }
 
-    @GetMapping("/prueba")
-    public void prueba() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getName());
+    @GetMapping("/mainPage")
+    public String mainPage() {
+        return "mainPage";
     }
 
     /*@PostMapping("/login")
