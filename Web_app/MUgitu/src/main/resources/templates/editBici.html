@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{bikeEdit.htmlTitle}"></title>
+</head>
+<body>
+
+<form name="register-form" th:action="@{/bike/edit/{id}(id=*{biciId})}" th:object="${bici}" method="post">
+    <h4 th:text="#{bikeEdit.editing} + *{biciId}"></h4>
+    <div>
+        <input type="text" th:field="*{modelo}" th:placeholder="#{bikeEdit.model}" th:value="*{modelo}" required>
+        <input type="text" th:field="*{estado}" th:placeholder="#{bikeEdit.status}" th:value="*{estado}" required>
+    </div>
+    <div>
+        <label th:text="#{bikeEdit.electrica}">Electric</label>
+        <input type="checkbox" name="electric" th:attrappend="*{electrica}? checked" required>
+        <label th:text="#{bikeEdit.SOC}">SOC</label>
+        <input type="number" th:field="*{SOC}" th:placeholder="#{bikeEdit.SOC}" th:value="*{SOC}">
+    </div>
+    <button type="submit" th:text="#{bikeEdit.edit}">Submit</button>
+</form>
+
+</body>
+</html>

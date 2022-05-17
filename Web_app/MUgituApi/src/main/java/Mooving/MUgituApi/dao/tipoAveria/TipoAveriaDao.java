@@ -6,9 +6,9 @@ import java.util.List;
 
  public interface TipoAveriaDao {
      List<TipoAveria> getAllTipoAverias();
-     TipoAveria getTipoAveria(long id);
+     TipoAveria getTipoAveria(int id);
      void editTipoAveria(TipoAveria tipoAveria);
-     void deleteTipoAveria(long id);
+     void deleteTipoAveria(int id);
      void deleteTipoAveria(TipoAveria tipoAveria);
      void addTipoAveria(TipoAveria tipoAveria);
  }

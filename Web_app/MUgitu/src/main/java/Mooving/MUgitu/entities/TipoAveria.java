@@ -38,4 +38,12 @@ public class TipoAveria {
         this.descripcion = descripcion;
     }
 
+    public enum Valores {
+        Leve(1),
+        Moderado(2),
+        Grave(3);
+
+        Valores(int i) {
+        }
+    }
 }

@@ -133,7 +133,16 @@ INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
 INSERT INTO estacion (estacion_id, nombre, latitud, longitud, plazas, activa) VALUES
     (1, 'Puerta del sol', 40.416926, -3.703537, 100, true);
 
+#Añadir bicis
+INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES
+(1, 'BH 1', false, null, 1),
+(2, 'BH 2', true, 100, 1),
+(3, 'BH 3', false, null, 1);
 
+#Anadir averias
+INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (1, '2022-05-17 00:00:00', '2022-05-18 00:00:00', 1, 1);
+INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (2, '2022-05-18 00:00:00', '2022-05-19 00:00:00', 2, 2);
+INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (3, '2022-05-19 00:00:00', '2022-05-21 00:00:00', 3, 3);
 
 
 

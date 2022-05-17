@@ -31,15 +31,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
 
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all"};
-    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**"};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all", "/bike/edit/**", "/estacion/edit/**",
+            "/averia/edit/**"};
+    private final static String[] ADMIN_POST_MATCHERS = {"/bike/edit/**", "/estacion/edit/**",
+            "/averia/edit/**"};
+
+    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "bike/**"};
+    private final static String[] USER_POST_MATCHERS = {""};
+
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
+    private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
+
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
             "/","/index","/home","/login", "/user/register", "/mainPage"};
-
-    private final static String[] ADMIN_POST_MATCHERS = {""};
-    private final static String[] USER_POST_MATCHERS = {""};
-    private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
     @Autowired
@@ -54,12 +58,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
         //Filter pages based on the authority or role the user has
+
+                .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
+                .antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
+                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
+                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN")
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
-                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
-                .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
-                //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         //Login control

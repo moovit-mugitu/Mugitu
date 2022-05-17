@@ -40,61 +40,55 @@ public class UserApi {
         this.tipoUsuarioDao = tipoUsuarioDao;
     }
 
-    @GetMapping(path="/email/{email}")
-    public ResponseEntity<Usuario>  getUserByEmail(@PathVariable("email") String mail, Authentication authentication) {
-        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
-        if(checkPermission(user, mail, "mail")){
+    @GetMapping(path = "/email/{email}")
+    public ResponseEntity<Usuario> getUserByEmail(@PathVariable("email") String mail, Authentication authentication) {
+        Usuario user = getPrincipal(usuarioDao, authentication);
+        if (checkPermission(user, mail, "mail")) {
             Usuario usuario = usuarioDao.getUsuarioByEmail(mail);
-            if(usuario == null) return ResponseEntity.notFound().build();
+            if (usuario == null) return ResponseEntity.notFound().build();
             return ResponseEntity.ok(usuario);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    @GetMapping(path="/id/{id}")
-    public ResponseEntity<Usuario> getUserById (@PathVariable("id") long id, Authentication authentication) {
-        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
-        if(checkPermission(user, String.valueOf(id), "id")){
+    @GetMapping(path = "/id/{id}")
+    public ResponseEntity<Usuario> getUserById(@PathVariable("id") long id, Authentication authentication) {
+        Usuario user = getPrincipal(usuarioDao, authentication);
+        if (checkPermission(user, String.valueOf(id), "id")) {
             Usuario usuario = usuarioDao.getUser(id);
-            if(usuario == null) return ResponseEntity.notFound().build();
+            if (usuario == null) return ResponseEntity.notFound().build();
             return ResponseEntity.ok(usuario);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    @GetMapping(path="/all")
-    public ResponseEntity<List<Usuario>> getAllUsers (Authentication authentication) {
-        Usuario user = usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
-        if(checkPermission(user, null, "all")){
-            List<Usuario> usuarios = usuarioDao.getAllUsers();
-            if(usuarios == null) return ResponseEntity.notFound().build();
-            return ResponseEntity.ok(usuarios);
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Usuario>> getAllUsers() {
+        List<Usuario> usuarios = usuarioDao.getAllUsers();
+        if (usuarios == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(usuarios);
     }
 
-    @PostMapping(path="/register")
-    public ResponseEntity<String> createNewUser (@RequestBody Usuario usuario) {
+    @PostMapping(path = "/register")
+    public ResponseEntity<String> createNewUser(@RequestBody Usuario usuario) {
         String error = checkUserDuplicated(usuario);
 
         BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder(SecurityConfiguration.ENCRYPT_STRENGTH);
         usuario.setPassword(encrypt.encode(usuario.getPassword()));
-        if(error.length()==0)usuarioDao.addUser(usuario);
+        if (error.length() == 0) usuarioDao.addUser(usuario);
 
         return ResponseEntity.ok(error);
     }
 
 
-
-
-    @PostMapping(path="/guardarAlgo")
-    public ResponseEntity<?> guardadYDevolverVOid (@RequestBody CustomEntity customEntity) {
+    @PostMapping(path = "/guardarAlgo")
+    public ResponseEntity<?> guardadYDevolverVOid(@RequestBody CustomEntity customEntity) {
         //Codigooo
         return ResponseEntity.ok().build();
     }
 
     @Data
-    class CustomEntity{
+    class CustomEntity {
         String name;
         String surname;
     }
@@ -112,27 +106,27 @@ public class UserApi {
         }
         return errorStr;
     }
-    private boolean checkPermission(Usuario applicant, String requestedUser, String identifier){
+
+    private boolean checkPermission(Usuario applicant, String requestedUser, String identifier) {
         boolean permited = false;
         switch (identifier) {
             case "id":
-                if(applicant.getUserId().equals(Long.valueOf(requestedUser)) ||
-                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
+                if (applicant.getUserId().equals(Long.valueOf(requestedUser)) ||
+                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")) {
                     permited = true;
                 }
                 break;
             case "mail":
-                if(applicant.getCorreo().equals(requestedUser) ||
-                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
-                    permited = true;
-                }
-                break;
-            case "all":
-                if(applicant.getTipo_usuario().getDescripcion().equals("ADMIN")){
+                if (applicant.getCorreo().equals(requestedUser) ||
+                        applicant.getTipo_usuario().getDescripcion().equals("ADMIN")) {
                     permited = true;
                 }
                 break;
         }
         return permited;
+    }
+
+    public static Usuario getPrincipal(UsuarioDao usuarioDao, Authentication authentication) {
+        return usuarioDao.getUsuarioByEmail((String) authentication.getPrincipal());
     }
 }

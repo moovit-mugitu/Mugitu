@@ -56,6 +56,7 @@ public class UserController {
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
     }
+
     @GetMapping(path = "/id/{id}")
     @ResponseBody
     public Usuario getUserById(@PathVariable("id") long id) {
@@ -64,6 +65,7 @@ public class UserController {
 
         return responseUser.getBody();
     }
+
     @GetMapping(path = "/email/{email}")
     @ResponseBody
     public Usuario getUserByEmail(@PathVariable("email") String email) {

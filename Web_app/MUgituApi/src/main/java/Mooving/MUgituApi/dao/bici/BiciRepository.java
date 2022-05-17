@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BiciRepository extends JpaRepository<Bici, Long> {
     List<Bici> getBicisByElectrica(Boolean electrica);
+    List<Bici> getBicisByModelo(String model);
 }

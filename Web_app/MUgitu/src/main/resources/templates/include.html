@@ -5,215 +5,216 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Bootstrap import-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!--js import-->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <!--Ajax import-->
-    <script src="/js/itemModelAjax.js"></script>
-    <script src="/js/grafana.js"></script>
-    <script src="/js/userAjax.js"></script>
-    <script src="/js/reservationAjax.js"></script>
+    <!-- Latest minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Packaged JS (Bundle) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"></script>
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
-      integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous" />
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <script>
-        $(function () {
-            $('.dp').datepicker();
-        });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.js"></script>
-    <!--header.css-->
-    <link rel="stylesheet" href="/css/header.css"/>
-    <link rel="stylesheet" href="/css/footer.css"/>
-    <link rel="stylesheet" href="/css/styles.css"/>
-    <link rel="icon" href="/images/logo_trasp.png" />
 
-    <!--Select picker-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+    <link rel="icon" href="/images/logo_trasp.png"/>
 
     <title th:replace=" :: #Ptitle"></title>
 </head>
 <body>
-  <header class="mb-3 border-bottom" th:fragment="headercontent">
+<header class="mb-3 border-bottom" th:fragment="headercontent">
     <div class="d-lg-flex align-items-center container">
-      <div class="d-flex align-items-center justify-content-center justify-content-lg-start col">
-        <a href="/index" class="d-flex  justify-content-center trackGrafana" grafanaId="6">
-          <img src="/images/logo_mubook.png" alt="Logo MUBook" class="bi me-2 w-50 d-none d-lg-flex"
-            aria-label="Bootstrap" />
-          <img src="/images/logo_web.png" alt="Logo MUBook"
-            class="m-2 w-50 d-lg-none d-flex justify-content-center d-block" aria-label="Bootstrap" />
-        </a>
-      </div>
-      <div class="dropdown text-end d-none d-lg-flex justify-content-end col">
-        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle trackGrafana" grafanaId="7" id="dropdownProfile"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="/images/profile.png" alt="mdo" width="32" height="32" class="rounded-circle">
-        </a>
-        <ul class="dropdown-menu text-small" aria-labelledby="dropdownProfile">
-          <li sec:authorize= "hasRole('USER')"><a class="dropdown-item trackGrafana" grafanaId="10" href="/reservations/all" th:text="#{menu.myReservations}"></a></li>
-          <li sec:authorize= "hasAnyRole('ADMIN','WORKER')"><a class="dropdown-item trackGrafana" grafanaId="10" href="/reservations/all" th:text="#{menu.reservations}"></a></li>
-          <li sec:authorize= "isAuthenticated()"><a class="dropdown-item trackGrafana" grafanaId="11" href="/user/profile" th:text="#{menu.myProfile}"></a></li>
-          <li sec:authorize= "hasRole('ADMIN')"><a class="dropdown-item trackGrafana" grafanaId="29" href="/data" th:text="#{menu.dataCharts}"></a></li>
-          <li sec:authorize= "isAuthenticated()">
-            <hr class="dropdown-divider">
-          </li>
-          <li sec:authorize= "isAnonymous()"><a class="dropdown-item trackGrafana"  grafanaId="8" th:href="@{/login}" th:text="#{menu.signIn}"></a></li>
-          <li sec:authorize= "isAuthenticated()">
-            <form th:action="@{/logout}" method = "post">
-            <input type = "submit" value = "Sign Out" class="dropdown-item trackGrafana" grafanaId="9"/>
-            </form>
-          </li>
-        </ul>
-      </div>
+        <div class="d-flex align-items-center justify-content-center justify-content-lg-start col">
+            <a href="/index" class="d-flex  justify-content-center trackGrafana" grafanaId="6">
+                <img src="/images/logo_mubook.png" alt="Logo MUBook" class="bi me-2 w-50 d-none d-lg-flex"
+                     aria-label="Bootstrap"/>
+                <img src="/images/logo_web.png" alt="Logo MUBook"
+                     class="m-2 w-50 d-lg-none d-flex justify-content-center d-block" aria-label="Bootstrap"/>
+            </a>
+        </div>
+        <div class="dropdown text-end d-none d-lg-flex justify-content-end col">
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle trackGrafana" grafanaId="7"
+               id="dropdownProfile"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/images/profile.png" alt="mdo" width="32" height="32" class="rounded-circle">
+            </a>
+            <ul class="dropdown-menu text-small" aria-labelledby="dropdownProfile">
+                <li sec:authorize="hasRole('USER')"><a class="dropdown-item trackGrafana" grafanaId="10"
+                                                       href="/reservations/all" th:text="#{menu.myReservations}"></a>
+                </li>
+                <li sec:authorize="hasAnyRole('ADMIN','WORKER')"><a class="dropdown-item trackGrafana" grafanaId="10"
+                                                                    href="/reservations/all"
+                                                                    th:text="#{menu.reservations}"></a></li>
+                <li sec:authorize="isAuthenticated()"><a class="dropdown-item trackGrafana" grafanaId="11"
+                                                         href="/user/profile" th:text="#{menu.myProfile}"></a></li>
+                <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item trackGrafana" grafanaId="29" href="/data"
+                                                        th:text="#{menu.dataCharts}"></a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <hr class="dropdown-divider">
+                </li>
+                <li sec:authorize="isAnonymous()"><a class="dropdown-item trackGrafana" grafanaId="8"
+                                                     th:href="@{/login}" th:text="#{menu.signIn}"></a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Sign Out" class="dropdown-item trackGrafana" grafanaId="9"/>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-dark">
-      <!-- container for responsiveness -->
-      <div class="container">
-        <!-- first item: brand name -->
-        <a class="navbar-brand text-white d-lg-none w-mi" id="mubook-text" href="#">MuBook</a>
-        <!-- this is the button when it collapses due to small screen size (data-bs-target must match the ID of the div below)-->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- this div holds everything who is going to collapse inside the button (be careful with the ID. It must match with the button target) -->
-        <div class="collapse navbar-collapse menu-items" id="navbarSupportedContent">
-          <!-- this list contains the "menu options (items)" such as download, contact, pricing, etc. -->
-          <ul id="my-ul" class="navbar-nav w-100">
-            <li class="nav-item">
-              <a class="nav-link text-white trackGrafana" grafanaId="1" th:classappend="${navPage eq 'index'}? active"  th:href="@{/}" th:text="#{menu.home}"></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white trackGrafana" grafanaId="2" th:classappend="${navPage eq 'search'}? active" th:href="@{/search}" th:text="#{menu.search}"></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white trackGrafana" grafanaId="3" th:classappend="${navPage eq 'faq'}? active" th:href="@{/faq}" th:text="#{menu.faq}"></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white trackGrafana" grafanaId="4" th:classappend="${navPage eq 'aboutUs'}? active" th:href="@{/aboutUs}" th:text="#{menu.aboutUs}"></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white trackGrafana" grafanaId="5" th:classappend="${navPage eq 'userPage'}? active" sec:authorize= "hasAnyRole('ADMIN','WORKER')" th:href="@{/user}" th:text="#{menu.users}"></a>
-            </li>
-            <hr>
-            <li sec:authorize= "hasRole('USER')"><a class="nav-link text-white d-lg-none" href="/reservations/all" th:text="#{menu.myReservations}"></a></li>
-            <li sec:authorize= "hasAnyRole('ADMIN','WORKER')"><a class="nav-link text-white d-lg-none" href="/reservations/all" th:text="#{menu.reservations}"></a></li>
-            <li sec:authorize= "isAuthenticated()"><a class="nav-link text-white d-lg-none" href="/user/profile" th:text="#{menu.myProfile}"></a></li>
-            <li sec:authorize= "hasRole('ADMIN')"><a class="nav-link text-white d-lg-none" href="/data" th:text="#{menu.dataCharts}"></a></li>
-            <li sec:authorize= "isAuthenticated()">
-              <hr class="dropdown-divider ">
-            </li>
-            <li sec:authorize= "isAnonymous()"><a class="nav-link text-white d-lg-none" th:href="@{/login}" th:text="#{menu.signIn}"></a></li>
-            <li sec:authorize= "isAuthenticated()" class="nav-link text-white d-lg-none" >
-              <form th:action="@{/logout}" method = "post">
-              <input type = "submit" value = "Sign Out" class="nav-link text-white d-lg-none bg-transparent border-0"/>
-              </form>
-            </li>
-            <hr>
-          </ul>
-          <ul class="navbar-nav float-right">
-            <li class="nav-item language float-right">
-              <a class="nav-link text-white" th:classappend="${#locale.language == 'en'}? active" th:href="|@{/}?language=en|" th:text="#{lang.en}"></a>
-              <a class="nav-link text-white" th:classappend="${#locale.language == 'es'}? active" th:href="|@{/}?language=es|" th:text="#{lang.es}"></a>
-              <a class="nav-link text-white" th:classappend="${#locale.language == 'eu'}? active" th:href="|@{/}?language=eu|" th:text="#{lang.eu}"></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <footer class="bg-light text-center text-white" th:fragment="footercontent">
-    <!-- Section: Links  -->
-  <div class="" style="background-color: #333333;">
-    <div class="container text-center text-md-start mt-5">
-      <!-- Grid row -->
-      <div class="row mt-3">
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
-          <!-- Content -->
-          <h6 class="text-uppercase fw-bold mb-4" th:text="#{footer.contactUs}"></h6>
-          <a href="mailto:mubook@mondragon.edu" class="text-white">
-            mubook@mondragon.edu
-          </a>
-        </div>
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold">
-            MuBook
-          </h6>
-          <hr/>
-            <h6 th:text="#{footer.engagement}"></h6>
-        </div>
-        <!-- Grid column -->
-
-        <!-- Grid column -->
-        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-          <h6 class="text-uppercase fw-bold mb-4 text-center" th:text="#{footer.socialNetworks}"></h6>
-          <div class="d-flex justify-content-center">
-            <!-- Section: Social media -->
-            <div class="d-flex justify-content-lg-center">
-              <!-- Facebook -->
-              <a
-                class="btn btn-primary btn-floating m-1"
-                style="background-color: #3b5998;"
-                href="https://www.facebook.com/mubook"
-                role="button"
-                ><em class="fab fa-facebook-f"></em
-              ></a>
-              <!-- Instagram -->
-              <a
-              class="btn btn-primary btn-floating m-1"
-              style="background-color: #ac2bac;"
-              href="https://www.instagram.com/mubook"
-              role="button"
-              ><em class="fab fa-instagram"></em
-            ></a>
-              <!-- Twitter -->
-              <a
-                class="btn btn-primary btn-floating m-1"
-                style="background-color: #55acee;"
-                href="https://www.twitter.com/mubook"
-                role="button"
-                ><em class="fab fa-twitter"></em
-              ></a>
-              <!-- Github -->
-              <a
-                class="btn btn-primary btn-floating m-1"
-                style="background-color: #333333;"
-                href="https://github.com/PeioM/mubook"
-                role="button"
-                ><em class="fab fa-github"></em
-              ></a>
+        <!-- container for responsiveness -->
+        <div class="container">
+            <!-- first item: brand name -->
+            <a class="navbar-brand text-white d-lg-none w-mi" id="mubook-text" href="#">MuBook</a>
+            <!-- this is the button when it collapses due to small screen size (data-bs-target must match the ID of the div below)-->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- this div holds everything who is going to collapse inside the button (be careful with the ID. It must match with the button target) -->
+            <div class="collapse navbar-collapse menu-items" id="navbarSupportedContent">
+                <!-- this list contains the "menu options (items)" such as download, contact, pricing, etc. -->
+                <ul id="my-ul" class="navbar-nav w-100">
+                    <li class="nav-item">
+                        <a class="nav-link text-white trackGrafana" grafanaId="1"
+                           th:classappend="${navPage eq 'index'}? active" th:href="@{/}" th:text="#{menu.home}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white trackGrafana" grafanaId="2"
+                           th:classappend="${navPage eq 'search'}? active" th:href="@{/search}"
+                           th:text="#{menu.search}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white trackGrafana" grafanaId="3"
+                           th:classappend="${navPage eq 'faq'}? active" th:href="@{/faq}" th:text="#{menu.faq}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white trackGrafana" grafanaId="4"
+                           th:classappend="${navPage eq 'aboutUs'}? active" th:href="@{/aboutUs}"
+                           th:text="#{menu.aboutUs}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white trackGrafana" grafanaId="5"
+                           th:classappend="${navPage eq 'userPage'}? active"
+                           sec:authorize="hasAnyRole('ADMIN','WORKER')" th:href="@{/user}" th:text="#{menu.users}"></a>
+                    </li>
+                    <hr>
+                    <li sec:authorize="hasRole('USER')"><a class="nav-link text-white d-lg-none"
+                                                           href="/reservations/all"
+                                                           th:text="#{menu.myReservations}"></a></li>
+                    <li sec:authorize="hasAnyRole('ADMIN','WORKER')"><a class="nav-link text-white d-lg-none"
+                                                                        href="/reservations/all"
+                                                                        th:text="#{menu.reservations}"></a></li>
+                    <li sec:authorize="isAuthenticated()"><a class="nav-link text-white d-lg-none" href="/user/profile"
+                                                             th:text="#{menu.myProfile}"></a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a class="nav-link text-white d-lg-none" href="/data"
+                                                            th:text="#{menu.dataCharts}"></a></li>
+                    <li sec:authorize="isAuthenticated()">
+                        <hr class="dropdown-divider ">
+                    </li>
+                    <li sec:authorize="isAnonymous()"><a class="nav-link text-white d-lg-none" th:href="@{/login}"
+                                                         th:text="#{menu.signIn}"></a></li>
+                    <li sec:authorize="isAuthenticated()" class="nav-link text-white d-lg-none">
+                        <form th:action="@{/logout}" method="post">
+                            <input type="submit" value="Sign Out"
+                                   class="nav-link text-white d-lg-none bg-transparent border-0"/>
+                        </form>
+                    </li>
+                    <hr>
+                </ul>
+                <ul class="navbar-nav float-right">
+                    <li class="nav-item language float-right">
+                        <a class="nav-link text-white" th:classappend="${#locale.language == 'en'}? active"
+                           th:href="|@{/}?language=en|" th:text="#{lang.en}"></a>
+                        <a class="nav-link text-white" th:classappend="${#locale.language == 'es'}? active"
+                           th:href="|@{/}?language=es|" th:text="#{lang.es}"></a>
+                        <a class="nav-link text-white" th:classappend="${#locale.language == 'eu'}? active"
+                           th:href="|@{/}?language=eu|" th:text="#{lang.eu}"></a>
+                    </li>
+                </ul>
             </div>
-            <!-- Section: Social media -->
-          </div>
         </div>
-        <!-- Grid column -->
-      </div>
-      <!-- Grid row -->
+    </nav>
+</header>
+<footer class="bg-light text-center text-white" th:fragment="footercontent">
+    <!-- Section: Links  -->
+    <div class="" style="background-color: #333333;">
+        <div class="container text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4" th:text="#{footer.contactUs}"></h6>
+                    <a href="mailto:mubook@mondragon.edu" class="text-white">
+                        mubook@mondragon.edu
+                    </a>
+                </div>
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold">
+                        MuBook
+                    </h6>
+                    <hr/>
+                    <h6 th:text="#{footer.engagement}"></h6>
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4 text-center" th:text="#{footer.socialNetworks}"></h6>
+                    <div class="d-flex justify-content-center">
+                        <!-- Section: Social media -->
+                        <div class="d-flex justify-content-lg-center">
+                            <!-- Facebook -->
+                            <a
+                                    class="btn btn-primary btn-floating m-1"
+                                    style="background-color: #3b5998;"
+                                    href="https://www.facebook.com/mubook"
+                                    role="button"
+                            ><em class="fab fa-facebook-f"></em
+                            ></a>
+                            <!-- Instagram -->
+                            <a
+                                    class="btn btn-primary btn-floating m-1"
+                                    style="background-color: #ac2bac;"
+                                    href="https://www.instagram.com/mubook"
+                                    role="button"
+                            ><em class="fab fa-instagram"></em
+                            ></a>
+                            <!-- Twitter -->
+                            <a
+                                    class="btn btn-primary btn-floating m-1"
+                                    style="background-color: #55acee;"
+                                    href="https://www.twitter.com/mubook"
+                                    role="button"
+                            ><em class="fab fa-twitter"></em
+                            ></a>
+                            <!-- Github -->
+                            <a
+                                    class="btn btn-primary btn-floating m-1"
+                                    style="background-color: #333333;"
+                                    href="https://github.com/PeioM/mubook"
+                                    role="button"
+                            ><em class="fab fa-github"></em
+                            ></a>
+                        </div>
+                        <!-- Section: Social media -->
+                    </div>
+                </div>
+                <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+        </div>
     </div>
-  </div>
-  <!-- Section: Links  -->
-  
+    <!-- Section: Links  -->
+
     <!-- Copyright -->
     <div class="text-center p-3 text-dark" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2021 Copyright:
-      <a class="text-black" href="https://libumu.com">Libumu Company</a>
+        © 2021 Copyright:
+        <a class="text-black" href="https://libumu.com">Libumu Company</a>
     </div>
     <!-- Copyright -->
-  </footer>
+</footer>
 </body>
 </html>

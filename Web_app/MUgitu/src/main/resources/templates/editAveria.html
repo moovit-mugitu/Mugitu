@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{averiaEdit.htmlTitle}"></title>
+</head>
+<body>
+
+<form name="register-form" th:action="@{/averia/edit/{id}(id=*{id})}" th:object="${averia}" method="post">
+    <h4 th:text="#{averiaEdit.editing} + *{id}"></h4>
+    <div>
+        <input type="number" name="biciId" th:placeholder="#{averiaEdit.bici}" required>
+        <select th:text="#{averiaEdit.tipoAveria}" name="tipoAveriaId" th:field="*{tipoAveria.id}" required>
+            <option value="1" th:text="#{averia.leve}" selected></option>
+            <option value="2" th:text="#{averia.moderada}"></option>
+            <option value="3" th:text="#{averia.grave}"></option>
+        </select>
+    </div>
+    <div>
+        <input type="date" th:field="*{fechaInicio}" th:placeholder="#{averiaEdit.fechaInicio}" required>
+        <input type="date" th:field="*{fechaFin}" th:placeholder="#{averiaEdit.fechaFin}">
+    </div>
+    <button type="submit" th:text="#{averiaEdit.edit}">Submit</button>
+</form>
+
+</body>
+</html>

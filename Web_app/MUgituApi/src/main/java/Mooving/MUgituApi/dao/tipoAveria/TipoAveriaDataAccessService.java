@@ -18,7 +18,7 @@ public class TipoAveriaDataAccessService implements TipoAveriaDao {
     }
 
     @Override
-    public TipoAveria getTipoAveria(long id) {
+    public TipoAveria getTipoAveria(int id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -28,7 +28,7 @@ public class TipoAveriaDataAccessService implements TipoAveriaDao {
     }
 
     @Override
-    public void deleteTipoAveria(long id) {
+    public void deleteTipoAveria(int id) {
         repository.deleteById(id);
     }
 

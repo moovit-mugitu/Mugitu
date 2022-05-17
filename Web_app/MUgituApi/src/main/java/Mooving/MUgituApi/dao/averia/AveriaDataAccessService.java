@@ -1,6 +1,8 @@
 package Mooving.MUgituApi.dao.averia;
 
+import Mooving.MUgituApi.dao.tipoAveria.TipoAveriaRepository;
 import Mooving.MUgituApi.entities.Averia;
+import Mooving.MUgituApi.entities.TipoAveria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ public class AveriaDataAccessService implements AveriaDao {
 
     @Autowired
     private AveriaRepository repository;
+    @Autowired
+    private TipoAveriaRepository repositoryTipo;
 
     @Override
     public List<Averia> getAllAverias() {
@@ -44,6 +48,7 @@ public class AveriaDataAccessService implements AveriaDao {
 
     @Override
     public List<Averia> getAveriaByTipo(Integer tipo) {
-        return repository.getAveriasByTipoAveria(tipo);
+        TipoAveria tipoAveria = repositoryTipo.getById(tipo);
+        return repository.getAveriasByTipoAveria(tipoAveria);
     }
 }

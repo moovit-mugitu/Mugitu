@@ -31,7 +31,6 @@ public class RestRequests {
         HttpSession session = attr.getRequest().getSession(true);
         return (String) session.getAttribute(tokenId);
     }
-
     public static HttpServletRequest getRequest(){
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest();
@@ -43,14 +42,6 @@ public class RestRequests {
         String url = BASE_PATH+requestUrl;
         ResponseEntity<T> responseEntity = restTemplate.getForEntity(url, returnClass);
         return  responseEntity;
-    }
-
-    public static <T> T RESTgetRequest(String requestUrl, Class<T> returnClass) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = BASE_PATH+requestUrl;
-        ResponseEntity<T> responseEntity = restTemplate.getForEntity(url, returnClass);
-        return  responseEntity.getBody();
     }
 
     //Headers and send something PROBABLY POST

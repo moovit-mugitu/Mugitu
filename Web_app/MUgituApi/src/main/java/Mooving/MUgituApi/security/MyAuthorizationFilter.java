@@ -30,12 +30,11 @@ public class MyAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletPath().equals("/login") || request.getServletPath().equals("/token/refresh")){
+        if (request.getServletPath().equals("/login") || request.getServletPath().equals("/token/refresh")) {
             filterChain.doFilter(request, response);
-        }
-        else{
+        } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if(authorizationHeader != null && authorizationHeader.startsWith(HeaderPrefix)){
+            if (authorizationHeader != null && authorizationHeader.startsWith(HeaderPrefix)) {
                 try {
                     String token = authorizationHeader.substring(HeaderPrefix.length());
                     Algorithm algorithm = Algorithm.HMAC256(MyAuthenticationFilter.AlgorithmKey);
@@ -44,23 +43,25 @@ public class MyAuthorizationFilter extends OncePerRequestFilter {
                     String username = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim(MyAuthenticationFilter.RolesString).asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    stream(roles).forEach(role-> {
+                    stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request,response);
-                }catch (Exception e){
+                    filterChain.doFilter(request, response);
+                } catch (Exception e) {
                     response.setHeader("error", e.getMessage());
                     response.setStatus(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
-                    error.put("error_message", "Access token expired: "+e.getMessage());
+                    error.put("error_message", "Access token expired: " + e.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-            }
-            else{
-                filterChain.doFilter(request,response);
+            } else {
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", "Access token missing");
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         }
     }

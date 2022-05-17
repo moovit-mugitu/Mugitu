@@ -43,7 +43,12 @@ public class BiciDataAccessService implements BiciDao {
     }
 
     @Override
-    public List<Bici> getBiciByElectrica(Boolean electrica) {
+    public List<Bici> getBicisByElectrica(Boolean electrica) {
         return repository.getBicisByElectrica(electrica);
+    }
+
+    @Override
+    public List<Bici> getBicisByModel(String model) {
+        return repository.getBicisByModelo(model);
     }
 }
