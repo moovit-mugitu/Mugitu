@@ -77,4 +77,21 @@ public class Bici {
     public void setBiciId(Long id) {
         this.biciId = id;
     }
+
+    public enum Estados {
+        Libre(1),
+        Ocupada(2),
+        Pausa(3),
+        Mantenimiento(4);
+
+        private int value;
+
+        Estados(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 }

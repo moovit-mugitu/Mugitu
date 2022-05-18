@@ -11,4 +11,7 @@ import java.util.List;
      void deleteEstacionar(long id);
      void deleteEstacionar(Estacionar estacionar);
      void addEstacionar(Estacionar estacionar);
+     List<Estacionar> getEstacionarByEstacion(long id);
+     List<Estacionar> getEstacionarByBici(long id);
+     List<Estacionar> getEstacionarSinFechaFin();
  }

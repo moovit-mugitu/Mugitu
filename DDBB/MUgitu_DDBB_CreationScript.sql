@@ -114,37 +114,47 @@ ALTER TABLE evento ADD CONSTRAINT fk_evento_bici FOREIGN KEY (bici_id) REFERENCE
 ALTER TABLE utilizacion ADD CONSTRAINT fk_utiliza_user FOREIGN KEY (user_id) REFERENCES usuario (user_id);
 ALTER TABLE utilizacion ADD CONSTRAINT fk_utiliza_bici FOREIGN KEY (bici_id) REFERENCES bici (bici_id);
 
-#Add user types
+#AÑADIR DATOS BASICOS PARA PRUEBAS
+
+#User types
 INSERT INTO tipo_usuario (tipo_user_id, descripcion)
 VALUES (1,'ADMIN'),(2,'USER');
 
-#Añadir usuarios básicos, ADMIN y USER con la password igual que el nombre
+#Usuarios básicos, ADMIN y USER con la password igual que el nombre
 INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
 ('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1, true),
 ('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
 
-#Añadir tipo de averias LEVE; MODERADA, GRABE
+#Tipo de averias LEVE; MODERADA, GRABE
 INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
 (1, 'Averia leve (luz no funciona...)'),
 (2, 'Averia moderada (fallo mecanico)'),
 (3, 'Averia grave (bicicleta inutilizable)');
 
-#Añadir una estacion
+#Estacion
 INSERT INTO estacion (estacion_id, nombre, latitud, longitud, plazas, activa) VALUES
     (1, 'Puerta del sol', 40.416926, -3.703537, 100, true);
 
-#Añadir bicis
+#Bicis
 INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES
 (1, 'BH 1', false, null, 1),
 (2, 'BH 2', true, 100, 1),
 (3, 'BH 3', false, null, 1);
 
-#Anadir averias
+#Averias
 INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (1, '2022-05-17 00:00:00', '2022-05-18 00:00:00', 1, 1);
 INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (2, '2022-05-18 00:00:00', '2022-05-19 00:00:00', 2, 2);
 INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_averia) VALUES (3, '2022-05-19 00:00:00', '2022-05-21 00:00:00', 3, 3);
 
+#Estacionar
+INSERT INTO mugitu.estacionar (estacionar_id, estacion_id, bici_id, fecha_inicio, fecha_fin) VALUES (1, 1, 1, '2022-05-18 10:51:08', null);
 
+#Evento
+INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (1, 2, 2, '2022-05-17 10:52:43');
+INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (2, 2, 3, '2022-05-18 10:52:16');
+
+#Utilizacion
+INSERT INTO mugitu.utilizacion (utiliza_id, bici_id, user_id, fecha_inicio, fecha_fin) VALUES (1, 3, 3, '2022-05-18 09:53:31', null);
 
 
 #Create User for web app

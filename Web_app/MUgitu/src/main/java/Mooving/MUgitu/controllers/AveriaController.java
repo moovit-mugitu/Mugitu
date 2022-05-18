@@ -23,7 +23,7 @@ public class AveriaController {
     public String editAveria(@PathVariable("id") long id, Model model) {
         ResponseEntity<Averia> averia = RestRequests.RestRequestWithHeaders("/averia/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
-        if(averia.getBody().getAveriaId() == id){
+        if(averia.getBody() != null && averia.getBody().getAveriaId() == id){
             model.addAttribute("averia", averia);
             return "editAveria";
         }
@@ -64,7 +64,7 @@ public class AveriaController {
 
     @GetMapping(path = "/tipo/{tipo}")
     @ResponseBody
-    public List<Averia> getAveriasByActivas(@PathVariable("tipo") int tipo) {
+    public List<Averia> getAveriasByTipo(@PathVariable("tipo") int tipo) {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/tipo/"+tipo, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 

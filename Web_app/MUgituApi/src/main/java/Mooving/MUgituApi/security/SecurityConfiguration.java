@@ -28,19 +28,22 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**"};
-    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bike/id/**", "/bike/all/**",
-    "/bike/model/**", "/bike/electrica/**"};
-    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
-    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh"};
-
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
     private final static String[] ADMIN_POST_MATCHERS = {""};
+    private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
+            "/averia/edit/**", "/estacionar/edit/**"};
+
+    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
+            "/averia/**", "/estacionar/**"};
     private final static String[] USER_POST_MATCHERS = {""};
+
+    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
     private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
+
+    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
-    private static final String[] ADMIN_PUT_MATCHERS = {"/bike/edit/**", "/estacion/edit/**",
-            "/averia/edit/**"};
+
 
 
     @Autowired
@@ -55,13 +58,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //Filter pages based on the authority or role the user has
-                .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
-                .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
-                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER")
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
                 //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
                 .antMatchers(PUT, ADMIN_PUT_MATCHERS).hasRole("ADMIN")
+                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
+                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN)
+                .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
+                .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
+
+
+
                 .anyRequest().authenticated();
 
         //Creation of JWT...

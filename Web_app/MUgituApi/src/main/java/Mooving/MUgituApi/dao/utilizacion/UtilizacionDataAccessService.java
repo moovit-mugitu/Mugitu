@@ -41,4 +41,9 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
     public void addUtilizacion(Utilizacion utilizacion) {
         repository.save(utilizacion);
     }
+
+    @Override
+    public List<Utilizacion> getUtilizacionSinFin() {
+        return repository.getUtilizacionsByFechaFinIsNull();
+    }
 }

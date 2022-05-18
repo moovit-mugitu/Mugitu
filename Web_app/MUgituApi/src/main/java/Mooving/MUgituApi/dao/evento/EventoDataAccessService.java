@@ -1,10 +1,12 @@
 package Mooving.MUgituApi.dao.evento;
 
+import Mooving.MUgituApi.entities.Bici;
 import Mooving.MUgituApi.entities.Evento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventoDataAccessService implements EventoDao {
@@ -40,5 +42,14 @@ public class EventoDataAccessService implements EventoDao {
     @Override
     public void addEvento(Evento evento) {
         repository.save(evento);
+    }
+
+    @Override
+    public List<Evento> getUltimosEventosByEstado(Bici.Estados estado) {
+        List<Evento> eventos = repository.getUltimosEventosPorBici();
+        List<Evento> eventosByEstado = eventos.stream()
+                .filter(e -> estado.getValue() == e.getEstado())
+                .collect(Collectors.toList());
+        return eventosByEstado;
     }
 }

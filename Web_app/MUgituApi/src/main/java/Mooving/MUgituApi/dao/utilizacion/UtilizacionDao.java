@@ -11,4 +11,5 @@ public interface UtilizacionDao {
      void deleteUtilizacion(long id);
      void deleteUtilizacion(Utilizacion utilizacion);
      void addUtilizacion(Utilizacion utilizacion);
- }
+    List<Utilizacion> getUtilizacionSinFin();
+}

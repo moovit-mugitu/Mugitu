@@ -1,8 +1,6 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Bici;
-import Mooving.MUgitu.entities.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +15,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/bike")
-public class BikeController {
+@RequestMapping("/bici")
+public class BiciController {
 
     @GetMapping("/edit/{id}")
     public String editBici(@PathVariable("id") long id, Model model) {
-        ResponseEntity<Bici> bici = RestRequests.RestRequestWithHeaders("/bike/id/"+id,
+        ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders("/bici/id/" + id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
-        if(bici.getBody().getBiciId() == id){
-            model.addAttribute("bici", bici);
-            return "editBici";
-        }
-        return "error";
+        Bici bici = response.getBody();
+        bici.setBiciId(id);
+        model.addAttribute("bici", bici);
+        return "editBici";
     }
 
     @PostMapping(path = "/edit/{id}")
@@ -38,11 +35,10 @@ public class BikeController {
         bici.setElectrica(electric);
         bici.setBiciId(id);
         ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
-                "/bike/edit/"+id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
-        if(response.getStatusCode() == HttpStatus.OK){
+                "/bici/edit/" + id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
+        if (response.getStatusCode() == HttpStatus.OK) {
             return "updated";
-        }
-        else{
+        } else {
             return "Something went wrong";
         }
     }
@@ -51,7 +47,7 @@ public class BikeController {
     @ResponseBody
     public List<Bici> getAllBicis() {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
-                "/bike/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+                "/bici/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
     }
@@ -60,7 +56,7 @@ public class BikeController {
     @ResponseBody
     public Bici getBiciById(@PathVariable("id") long id) {
         ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders(
-                "/bike/id/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
+                "/bici/id/" + id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
 
         return response.getBody();
     }
@@ -69,7 +65,7 @@ public class BikeController {
     @ResponseBody
     public List<Bici> getBicisByModel(@PathVariable("model") String model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
-                "/bike/model/"+model, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+                "/bici/model/" + model, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
     }
@@ -78,7 +74,34 @@ public class BikeController {
     @ResponseBody
     public List<Bici> getBicisByElectrica(@PathVariable("electric") boolean electric) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
-                "/bike/electrica/"+electric, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+                "/bici/electrica/" + electric, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+
+        return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    @GetMapping(path = "/libre")
+    @ResponseBody
+    public List<Bici> getBicisLibres() {
+        ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
+                "/bici/libre", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+
+        return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    @GetMapping(path = "/parada")
+    @ResponseBody
+    public List<Bici> getBicisParada() {
+        ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
+                "/bici/parada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+
+        return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    @GetMapping(path = "/ocupada")
+    @ResponseBody
+    public List<Bici> getBicisOcupada() {
+        ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
+                "/bici/ocupada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
     }

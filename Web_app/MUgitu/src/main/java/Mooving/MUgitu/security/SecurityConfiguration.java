@@ -31,12 +31,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
 
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all", "/bike/edit/**", "/estacion/edit/**",
-            "/averia/edit/**"};
-    private final static String[] ADMIN_POST_MATCHERS = {"/bike/edit/**", "/estacion/edit/**",
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all", "/bici/edit/**", "/estacion/edit/**",
+            "/averia/edit/**", "/bici/parada", "/bici/ocupada"};
+    private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
             "/averia/edit/**"};
 
-    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "bike/**"};
+    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "bici/**"};
     private final static String[] USER_POST_MATCHERS = {""};
 
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};

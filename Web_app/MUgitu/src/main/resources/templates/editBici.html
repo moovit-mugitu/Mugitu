@@ -5,15 +5,15 @@
 </head>
 <body>
 
-<form name="register-form" th:action="@{/bike/edit/{id}(id=*{biciId})}" th:object="${bici}" method="post">
-    <h4 th:text="#{bikeEdit.editing} + *{biciId}"></h4>
+<form name="register-form" th:action="@{/bici/edit/} + ${bici.biciId}" th:object="${bici}" method="post">
+    <h4 th:text="#{bikeEdit.editing} + ${bici.biciId}"></h4>
     <div>
         <input type="text" th:field="*{modelo}" th:placeholder="#{bikeEdit.model}" th:value="*{modelo}" required>
         <input type="text" th:field="*{estado}" th:placeholder="#{bikeEdit.status}" th:value="*{estado}" required>
     </div>
     <div>
         <label th:text="#{bikeEdit.electrica}">Electric</label>
-        <input type="checkbox" name="electric" th:attrappend="*{electrica}? checked" required>
+        <input type="checkbox" name="electric" th:checked="${bici.electrica}">
         <label th:text="#{bikeEdit.SOC}">SOC</label>
         <input type="number" th:field="*{SOC}" th:placeholder="#{bikeEdit.SOC}" th:value="*{SOC}">
     </div>
