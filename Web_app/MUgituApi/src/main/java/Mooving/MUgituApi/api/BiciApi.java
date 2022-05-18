@@ -66,9 +66,8 @@ public class BiciApi {
 
     @PutMapping(path = "/edit/{id}")
     public ResponseEntity<Bici> editBici(@PathVariable("id") long id, @RequestBody Bici bici) {
-        /*if (bici == null || bici.getBiciId() != id) return ResponseEntity.notFound().build();
+        if (bici == null || bici.getBiciId() != id) return ResponseEntity.notFound().build();
         biciDao.editBici(bici);
-        return ResponseEntity.ok(bici);*/
         return ResponseEntity.notFound().build();
     }
 
