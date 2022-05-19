@@ -27,8 +27,8 @@ public class AveriaDataAccessService implements AveriaDao {
     }
 
     @Override
-    public void editAveria(Averia bici) {
-        repository.save(bici);
+    public void editAveria(Averia averia) {
+        repository.save(averia);
     }
 
     @Override
@@ -37,13 +37,13 @@ public class AveriaDataAccessService implements AveriaDao {
     }
 
     @Override
-    public void deleteAveria(Averia bici) {
-        repository.delete(bici);
+    public void deleteAveria(Averia averia) {
+        repository.delete(averia);
     }
 
     @Override
-    public void addAveria(Averia bici) {
-        repository.save(bici);
+    public Averia addAveria(Averia averia) {
+        return repository.save(averia);
     }
 
     @Override

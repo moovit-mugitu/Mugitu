@@ -11,6 +11,6 @@ public interface EventoDao {
      void editEvento(Evento evento);
      void deleteEvento(long id);
      void deleteEvento(Evento evento);
-     void addEvento(Evento evento);
+     Evento addEvento(Evento evento);
      List<Evento> getUltimosEventosByEstado(Bici.Estados estado);
 }

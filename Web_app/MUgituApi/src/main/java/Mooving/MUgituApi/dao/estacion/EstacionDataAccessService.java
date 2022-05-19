@@ -24,8 +24,8 @@ public class EstacionDataAccessService implements EstacionDao {
     }
 
     @Override
-    public void editEstacion(Estacion bici) {
-        repository.save(bici);
+    public void editEstacion(Estacion estacion) {
+        repository.save(estacion);
     }
 
     @Override
@@ -34,13 +34,13 @@ public class EstacionDataAccessService implements EstacionDao {
     }
 
     @Override
-    public void deleteEstacion(Estacion bici) {
-        repository.delete(bici);
+    public void deleteEstacion(Estacion estacion) {
+        repository.delete(estacion);
     }
 
     @Override
-    public void addEstacion(Estacion bici) {
-        repository.save(bici);
+    public Estacion addEstacion(Estacion estacion) {
+        return repository.save(estacion);
     }
 
     @Override

@@ -6,13 +6,17 @@ import Mooving.MUgituApi.dao.evento.EventoDao;
 import Mooving.MUgituApi.dao.tipoUser.TipoUsuarioDao;
 import Mooving.MUgituApi.dao.user.UsuarioDao;
 import Mooving.MUgituApi.dao.utilizacion.UtilizacionDao;
-import Mooving.MUgituApi.entities.Bici;
-import Mooving.MUgituApi.entities.Estacionar;
-import Mooving.MUgituApi.entities.Evento;
-import Mooving.MUgituApi.entities.Utilizacion;
+import Mooving.MUgituApi.entities.*;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +39,8 @@ public class BiciApi {
         this.eventoDao = eventoDao;
         this.utilizacionDao = utilizacionDao;
     }
+
+    ///  GET METHODS  ///
 
     @GetMapping(path = "/id/{id}")
     public ResponseEntity<Bici> getBiciById(@PathVariable("id") long id) {
@@ -64,13 +70,6 @@ public class BiciApi {
         return ResponseEntity.ok(bicis);
     }
 
-    @PutMapping(path = "/edit/{id}")
-    public ResponseEntity<Bici> editBici(@PathVariable("id") long id, @RequestBody Bici bici) {
-        if (bici == null || bici.getBiciId() != id) return ResponseEntity.notFound().build();
-        biciDao.editBici(bici);
-        return ResponseEntity.notFound().build();
-    }
-
     @GetMapping(path = "/libre")
     public ResponseEntity<List<Bici>> getBiciLibres() {
         List<Estacionar> estacionarList = estacionarDao.getEstacionarSinFechaFin();
@@ -90,6 +89,36 @@ public class BiciApi {
         List<Utilizacion> utilizaciones = utilizacionDao.getUtilizacionSinFin();
         List<Bici> bicis = utilizaciones.stream().map(Utilizacion::getBici).collect(Collectors.toList());
         return ResponseEntity.ok(bicis);
+    }
+
+    ///  PUT METHODS  ///
+
+    @PutMapping(path = "/edit/{id}")
+    public ResponseEntity<Bici> editBici(@PathVariable("id") long id, @RequestBody Bici bici) {
+        if (bici == null || bici.getBiciId() != id) return ResponseEntity.notFound().build();
+        biciDao.editBici(bici);
+        return ResponseEntity.ok(bici);
+    }
+
+    @PutMapping(path = "/create")
+    public ResponseEntity<Bici> createBici(@RequestBody Bici bici) {
+        if (bici == null || bici.getBiciId() != null) return ResponseEntity.notFound().build();
+        Bici saved = biciDao.addBici(bici);
+        return ResponseEntity.created(URI.create("/bici/id/"+saved.getBiciId())).build();
+    }
+
+    ///  DELETE METHODS  ///
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Void> createBici(@PathVariable("id") long id){
+        try {
+            biciDao.deleteBici(id);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 }

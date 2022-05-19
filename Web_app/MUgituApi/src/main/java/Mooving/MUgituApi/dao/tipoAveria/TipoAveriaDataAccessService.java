@@ -38,7 +38,7 @@ public class TipoAveriaDataAccessService implements TipoAveriaDao {
     }
 
     @Override
-    public void addTipoAveria(TipoAveria tipoAveria) {
-        repository.save(tipoAveria);
+    public TipoAveria addTipoAveria(TipoAveria tipoAveria) {
+        return repository.save(tipoAveria);
     }
 }

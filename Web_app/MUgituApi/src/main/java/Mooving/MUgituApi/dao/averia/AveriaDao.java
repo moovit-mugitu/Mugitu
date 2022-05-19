@@ -11,6 +11,6 @@ import java.util.List;
      void editAveria(Averia averia);
      void deleteAveria(long id);
      void deleteAveria(Averia averia);
-     void addAveria(Averia averia);
+     Averia addAveria(Averia averia);
      List<Averia> getAveriaByTipo(Integer tipo);
  }

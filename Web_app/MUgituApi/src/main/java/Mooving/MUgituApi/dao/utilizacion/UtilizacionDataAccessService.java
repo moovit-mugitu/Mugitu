@@ -38,8 +38,8 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
     }
 
     @Override
-    public void addUtilizacion(Utilizacion utilizacion) {
-        repository.save(utilizacion);
+    public Utilizacion addUtilizacion(Utilizacion utilizacion) {
+        return repository.save(utilizacion);
     }
 
     @Override

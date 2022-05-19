@@ -25,6 +25,7 @@ public class AveriaController {
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
         if(averia.getBody() != null && averia.getBody().getAveriaId() == id){
             model.addAttribute("averia", averia);
+            model.addAttribute("url", "/edit/"+id);
             return "editAveria";
         }
         return "error";
@@ -32,16 +33,11 @@ public class AveriaController {
 
     @PostMapping(path = "/edit/{id}")
     @ResponseBody
-    public String editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia, WebRequest request) {
+    public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia) {
         averia.setAveriaId(id);
-        ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
-                "/averia/edit/"+id, HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
-        if(response.getStatusCode() == HttpStatus.OK){
-            return "updated";
-        }
-        else{
-            return "Something went wrong";
-        }
+        ResponseEntity<Averia> response = RestRequests.RestRequestWithHeaders(
+                "/averia/edit/"+id, HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
+        return response.getBody();
     }
 
     @GetMapping(path = "/all")
@@ -69,5 +65,20 @@ public class AveriaController {
                 "/averia/tipo/"+tipo, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    @GetMapping(path = "/create")
+    public String createAveria(Model model) {
+        model.addAttribute("averia", new Averia());
+        model.addAttribute("url", "/create");
+        return "editAveria";
+    }
+
+    @PostMapping(path = "/create")
+    @ResponseBody
+    public Averia createAveria(Model model, @ModelAttribute Averia averia) {
+        ResponseEntity<Averia> response = RestRequests.RestRequestWithHeaders(
+                "/averia/create", HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
+        return response.getBody();
     }
 }

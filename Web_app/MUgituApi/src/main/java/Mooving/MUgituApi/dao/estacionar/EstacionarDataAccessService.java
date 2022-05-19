@@ -31,8 +31,8 @@ public class EstacionarDataAccessService implements EstacionarDao {
     }
 
     @Override
-    public void editEstacionar(Estacionar bici) {
-        repository.save(bici);
+    public void editEstacionar(Estacionar estacionar) {
+        repository.save(estacionar);
     }
 
     @Override
@@ -41,13 +41,13 @@ public class EstacionarDataAccessService implements EstacionarDao {
     }
 
     @Override
-    public void deleteEstacionar(Estacionar bici) {
-        repository.delete(bici);
+    public void deleteEstacionar(Estacionar estacionar) {
+        repository.delete(estacionar);
     }
 
     @Override
-    public void addEstacionar(Estacionar bici) {
-        repository.save(bici);
+    public Estacionar addEstacionar(Estacionar estacionar) {
+        return repository.save(estacionar);
     }
 
     @Override

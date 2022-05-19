@@ -11,7 +11,7 @@ public interface UsuarioDao {
      void editUser(Usuario user);
      void deleteUser(long id);
      void deleteUser(Usuario user);
-     void addUser(Usuario user);
+     Usuario addUser(Usuario user);
      Usuario getUserByDNI(String DNI);
      Usuario getUsuarioByEmail(String email);
 

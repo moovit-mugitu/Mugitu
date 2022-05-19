@@ -38,7 +38,7 @@ public class NotificacionDataAccessService implements NotificacionDao {
     }
 
     @Override
-    public void addNotificacion(NotificacionAveria notificacion) {
-        repository.save(notificacion);
+    public NotificacionAveria addNotificacion(NotificacionAveria notificacion) {
+        return repository.save(notificacion);
     }
 }

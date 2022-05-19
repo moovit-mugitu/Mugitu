@@ -123,13 +123,16 @@ VALUES (1,'ADMIN'),(2,'USER'),(3,'WORKER');
 
 #Usuarios básicos, ADMIN y USER con la password igual que el nombre
 INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
-('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1, true),
+('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1, true);
+INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
 ('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
 
 #Tipo de averias LEVE; MODERADA, GRABE
 INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
-(1, 'Averia leve (luz no funciona...)'),
-(2, 'Averia moderada (fallo mecanico)'),
+(1, 'Averia leve (luz no funciona...)');
+INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
+(2, 'Averia moderada (fallo mecanico)');
+INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
 (3, 'Averia grave (bicicleta inutilizable)');
 
 #Estacion
@@ -138,8 +141,10 @@ INSERT INTO estacion (estacion_id, nombre, latitud, longitud, plazas, activa) VA
 
 #Bicis
 INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES
-(1, 'BH 1', false, null, 1),
-(2, 'BH 2', true, 100, 1),
+(1, 'BH 1', false, null, 1);
+INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES
+(2, 'BH 2', true, 100, 1);
+INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES
 (3, 'BH 3', false, null, 1);
 
 #Averias

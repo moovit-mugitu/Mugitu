@@ -38,8 +38,8 @@ public class UsuarioDataAccessService implements UsuarioDao {
     }
 
     @Override
-    public void addUser(Usuario user) {
-        repository.save(user);
+    public Usuario addUser(Usuario user) {
+        return repository.save(user);
     }
 
     @Override

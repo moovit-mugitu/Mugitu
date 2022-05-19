@@ -18,6 +18,8 @@ import java.util.Objects;
 @RequestMapping("/bici")
 public class BiciController {
 
+    ///  GET  ///
+
     @GetMapping("/edit/{id}")
     public String editBici(@PathVariable("id") long id, Model model) {
         ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders("/bici/id/" + id,
@@ -26,21 +28,6 @@ public class BiciController {
         bici.setBiciId(id);
         model.addAttribute("bici", bici);
         return "editBici";
-    }
-
-    @PostMapping(path = "/edit/{id}")
-    @ResponseBody
-    public String editBici(@PathVariable("id") long id, @ModelAttribute Bici bici, WebRequest request) {
-        boolean electric = Objects.equals(request.getParameter("electric"), "on");
-        bici.setElectrica(electric);
-        bici.setBiciId(id);
-        ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
-                "/bici/edit/" + id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return "updated";
-        } else {
-            return "Something went wrong";
-        }
     }
 
     @GetMapping(path = "/all")
@@ -104,5 +91,26 @@ public class BiciController {
                 "/bici/ocupada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    ///  POST  ///
+
+    @PostMapping(path = "/edit/{id}")
+    @ResponseBody
+    public String editBici(@PathVariable("id") long id, @ModelAttribute Bici bici, WebRequest request) {
+        boolean electric = Objects.equals(request.getParameter("electric"), "on");
+        bici.setElectrica(electric);
+        bici.setBiciId(id);
+        ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
+                "/bici/edit/" + id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
+        return "updated";
+    }
+
+    @PostMapping(path = "/delete/{id}")
+    @ResponseBody
+    public String deleteBici(@PathVariable("id") long id) {
+        ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders(
+                "/bici/delete/" + id, HttpMethod.DELETE, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
+        return "deleted";
     }
 }

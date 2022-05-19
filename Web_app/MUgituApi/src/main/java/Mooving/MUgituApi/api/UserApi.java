@@ -9,6 +9,8 @@ import Mooving.MUgituApi.security.SecurityConfiguration;
 import jdk.jfr.DataAmount;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +42,8 @@ public class UserApi {
         this.usuarioDao = usuarioDao;
         this.tipoUsuarioDao = tipoUsuarioDao;
     }
+
+    ///  GET METHODS  ///
 
     @GetMapping(path = "/email/{email}")
     public ResponseEntity<Usuario> getUserByEmail(@PathVariable("email") String mail, Authentication authentication) {
@@ -69,6 +74,8 @@ public class UserApi {
         return ResponseEntity.ok(usuarios);
     }
 
+    ///  POST METHODS  ///
+
     @PostMapping(path = "/register")
     public ResponseEntity<String> createNewUser(@RequestBody Usuario usuario) {
         String error = checkUserDuplicated(usuario);
@@ -80,17 +87,18 @@ public class UserApi {
         return ResponseEntity.ok(error);
     }
 
+    ///  DELETE METHODS  ///
 
-    @PostMapping(path = "/guardarAlgo")
-    public ResponseEntity<?> guardadYDevolverVOid(@RequestBody CustomEntity customEntity) {
-        //Codigooo
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Void> createBici(@PathVariable("id") long id) {
+        try {
+            usuarioDao.deleteUser(id);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
         return ResponseEntity.ok().build();
-    }
-
-    @Data
-    class CustomEntity {
-        String name;
-        String surname;
     }
 
 

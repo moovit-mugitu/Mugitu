@@ -10,5 +10,5 @@ public interface NotificacionDao {
      void editNotificacion(NotificacionAveria notificacion);
      void deleteNotificacion(long id);
      void deleteNotificacion(NotificacionAveria notificacion);
-     void addNotificacion(NotificacionAveria notificacion);
+     NotificacionAveria addNotificacion(NotificacionAveria notificacion);
  }

@@ -10,5 +10,5 @@ import java.util.List;
      void editTipoAveria(TipoAveria tipoAveria);
      void deleteTipoAveria(int id);
      void deleteTipoAveria(TipoAveria tipoAveria);
-     void addTipoAveria(TipoAveria tipoAveria);
+     TipoAveria addTipoAveria(TipoAveria tipoAveria);
  }

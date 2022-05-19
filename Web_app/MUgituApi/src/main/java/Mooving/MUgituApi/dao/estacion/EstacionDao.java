@@ -11,6 +11,6 @@ import java.util.List;
      void editEstacion(Estacion estacion);
      void deleteEstacion(long id);
      void deleteEstacion(Estacion estacion);
-     void addEstacion(Estacion estacion);
+     Estacion addEstacion(Estacion estacion);
      List<Estacion> getEstacionesActivas(boolean activa);
  }

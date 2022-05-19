@@ -32,15 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public final static int ENCRYPT_STRENGTH = 10;
 
     private final static String[] ADMIN_GET_MATCHERS = {"/user/all", "/bici/edit/**", "/estacion/edit/**",
-            "/averia/edit/**", "/bici/parada", "/bici/ocupada"};
-    private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
-            "/averia/edit/**"};
+            "/bici/parada", "/bici/ocupada"};
+    private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "bici/**"};
     private final static String[] USER_POST_MATCHERS = {""};
 
-    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
-    private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
+    private final static String[] WORKER_POST_MATCHERS = {"/averia/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
             "/","/index","/home","/login", "/user/register", "/mainPage"};
@@ -61,8 +60,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
                 .antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
-                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN")
+                .antMatchers(GET, WORKER_GET_MATCHERS).hasAnyRole("WORKER", "ADMIN")
+                .antMatchers(POST, WORKER_POST_MATCHERS).hasAnyRole("WORKER", "ADMIN")
+                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN", "WORKER")
+                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN", "WORKER")
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
                 .anyRequest().authenticated();

@@ -38,8 +38,8 @@ public class BiciDataAccessService implements BiciDao {
     }
 
     @Override
-    public void addBici(Bici bici) {
-        repository.save(bici);
+    public Bici addBici(Bici bici) {
+        return repository.save(bici);
     }
 
     @Override

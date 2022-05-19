@@ -10,7 +10,7 @@ import java.util.List;
      void editEstacionar(Estacionar estacionar);
      void deleteEstacionar(long id);
      void deleteEstacionar(Estacionar estacionar);
-     void addEstacionar(Estacionar estacionar);
+     Estacionar addEstacionar(Estacionar estacionar);
      List<Estacionar> getEstacionarByEstacion(long id);
      List<Estacionar> getEstacionarByBici(long id);
      List<Estacionar> getEstacionarSinFechaFin();

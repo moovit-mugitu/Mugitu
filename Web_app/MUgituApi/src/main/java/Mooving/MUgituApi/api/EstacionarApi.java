@@ -3,10 +3,18 @@ package Mooving.MUgituApi.api;
 import Mooving.MUgituApi.dao.estacionar.EstacionarDao;
 import Mooving.MUgituApi.dao.tipoUser.TipoUsuarioDao;
 import Mooving.MUgituApi.dao.user.UsuarioDao;
+import Mooving.MUgituApi.entities.Estacion;
 import Mooving.MUgituApi.entities.Estacionar;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,6 +30,8 @@ public class EstacionarApi {
         this.tipoUsuarioDao = tipoUsuarioDao;
         this.estacionarDao = estacionarDao;
     }
+
+    ///  GET METHODS  ///
 
     @GetMapping(path = "/id/{id}")
     public ResponseEntity<Estacionar> getEstacionarById(@PathVariable("id") long id) {
@@ -51,9 +61,32 @@ public class EstacionarApi {
         return ResponseEntity.ok(estacionars);
     }
 
+    ///  PUT METHODS  ///
+
     @PutMapping(path = "/edit/{id}")
     public ResponseEntity<Estacionar> editEstacionar(@PathVariable("id") long id, @RequestBody Estacionar estacionar) {
         if (estacionar == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(estacionar);
+    }
+
+    @PutMapping(path = "/create")
+    public ResponseEntity<Estacionar> createBici(@RequestBody Estacionar estacionar) {
+        if (estacionar == null || estacionar.getEstacionarId() != null) return ResponseEntity.notFound().build();
+        Estacionar saved = estacionarDao.addEstacionar(estacionar);
+        return ResponseEntity.created(URI.create("/estacionar/id/" + saved.getEstacionarId())).build();
+    }
+
+    ///  DELETE METHODS  ///
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Void> createBici(@PathVariable("id") long id) {
+        try {
+            estacionarDao.deleteEstacionar(id);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        return ResponseEntity.ok().build();
     }
 }

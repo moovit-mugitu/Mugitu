@@ -38,7 +38,7 @@ public class TipoUsuarioDataAccessService implements TipoUsuarioDao {
     }
 
     @Override
-    public void addTipoUsuario(TipoUsuario tipoUsuario) {
-        repository.save(tipoUsuario);
+    public TipoUsuario addTipoUsuario(TipoUsuario tipoUsuario) {
+        return repository.save(tipoUsuario);
     }
 }

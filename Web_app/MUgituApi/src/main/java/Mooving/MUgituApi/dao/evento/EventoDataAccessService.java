@@ -40,8 +40,8 @@ public class EventoDataAccessService implements EventoDao {
     }
 
     @Override
-    public void addEvento(Evento evento) {
-        repository.save(evento);
+    public Evento addEvento(Evento evento) {
+        return repository.save(evento);
     }
 
     @Override

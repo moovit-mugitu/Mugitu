@@ -28,14 +28,19 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
-    private final static String[] ADMIN_POST_MATCHERS = {""};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada", "user/delete/**"};
+    private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
+            "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
             "/averia/edit/**", "/estacionar/edit/**"};
 
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
+    private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete"};
+    private static final String[] WORKER_PUT_MATCHERS = {"/averia/**"};
+
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
             "/averia/**", "/estacionar/**"};
-    private final static String[] USER_POST_MATCHERS = {""};
+    private final static String[] USER_PUT_MATCHERS = {"/notificacion/create"};
 
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
     private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
@@ -59,10 +64,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //Filter pages based on the authority or role the user has
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
-                //.antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
+                .antMatchers(DELETE, ADMIN_DELETE_MATCHERS).hasRole("ADMIN")
                 .antMatchers(PUT, ADMIN_PUT_MATCHERS).hasRole("ADMIN")
+
+                .antMatchers(GET, WORKER_GET_MATCHERS).hasAnyRole("ADMIN", "WORKER")
+                .antMatchers(DELETE, WORKER_DELETE_MATCHERS).hasAnyRole("ADMIN", "WORKER")
+                .antMatchers(PUT, WORKER_PUT_MATCHERS).hasAnyRole("ADMIN", "WORKER")
+
                 .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN)
+                //.antMatchers(PUT, USER_PUT_MATCHERS).hasRole("USER", "ADMIN)
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
 

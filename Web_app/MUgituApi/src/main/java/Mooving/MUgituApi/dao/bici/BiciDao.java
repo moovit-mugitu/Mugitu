@@ -11,7 +11,7 @@ import java.util.List;
      void editBici(Bici bici);
      void deleteBici(long id);
      void deleteBici(Bici bici);
-     void addBici(Bici bici);
+     Bici addBici(Bici bici);
      List<Bici> getBicisByElectrica(Boolean electrica);
      List<Bici> getBicisByModel(String model);
  }

@@ -10,5 +10,5 @@ import java.util.List;
      void editTipoUsuario(TipoUsuario tipoUsuario);
      void deleteTipoUsuario(long id);
      void deleteTipoUsuario(TipoUsuario tipoUsuario);
-     void addTipoUsuario(TipoUsuario tipoUsuario);
+     TipoUsuario addTipoUsuario(TipoUsuario tipoUsuario);
  }

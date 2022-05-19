@@ -10,6 +10,6 @@ public interface UtilizacionDao {
      void editUtilizacion(Utilizacion utilizacion);
      void deleteUtilizacion(long id);
      void deleteUtilizacion(Utilizacion utilizacion);
-     void addUtilizacion(Utilizacion utilizacion);
+     Utilizacion addUtilizacion(Utilizacion utilizacion);
     List<Utilizacion> getUtilizacionSinFin();
 }

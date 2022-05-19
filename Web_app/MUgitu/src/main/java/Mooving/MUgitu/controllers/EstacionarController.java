@@ -28,20 +28,6 @@ public class EstacionarController {
         return "error";
     }
 
-    @PostMapping(path = "/edit/{id}")
-    @ResponseBody
-    public String editEstacionar(@PathVariable("id") long id, @ModelAttribute Estacionar estacionar, WebRequest request) {
-        estacionar.setEstacionarId(id);
-        ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
-                "/estacionar/edit/"+id, HttpMethod.PUT, estacionar, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
-        if(response.getStatusCode() == HttpStatus.OK){
-            return "updated";
-        }
-        else{
-            return "Something went wrong";
-        }
-    }
-
     @GetMapping(path = "/all")
     @ResponseBody
     public List<Estacionar> getAllEstacionars() {
@@ -76,5 +62,24 @@ public class EstacionarController {
                 "/estacionar/bici/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar[].class);
 
         return new ArrayList<>(Arrays.asList(response.getBody()));
+    }
+
+    ///  POST  ///
+
+    @PostMapping(path = "/edit/{id}")
+    @ResponseBody
+    public String editEstacionar(@PathVariable("id") long id, @ModelAttribute Estacionar estacionar, WebRequest request) {
+        estacionar.setEstacionarId(id);
+        ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
+                "/estacionar/edit/"+id, HttpMethod.PUT, estacionar, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
+        return "updated";
+    }
+
+    @PostMapping(path = "/delete/{id}")
+    @ResponseBody
+    public String deleteEstacionar(@PathVariable("id") long id) {
+        ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders(
+                "/estacionar/delete/" + id, HttpMethod.DELETE, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
+        return "deleted";
     }
 }
