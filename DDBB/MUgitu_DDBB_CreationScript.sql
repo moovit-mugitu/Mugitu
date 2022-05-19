@@ -6,7 +6,8 @@ create table bici(
 	bici_id bigint,
 	modelo nvarchar(128),
 	electrica boolean,
-	SOC int check ( SOC <= 100 && SOC >= 0 )
+	SOC int check ( SOC <= 100 && SOC >= 0 ),
+    estado int
 );
 
 create table estacion(
@@ -118,7 +119,7 @@ ALTER TABLE utilizacion ADD CONSTRAINT fk_utiliza_bici FOREIGN KEY (bici_id) REF
 
 #User types
 INSERT INTO tipo_usuario (tipo_user_id, descripcion)
-VALUES (1,'ADMIN'),(2,'USER');
+VALUES (1,'ADMIN'),(2,'USER'),(3,'WORKER');
 
 #Usuarios básicos, ADMIN y USER con la password igual que el nombre
 INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
@@ -154,7 +155,7 @@ INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (1, 2, 2, '
 INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (2, 2, 3, '2022-05-18 10:52:16');
 
 #Utilizacion
-INSERT INTO mugitu.utilizacion (utiliza_id, bici_id, user_id, fecha_inicio, fecha_fin) VALUES (1, 3, 3, '2022-05-18 09:53:31', null);
+INSERT INTO mugitu.utilizacion (utiliza_id, bici_id, user_id, fecha_inicio, fecha_fin) VALUES (1, 3, 2, '2022-05-18 09:53:31', null);
 
 
 #Create User for web app
