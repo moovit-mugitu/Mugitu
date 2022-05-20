@@ -24,7 +24,7 @@ public class AveriaController {
         ResponseEntity<Averia> averia = RestRequests.RestRequestWithHeaders("/averia/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
         if(averia.getBody() != null && averia.getBody().getAveriaId() == id){
-            model.addAttribute("averia", averia);
+            model.addAttribute("averia", averia.getBody());
             model.addAttribute("url", "/edit/"+id);
             return "editAveria";
         }

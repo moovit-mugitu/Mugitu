@@ -5,8 +5,8 @@
 </head>
 <body>
 
-<form name="register-form" th:action="@{/estacion/edit/{id}(id=*{id})}" th:object="${estacion}" method="post">
-    <h4 th:text="#{estacionEdit.editing} + *{id}"></h4>
+<form name="register-form" th:action="@{/estacion} + ${url}}" th:object="${estacion}" method="post">
+    <h4 th:text="#{estacionEdit.editing} + ${estacion.id}"></h4>
     <div>
         <input type="text" th:field="*{nombre}" th:placeholder="#{estacionEdit.nombre}" required>
         <input type="number" th:field="*{plazas}" th:placeholder="#{estacionEdit.plazas}" required>
@@ -17,7 +17,7 @@
         <input type="text" th:field="*{latitud}" th:placeholder="#{estacionEdit.latitud}" required>
         <input type="text" th:field="*{longitud}" th:placeholder="#{estacionEdit.longitud}" required>
     </div>
-    <button type="submit" th:text="#{estacionEdit.edit}">Submit</button>
+    <button type="submit" th:text="#{form.edit}">Submit</button>
 </form>
 
 </body>

@@ -5,8 +5,8 @@
 </head>
 <body>
 
-<form name="register-form" th:action="@{/averia/edit/{id}(id=*{id})}" th:object="${averia}" method="post">
-    <h4 th:text="#{averiaEdit.editing} + *{id}"></h4>
+<form name="register-form" th:action="@{/averia} + ${url}" th:object="${estacionar}" method="post">
+    <h4 th:text="#{averiaEdit.editing} + ${estacionar.estacionarId}"></h4>
     <div>
         <input type="number" name="biciId" th:placeholder="#{averiaEdit.bici}" required>
         <select th:text="#{averiaEdit.tipoAveria}" name="tipoAveriaId" th:field="*{tipoAveria.id}" required>
@@ -19,7 +19,7 @@
         <input type="date" th:field="*{fechaInicio}" th:placeholder="#{averiaEdit.fechaInicio}" required>
         <input type="date" th:field="*{fechaFin}" th:placeholder="#{averiaEdit.fechaFin}">
     </div>
-    <button type="submit" th:text="#{averiaEdit.edit}">Submit</button>
+    <button type="submit" th:text="#{form.edit}">Submit</button>
 </form>
 
 </body>

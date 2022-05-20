@@ -12,11 +12,34 @@
 </form>
 
 <form th:action="@{/bici/delete/1}" method = "post">
-    <input type = "submit" value = "Delete bike 1"/>
+    <input type = "submit" value = "Delete bici 1"/>
 </form>
 <form th:action="@{/estacionar/delete/1}" method = "post">
     <input type = "submit" value = "Delete estacionar 1"/>
 </form>
-</body>
+<a th:href="@{/bici/libre}" >
+    <button>Bicis libres</button>
+</a>
+<a th:href="@{/bici/parada}" >
+    <button>Bicis paradas</button>
+</a>
+<a th:href="@{/bici/ocupada}" >
+    <button>Bicis ocupadas</button>
+</a>
+<br>
+<a th:href="@{/user/all}" >
+    <button>Todos los users</button>
+</a>
+<a th:href="@{/user/id/1}" >
+    <button>ADMIN user</button>
+</a>
+<a th:href="@{/user/id/2}" >
+    <button>USER user</button>
+</a>
+<br>
+<a th:href="@{/user/edit/2}" >
+    <button>ADMIN user</button>
+</a>
 
+</body>
 </html>

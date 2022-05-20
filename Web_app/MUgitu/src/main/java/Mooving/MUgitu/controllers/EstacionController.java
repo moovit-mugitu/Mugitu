@@ -24,7 +24,8 @@ public class EstacionController {
         ResponseEntity<Estacion> estacion = RestRequests.RestRequestWithHeaders("/estacion/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacion.class);
         if(estacion.getBody() != null && estacion.getBody().getId() == id){
-            model.addAttribute("estacion", estacion);
+            model.addAttribute("estacion", estacion.getBody());
+            model.addAttribute("url", "/edit/"+id);
             return "editEstacion";
         }
         return "error";

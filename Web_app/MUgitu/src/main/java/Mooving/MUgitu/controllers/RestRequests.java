@@ -52,8 +52,21 @@ public class RestRequests {
 
         String url = BASE_PATH+requestUrl;
         HttpEntity<G> requestEntity = new HttpEntity<>(sendEntity,headers);
-        ResponseEntity<T> response = restTemplate.exchange(
-                url, method, requestEntity, returnClass);
+        ResponseEntity<T> response = null;
+        try {
+            response = restTemplate.exchange(
+                    url, method, requestEntity, returnClass);
+        }
+        catch (HttpClientErrorException e){
+            String responseString = RestRequests.manageException(e);
+            if(responseString.equals("login")){
+                throw new ResponseStatusException(
+                        HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, "Login needed, refresh token expired", e);
+            }else{
+                response = RestRequestWithHeaders(requestUrl,method,responseString,returnClass);
+            }
+        }
+
         return response;
     }
     //Headers and send nothing PROBABLY GET
@@ -119,17 +132,6 @@ public class RestRequests {
         ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, request, returnClass);
         return  responseEntity.getBody();
     }
-
-    /*public static <T, G> ResponseEntity<T> localPostRequestForm(String requestUrl, MultiValueMap<String, G> map, Class<T> returnClass) {
-        HttpHeaders headers = new HttpHeaders();
-        RestTemplate restTemplate = new RestTemplate();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<MultiValueMap<String, G>> request = new HttpEntity<>(map, headers);
-
-        String url = "http://localhost:8080"+requestUrl;
-        ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, request, returnClass);
-        return  responseEntity;
-    }*/
 
     public static <T, G> G RESTpostRequest(String requestUrl, T objToSend, Class<G> returnClass) {
         HttpHeaders headers = new HttpHeaders();
