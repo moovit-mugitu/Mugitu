@@ -5,20 +5,50 @@
 </head>
 <body>
 
-<form name="register-form" th:action="@{/estacion} + ${url}}" th:object="${estacion}" method="post">
-    <h4 th:text="#{estacionEdit.editing} + ${estacion.id}"></h4>
-    <div>
-        <input type="text" th:field="*{nombre}" th:placeholder="#{estacionEdit.nombre}" required>
-        <input type="number" th:field="*{plazas}" th:placeholder="#{estacionEdit.plazas}" required>
-        <label th:text="#{estacionEdit.active}">Active</label>
-        <input type="checkbox" name="active" required >
+<div class="container-fluid d-flex justify-content-center align-items-center">
+    <div class="card p-3 py-4 m-4">
+        <form name="register-form" th:action="@{/estacion} + ${url}" th:object="${estacion}" method="post">
+            <div class="text-center">
+                <h4 th:text="#{estacionEdit.editing} + ${estacion.id}"></h4>
+                <div class="px-3 mt-3">
+                    <label th:text="#{estacionEdit.nombre}">Nombre</label>
+                    <input type="text" th:field="*{nombre}" th:placeholder="#{estacionEdit.nombre}" th:value="*{nombre}" required>
+                </div>
+            </div>
+            <div class="px-3 mt-3">
+                <label class="form-label" th:text="#{estacionEdit.plazas}">Plazas</label>
+                <input class="form-control" type="number" th:placeholder="#{estacionEdit.plazas}"
+                       th:value="${estacion.plazas}" th:field="*{plazas}" required>
+            </div>
+            <br>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="active" th:checked="${estacion.activa}">
+                <label class="form-check-label" th:text="#{estacionEdit.active}">Activa</label>
+            </div>
+            <div class="container ">
+                <div class="row">
+                    <div class="col">
+                        <label class="form-check-label" th:text="#{estacionEdit.latitud}"></label>
+                    </div>
+                    <div class="col">
+                        <label class="form-check-label" th:text="#{estacionEdit.longitud}"></label>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <input type="text" th:field="*{latitud}" th:placeholder="#{estacionEdit.latitud}" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" th:field="*{longitud}" th:placeholder="#{estacionEdit.longitud}" required>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary text-uppercase mt-4" th:text="#{form.edit}">Submit</button>
+
+        </form>
     </div>
-    <div>
-        <input type="text" th:field="*{latitud}" th:placeholder="#{estacionEdit.latitud}" required>
-        <input type="text" th:field="*{longitud}" th:placeholder="#{estacionEdit.longitud}" required>
-    </div>
-    <button type="submit" th:text="#{form.edit}">Submit</button>
-</form>
+</div>
 
 </body>
 </html>

@@ -7,7 +7,7 @@ create table bici(
 	modelo nvarchar(128),
 	electrica boolean,
 	SOC int check ( SOC <= 100 && SOC >= 0 ),
-    estado int
+    estado boolean
 );
 
 create table estacion(
@@ -70,7 +70,7 @@ create table estacionar(
 create table evento(
     evento_id bigint,
     bici_id bigint,
-    estado int,
+    estado boolean,
     fecha datetime
 );
 
@@ -156,8 +156,8 @@ INSERT INTO mugitu.averia (averia_id, fecha_inicio, fecha_fin, bici_id, tipo_ave
 INSERT INTO mugitu.estacionar (estacionar_id, estacion_id, bici_id, fecha_inicio, fecha_fin) VALUES (1, 1, 1, '2022-05-18 10:51:08', null);
 
 #Evento
-INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (1, 2, 2, '2022-05-17 10:52:43');
-INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (2, 2, 3, '2022-05-18 10:52:16');
+INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (1, 2, 1, '2022-05-17 10:52:43');
+INSERT INTO mugitu.evento (evento_id, bici_id, estado, fecha) VALUES (2, 2, 0, '2022-05-18 10:52:16');
 
 #Utilizacion
 INSERT INTO mugitu.utilizacion (utiliza_id, bici_id, user_id, fecha_inicio, fecha_fin) VALUES (1, 3, 2, '2022-05-18 09:53:31', null);

@@ -1,6 +1,7 @@
 package Mooving.MUgituApi.entities;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class NotificacionAveria {
     @JoinColumn(name = "user_id")
     private Usuario user;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "fecha")
     private Date fecha;
 

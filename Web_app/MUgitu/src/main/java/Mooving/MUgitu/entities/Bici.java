@@ -17,7 +17,7 @@ public class Bici {
     private String modelo;
 
     @Column(name = "estado")
-    private Integer estado;
+    private boolean estado;
 
     @Column(name = "electrica")
     private Boolean electrica;
@@ -30,7 +30,7 @@ public class Bici {
         this.SOC = 0;
     }
 
-    public Bici(Long biciId, String modelo, Integer estado, Boolean electrica, Integer SOC) {
+    public Bici(Long biciId, String modelo, boolean estado, Boolean electrica, Integer SOC) {
         this.biciId = biciId;
         this.modelo = modelo;
         this.estado = estado;
@@ -46,11 +46,11 @@ public class Bici {
         this.modelo = modelo;
     }
 
-    public Integer getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(Integer estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
@@ -76,15 +76,5 @@ public class Bici {
 
     public void setBiciId(Long id) {
         this.biciId = id;
-    }
-
-    public enum Estados {
-        Libre(1),
-        Ocupada(2),
-        Pausa(3),
-        Mantenimiento(4);
-
-        Estados(int i) {
-        }
     }
 }

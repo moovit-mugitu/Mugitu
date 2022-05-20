@@ -99,7 +99,9 @@ public class BiciController {
     @ResponseBody
     public String editBici(@PathVariable("id") long id, @ModelAttribute Bici bici, WebRequest request) {
         boolean electric = Objects.equals(request.getParameter("electric"), "on");
+        boolean estado = Objects.equals(request.getParameter("estado"), "on");
         bici.setElectrica(electric);
+        bici.setEstado(estado);
         bici.setBiciId(id);
         ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
                 "/bici/edit/" + id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);

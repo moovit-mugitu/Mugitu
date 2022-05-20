@@ -29,7 +29,6 @@
                         <input type="text" th:field="*{telefono}" class="form-control" th:placeholder="#{register.phone}" value="" name="phone" required minlength="9" maxlength="9">
                     </div>
                     <div class="col-md-6">
-<!--                        <input type="text" th:field="*{sexo}" class="form-control" th:placeholder="#{register.sex}" value="" name="sex" required>-->
                         <select name="sex" th:field="*{sexo}">
                             <option value="0" th:text="#{sex.woman}" selected></option>
                             <option value="1" th:text="#{sex.man}"></option>

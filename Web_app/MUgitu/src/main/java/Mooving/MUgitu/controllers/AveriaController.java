@@ -2,6 +2,7 @@ package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Averia;
 import Mooving.MUgitu.entities.Bici;
+import Mooving.MUgitu.entities.TipoAveria;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 @Controller
 @RequestMapping("/averia")
@@ -33,11 +34,23 @@ public class AveriaController {
 
     @PostMapping(path = "/edit/{id}")
     @ResponseBody
-    public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia) {
+    public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia, WebRequest request) throws ParseException {
+        int tipoAveriaId = Integer.parseInt(request.getParameter("tipoAveriaId"));
+        int biciId = Integer.parseInt(request.getParameter("biciId"));
+        String fechaFin = request.getParameter("fechaFin");
+
+        ResponseEntity<TipoAveria> response1 = RestRequests.RestRequestWithHeaders(
+                "/tipoAveria/id/"+tipoAveriaId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), TipoAveria.class);
+        ResponseEntity<Bici> response2 = RestRequests.RestRequestWithHeaders(
+                "/bici/id/"+biciId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
+
         averia.setAveriaId(id);
-        ResponseEntity<Averia> response = RestRequests.RestRequestWithHeaders(
+        averia.setTipoAveria(response1.getBody());
+        averia.setBici(response2.getBody());
+        if(fechaFin != null && !fechaFin.equals("")) averia.setFechaFin(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"). parse(fechaFin));
+        ResponseEntity<Averia> response3 = RestRequests.RestRequestWithHeaders(
                 "/averia/edit/"+id, HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
-        return response.getBody();
+        return response3.getBody();
     }
 
     @GetMapping(path = "/all")

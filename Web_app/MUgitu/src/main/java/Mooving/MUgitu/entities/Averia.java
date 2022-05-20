@@ -1,6 +1,7 @@
 package Mooving.MUgitu.entities;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,9 +23,11 @@ public class Averia {
     @JoinColumn(name = "tipo_averia")
     private TipoAveria tipoAveria;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "fecha_inicio")
     private Date fechaInicio;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "fecha_fin")
     private Date fechaFin;
 

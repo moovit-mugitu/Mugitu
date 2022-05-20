@@ -45,10 +45,10 @@ public class EventoDataAccessService implements EventoDao {
     }
 
     @Override
-    public List<Evento> getUltimosEventosByEstado(Bici.Estados estado) {
+    public List<Evento> getUltimosEventosByEstado(boolean estado) {
         List<Evento> eventos = repository.getUltimosEventosPorBici();
         List<Evento> eventosByEstado = eventos.stream()
-                .filter(e -> estado.getValue() == e.getEstado())
+                .filter(e -> estado == e.getEstado())
                 .collect(Collectors.toList());
         return eventosByEstado;
     }

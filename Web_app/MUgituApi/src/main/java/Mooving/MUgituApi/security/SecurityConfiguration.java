@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
             "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
-            "/averia/edit/**", "/estacionar/edit/**"};
+            "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**"};
 
     private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
     private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete"};
@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
     private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
 
-    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh"};
+    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
 

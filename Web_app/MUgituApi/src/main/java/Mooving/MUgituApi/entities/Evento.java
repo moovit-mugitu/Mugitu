@@ -1,6 +1,7 @@
 package Mooving.MUgituApi.entities;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,8 +20,9 @@ public class Evento {
     private Bici bici;
 
     @Column(name = "estado")
-    private int estado;
+    private boolean estado;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "fecha")
     private Date fecha;
 
@@ -28,7 +30,7 @@ public class Evento {
         this.fecha = new Date();
     }
 
-    public Evento(Long eventoId, Bici bici, int estado, Date fecha) {
+    public Evento(Long eventoId, Bici bici, boolean estado, Date fecha) {
         this.eventoId = eventoId;
         this.bici = bici;
         this.estado = estado;
@@ -51,11 +53,11 @@ public class Evento {
         this.bici = bici;
     }
 
-    public int getEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 
