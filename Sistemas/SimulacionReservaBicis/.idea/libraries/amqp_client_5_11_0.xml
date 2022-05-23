@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="amqp-client-5.11.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Libs/amqp-client-5.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Libs/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Libs/slf4j-simple-1.7.25.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
