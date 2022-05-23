@@ -14,4 +14,5 @@ import java.util.List;
      List<Estacionar> getEstacionarByEstacion(long id);
      List<Estacionar> getEstacionarByBici(long id);
      List<Estacionar> getEstacionarSinFechaFin();
+     List<Estacionar> getEstacionarSinFechaFinByEstacion(long id);
  }

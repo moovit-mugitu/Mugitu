@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -89,6 +90,18 @@ public class BiciApi {
         List<Utilizacion> utilizaciones = utilizacionDao.getUtilizacionSinFin();
         List<Bici> bicis = utilizaciones.stream().map(Utilizacion::getBici).collect(Collectors.toList());
         return ResponseEntity.ok(bicis);
+    }
+
+    @GetMapping(path = "/random/estacion/{id}/{electrica}")
+    public ResponseEntity<Long> getBiciEnEstacion(@PathVariable("id") long estacionId, @PathVariable("electrica") boolean electrica){
+        List<Estacionar> estacionars = estacionarDao.getEstacionarSinFechaFinByEstacion(estacionId);
+        List<Bici> bicis = estacionars.stream().map(Estacionar::getBici)
+                .filter(line -> line.getElectrica() == electrica)
+                .collect(Collectors.toList());
+        if(bicis.size()==0) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(-1L);
+        Random r  = new Random();
+        int pos = r.nextInt(bicis.size());
+        return ResponseEntity.ok(bicis.get(pos).getBiciId());
     }
 
     ///  PUT METHODS  ///

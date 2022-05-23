@@ -9,7 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EstacionarRepository extends JpaRepository<Estacionar, Long> {
-    List<Estacionar> getEstacionarByEstacion(Estacion estacion);
     List<Estacionar> getEstacionarByBici(Bici bici);
+    List<Estacionar> getEstacionarByEstacion(Estacion estacion);
     List<Estacionar> getEstacionarByFechaFinIsNull();
+    List<Estacionar> getEstacionarByFechaFinIsNullAndEstacion(Estacion estacion);
 }

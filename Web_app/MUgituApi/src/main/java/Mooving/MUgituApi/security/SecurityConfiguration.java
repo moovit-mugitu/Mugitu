@@ -72,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUT, WORKER_PUT_MATCHERS).hasAnyRole("ADMIN", "WORKER")
 
                 .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                //.antMatchers(PUT, USER_PUT_MATCHERS).hasRole("USER", "ADMIN)
+                .antMatchers(PUT, USER_PUT_MATCHERS).hasAnyRole("USER", "ADMIN")
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
 

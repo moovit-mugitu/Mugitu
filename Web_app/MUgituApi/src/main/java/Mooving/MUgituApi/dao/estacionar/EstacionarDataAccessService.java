@@ -66,4 +66,10 @@ public class EstacionarDataAccessService implements EstacionarDao {
     public List<Estacionar> getEstacionarSinFechaFin() {
         return repository.getEstacionarByFechaFinIsNull();
     }
+
+    @Override
+    public List<Estacionar> getEstacionarSinFechaFinByEstacion(long id) {
+        Estacion estacion = repositoryEstacion.getById(id);
+        return repository.getEstacionarByFechaFinIsNullAndEstacion(estacion);
+    }
 }
