@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class RestRequests {
-    public final static String BASE_PATH = "http://localhost:8000/MUgitu/REST/api";
+    public final static String BASE_PATH = "https://localhost/MUgitu/REST/api";
     public final static String TokenPrefix = "Bearer ";
     public final static String ACCESSTOKEN = "accessToken";
     public final static String REFRESHTOKEN = "refreshToken";
