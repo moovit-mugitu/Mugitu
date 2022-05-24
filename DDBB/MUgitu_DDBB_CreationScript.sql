@@ -126,6 +126,9 @@ INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, 
 ('admin', 'admin', 'admin@admin','00000000A', '$2a$10$.tZglXmO7tFDgz5jRVJpGO/YZXU8gKx3aPIcSLVz3s4ETa/WcDlYi', 1, true);
 INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
 ('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
+INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+('worker', 'worker', 'worker@worker', '22222222C', '$2a$10$vp7yzrts9c928pvTJg70LeaZbHMNSfXdNMuEzNxg.WtlyVmHNGXyC', 3, 1);
+
 
 #Tipo de averias LEVE; MODERADA, GRABE
 INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES

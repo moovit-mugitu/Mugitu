@@ -28,9 +28,10 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada", "user/delete/**"};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
     private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
-            "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*"};
+            "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*",
+            "user/delete/**"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
             "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**"};
 
@@ -45,8 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
     private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
 
-    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**"};
-    private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
+    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**", "/rabbitmq/**"};
+    private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register", "/rabbitmq/**"};
 
 
 

@@ -2,13 +2,22 @@ import com.rabbitmq.client.*;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeoutException;
 
 public class Cliente {
-    final static String EXCHANGE_NAME = "solicitudEstacion";
-    final static String DLX_NAME = "MiDeadLetterExchange";
+    public final static String EXCHANGE_NAME = "exchangeApiSimulator";
+    public final static String DLX_NAME = "dlxApiSimulator";
+
+    public final static String ESTACION_QUEUE = "queueEstacion";
+    public final static String BICI_QUEUE = "queueBici";
+    public final static String DLQ_NAME = "queueDeadletter";
+
+    public final static String ROUTING_KEY_ESTACION = "estacionId";
+    public final static String ROUTING_KEY_BICI = "biciId";
 
     ConnectionFactory factory;
     Random generador;
@@ -19,7 +28,7 @@ public class Cliente {
         factory.setHost("localhost");
         factory.setUsername("guest");
         factory.setPassword("guest");
-        //puerto 5672 o 5673 para TLS
+        //puerto 15672 o 15673 para TLS
         generador = new Random();
     }
 
@@ -27,18 +36,13 @@ public class Cliente {
         try (Connection connection = factory.newConnection()) {
             //Crear exchanges
             channel = connection.createChannel();
-            channel.exchangeDeclare(DLX_NAME, "fanout");
-            channel.exchangeDeclare(EXCHANGE_NAME, "direct");
-            //Crear cola DLX y de lextura
-            String colaDLX = channel.queueDeclare().getQueue();
-            String colaBici = channel.queueDeclare().getQueue();
-            channel.queueBind(colaDLX, DLX_NAME, "");
-            channel.queueBind(colaBici, EXCHANGE_NAME, "biciId");
+            channel.queueBind(DLQ_NAME, DLX_NAME, "");
+            channel.queueBind(BICI_QUEUE, EXCHANGE_NAME, ROUTING_KEY_BICI);
             //Crear consumidores
             Consumer consumerDeadLetter = new ConsumerDeadLetter(channel);
-            channel.basicConsume(colaDLX, true, consumerDeadLetter);
+            channel.basicConsume(DLQ_NAME, true, consumerDeadLetter);
             Consumer consumerBiciId = new BiciConsumer(channel);
-            channel.basicConsume(colaBici, true, consumerBiciId);
+            channel.basicConsume(BICI_QUEUE, true, consumerBiciId);
 
             Publisher publisher = new Publisher();
             publisher.start();
@@ -54,7 +58,6 @@ public class Cliente {
             channel.close();
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -70,10 +73,10 @@ public class Cliente {
                 while (!this.isInterrupted()) {
                     id = generador.nextInt(264) + 1;
                     electrica = generador.nextBoolean();
-                    linea = id+"/"+electrica;
+                    linea = 1+"/"+electrica;
                     if (!this.isInterrupted()) {
 
-                        channel.basicPublish(EXCHANGE_NAME, "estacionId", null, linea.getBytes());
+                        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_ESTACION, null, linea.getBytes());
                         System.out.println(" Enviado: " + linea);
                         Thread.sleep(1000);
                     }
@@ -97,10 +100,17 @@ public class Cliente {
             int biciId = Integer.parseInt(message);
             System.out.println("bici id: "+biciId);
             if(biciId >= 0){
-                //HTTP REQUEST PARA HACER LA RESERVA
-            }
-            else{ //Devuelve -1
-                //No hay disponibles
+                Random r = new Random();
+                int userId = r.nextInt(4)+3;
+                URL url = new URL("http://localhost:8000/MUgitu/REST/api/utilizar/create/"+biciId+"/"+userId);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                connection.setRequestMethod("PUT");
+                connection.setRequestProperty("Content-Type", "application/json");
+
+                connection.connect();
+                System.out.println(connection.getResponseCode());
+                connection.disconnect();
             }
         }
     }
