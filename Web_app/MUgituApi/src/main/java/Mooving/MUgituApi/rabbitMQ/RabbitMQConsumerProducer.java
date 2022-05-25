@@ -55,7 +55,7 @@ public class RabbitMQConsumerProducer {
             rabbitTemplate.convertAndSend(
                     RabbitMQConfiguration.EXCHANGE_NAME, RabbitMQConfiguration.ROUTING_KEY_BICI, biciId);
         }else{
-            throw  new AmqpRejectAndDontRequeueException(estacionId+"/"+biciId, true, null);
+            throw new AmqpRejectAndDontRequeueException(estacionId+"/"+biciId, true, null);
         }
     }
 }

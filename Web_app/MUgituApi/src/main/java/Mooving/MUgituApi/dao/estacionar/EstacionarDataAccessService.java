@@ -8,6 +8,7 @@ import Mooving.MUgituApi.entities.Estacionar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -71,5 +72,13 @@ public class EstacionarDataAccessService implements EstacionarDao {
     public List<Estacionar> getEstacionarSinFechaFinByEstacion(long id) {
         Estacion estacion = repositoryEstacion.getById(id);
         return repository.getEstacionarByFechaFinIsNullAndEstacion(estacion);
+    }
+
+    @Override
+    public Estacionar finishEstacionar(long id) {
+        Estacionar e = repository.getEstacionarByBiciBiciIdAndFechaFinIsNull(id);
+        e.setFechaFin(new java.util.Date());
+        repository.save(e);
+        return e;
     }
 }

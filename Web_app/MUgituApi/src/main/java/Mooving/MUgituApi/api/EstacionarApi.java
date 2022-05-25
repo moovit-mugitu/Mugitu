@@ -65,7 +65,7 @@ public class EstacionarApi {
 
     @PutMapping(path = "/edit/{id}")
     public ResponseEntity<Estacionar> editEstacionar(@PathVariable("id") long id, @RequestBody Estacionar estacionar) {
-        if (estacionar == null) return ResponseEntity.notFound().build();
+        if (estacionar == null || id != estacionar.getEstacionarId()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(estacionar);
     }
 

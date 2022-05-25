@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
@@ -78,6 +79,7 @@ public class RabbitMQConfiguration {
         factory.setPrefetchCount(50);
         factory.setConcurrentConsumers(2);
         factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        factory.setMessageConverter(new SimpleMessageConverter());
         factory.setErrorHandler(t -> {
             if(!t.getMessage().contains("AmqpRejectAndDontRequeueException")){
                 t.printStackTrace();
@@ -85,6 +87,7 @@ public class RabbitMQConfiguration {
                 System.out.println("Denied request: "+t.getCause().getMessage());
             }
         });
+
         return factory;
     }
 

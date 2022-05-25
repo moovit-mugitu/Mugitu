@@ -128,6 +128,15 @@ INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, 
 ('user', 'user', 'user@user','11111111B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
 INSERT INTO usuario (nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
 ('worker', 'worker', 'worker@worker', '22222222C', '$2a$10$vp7yzrts9c928pvTJg70LeaZbHMNSfXdNMuEzNxg.WtlyVmHNGXyC', 3, 1);
+#Users de relleno
+INSERT INTO usuario (user_id, nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+    (6, 'user6', 'user6', 'user6@user','11111116B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
+INSERT INTO usuario (user_id, nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+    (7, 'user7', 'user7', 'user7@user','11111117B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
+INSERT INTO usuario (user_id, nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+    (4, 'user4', 'user4', 'user4@user','11111114B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
+INSERT INTO usuario (user_id, nombre, apellidos, correo, DNI, password, tipo_usuario_id, verificado) VALUES
+    (5, 'user5', 'user5', 'user5@user','11111115B', '$2a$10$m9Gr6Az8dDmGljI8agZRCOCqf2XBYWu9nyxgaTCuLek5DexdntkBm', 2, true);
 
 
 #Tipo de averias LEVE; MODERADA, GRABE
