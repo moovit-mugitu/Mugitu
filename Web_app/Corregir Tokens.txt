@@ -1,8 +1,0 @@
-QUEDA:
-
-- APUNTES EN CODIGO 
-- Login en WebApp hace request a REST
-- Token en REST (Será tambien de autenticacion)
-- Te devuelve el token
-- Con ese token request a REST y si username solicitado == username token devuelve
-- Guardas principal en 
