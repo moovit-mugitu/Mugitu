@@ -18,7 +18,13 @@ class IrisClassifier(Resource):
         json_data = request.get_json(force=True)
         args = parser.parse_args()
         X = json_data['data']
+        id = json_data['id']
         print("El valor de X es "+X)
+        filename = 'models/' + id + '.pckl'
+        # Load model
+        with open(filename, 'rb') as f:
+            model = pickle.load(f)
+
         future_date = pd.DataFrame({'ds':[X]})
         prediction = model.predict(future_date)
         resultado = prediction[['yhat']]
@@ -26,11 +32,8 @@ class IrisClassifier(Resource):
         yath = resultado['yhat'].iloc[0]
         return jsonify(yath)
 
-api.add_resource(IrisClassifier, '/iris')
+api.add_resource(IrisClassifier, '/')
 
 if __name__ == '__main__':
-    # Load model
-    with open('forecast_model.pckl', 'rb') as f:
-        model = pickle.load(f)
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=80)
 
