@@ -2,13 +2,9 @@ import com.rabbitmq.client.*;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 public class Cliente {
     final static String EXCHANGE_NAME = "avisosBicis";
@@ -23,12 +20,10 @@ public class Cliente {
     ConnectionFactory factory;
     Random generador;
     Channel channel;
-    String estacionCliente;
+
     Monitorizacion monitorizacion;
 
-    public Cliente(String estacionCliente) {
-        this.estacionCliente = estacionCliente;
-
+    public Cliente() {
         factory = new ConnectionFactory();
         factory.setHost("localhost");
         factory.setUsername("guest");
@@ -37,8 +32,8 @@ public class Cliente {
         generador = new Random();
     }
 
-    public Map<String, String> conseguirbicis() throws IOException, InterruptedException, JSONException {
-        Map<Long, Integer> map = new HashMap<>();
+    public Map<Long, Integer[]> conseguirbicis() throws IOException, InterruptedException, JSONException {
+        Map<Long, Integer[]> map = new HashMap<>();
         String token = loggearseConUser();
 
         HttpClient client = HttpClient.newHttpClient();
@@ -52,11 +47,16 @@ public class Cliente {
 
         if (response.statusCode() == 200) {
             JSONObject json = new JSONObject(response.body());
+            Iterator<Long> keys = json.keys();
+            while(keys.hasNext()) {
+                Long key = keys.next();
+                Integer[] values = (Integer[]) json.get(String.valueOf(key));
+                map.put(key, values);
+            }
             System.out.println(json);
         } else {
             System.out.println("Request error: "+response.statusCode());
         }
-
         return map;
     }
 
@@ -118,13 +118,10 @@ public class Cliente {
     }
 
     public class Monitorizacion extends Thread {
-
         Cliente cliente;
 
         public Monitorizacion(Cliente cliente) {
-
             this.cliente = cliente;
-
         }
 
         @Override
@@ -132,16 +129,22 @@ public class Cliente {
             String linea;
             int bicis;
             int id;
-            Map<String, String> map = new HashMap<String, String>();
+            Map<Long, Integer[]> map = new HashMap<>();
+            List<Long> estaciones = new ArrayList<>();
             Random generador = new Random();
             try {
                 while (!this.isInterrupted()) {
-
                     map = cliente.conseguirbicis();
-                    bicis = Integer.parseInt(map.get(estacionCliente));
+                    //HACER CALCULOS DE PORCENTAJE EN MAPA
+                    //////////////////////////
+                    //////////////////////////
+                    //////////////////////////
+                    estaciones = map.entrySet().stream()
+                            .filter(e -> ((float)e.getValue()[0]/e.getValue()[1]) < 0.25)
+                            .map(Map.Entry::getKey)
+                            .collect(Collectors.toList());
                     linea = "eii";
                     if (!this.isInterrupted()) {
-
                         channel.basicPublish(EXCHANGE_NAME, "", null, linea.getBytes());
                         System.out.println(" Enviado: " + linea);
                         Thread.sleep(1000);
@@ -151,7 +154,6 @@ public class Cliente {
                 System.out.println("hilo interrumpido");
             }
         }
-
     }
 
     public synchronized void stop() {
@@ -163,10 +165,8 @@ public class Cliente {
 
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
-        System.out.print("Estacion: ");
-        String estacionCliente = teclado.nextLine();
         System.out.println("Esperando mensaje. Pulsa return para terminar");
-        Cliente cliente = new Cliente(estacionCliente);
+        Cliente cliente = new Cliente();
         Thread hiloEspera = new Thread(() -> {
             teclado.nextLine();
             cliente.stop();
@@ -175,6 +175,5 @@ public class Cliente {
         cliente.enviarMensaje();
         teclado.close();
     }
-
 }
 

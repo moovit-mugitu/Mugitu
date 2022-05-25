@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] WORKER_PUT_MATCHERS = {"/averia/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
-            "/averia/**", "/estacionar/**"};
+            "/averia/**", "/estacionar/**", "/api/biciEstacion"};
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/**"};
 
     private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
