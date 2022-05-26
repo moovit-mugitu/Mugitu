@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import com.rabbitmq.client.*;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -15,7 +16,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 public class Cliente {
-    final static String EXCHANGE_NAME = "avisosBicis";
+    final static String NECESIDADES_EXCHANGE = "necesidadesBicis";
+    final static String SOLUCIONES_EXCHANGE = "solucionesBicis";
 
     ConnectionFactory factory;
     Random generador;
@@ -32,8 +34,8 @@ public class Cliente {
         generador = new Random();
     }
 
-    public Map<Long, Integer[]> conseguirbicis() throws IOException, InterruptedException, JSONException {
-        Map<Long, Integer[]> map = new HashMap<>();
+    public Map<String, List<Double>> conseguirbicis() throws IOException, InterruptedException, JSONException {
+        Map<String, List<Double>> map = new HashMap<>();
         String token = loggearseConUser();
 
         HttpClient client = HttpClient.newHttpClient();
@@ -47,15 +49,9 @@ public class Cliente {
 
         if (response.statusCode() == 200) {
             JSONObject json = new JSONObject(response.body());
-            Iterator<Long> keys = json.keys();
-            while(keys.hasNext()) {
-                Long key = keys.next();
-                Integer[] values = (Integer[]) json.get(String.valueOf(key));
-                map.put(key, values);
-            }
-            System.out.println(json);
+            return map = new Gson().fromJson(json.toString(), HashMap.class);
         } else {
-            System.out.println("Request error: "+response.statusCode());
+            System.out.println("Request error: " + response.statusCode());
         }
         return map;
     }
@@ -99,7 +95,8 @@ public class Cliente {
         try (Connection connection = factory.newConnection()) {
 
             channel = connection.createChannel();
-            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.exchangeDeclare(NECESIDADES_EXCHANGE, "fanout", true);
+            channel.exchangeDeclare(SOLUCIONES_EXCHANGE, "fanout", true);
 
             monitorizacion = new Monitorizacion(this);
             monitorizacion.start();
@@ -126,33 +123,61 @@ public class Cliente {
 
         @Override
         public void run() {
-            String linea;
-            int bicis;
-            int id;
-            Map<Long, Integer[]> map = new HashMap<>();
-            List<Long> estaciones = new ArrayList<>();
-            Random generador = new Random();
+            Map<String, List<Double>> map;
+            List<String> estacionesFalta;
             try {
                 while (!this.isInterrupted()) {
                     map = cliente.conseguirbicis();
-                    //HACER CALCULOS DE PORCENTAJE EN MAPA
-                    //////////////////////////
-                    //////////////////////////
-                    //////////////////////////
-                    estaciones = map.entrySet().stream()
-                            .filter(e -> ((float)e.getValue()[0]/e.getValue()[1]) < 0.25)
+                    //FILTAR MAPA Y ESTACIONES SOLUCION
+                    estacionesFalta = map.entrySet().stream()
+                            .filter(e -> e.getValue().get(0) / e.getValue().get(1) <= 0.35)
                             .map(Map.Entry::getKey)
                             .collect(Collectors.toList());
-                    linea = "eii";
+                    List<String> mejoresEstaciones = getMejoresEstaciones(map,
+                            Math.min(estacionesFalta.size(), map.size() - estacionesFalta.size()));
+
+                    //CREAR MENSAJE
+                    StringBuilder buildFalta = new StringBuilder();
+                    estacionesFalta.forEach(s -> {
+                        buildFalta.append(s).append("/");
+                    });
+                    StringBuilder buildSolucion = new StringBuilder();
+                    mejoresEstaciones.forEach(s -> {
+                        buildSolucion.append(s).append("/");
+                    });
+                    String lineaNecesidad = (buildFalta.toString().equals("")) ? "Ninguna" : buildFalta.substring(0, buildFalta.length() - 1);
+                    String lineaSolucion = (buildSolucion.toString().equals("")) ? "Ninguna" : buildSolucion.substring(0, buildSolucion.length() - 1);
+
+                    //ENVIAR MENSAJE
                     if (!this.isInterrupted()) {
-                        channel.basicPublish(EXCHANGE_NAME, "", null, linea.getBytes());
-                        System.out.println(" Enviado: " + linea);
-                        Thread.sleep(1000);
+                        channel.basicPublish(NECESIDADES_EXCHANGE, "", null, lineaNecesidad.getBytes());
+                        System.out.println(" Enviado: " + lineaNecesidad);
+
+                        channel.basicPublish(SOLUCIONES_EXCHANGE, "", null, lineaSolucion.getBytes());
+                        System.out.println(" Enviado: " + lineaNecesidad);
+                        Thread.sleep(10000);
                     }
                 }
             } catch (IOException | InterruptedException | JSONException e) {
                 System.out.println("hilo interrumpido");
             }
+        }
+
+        private List<String> getMejoresEstaciones(Map<String, List<Double>> map, int necessary) {
+            double valorMax = -1;
+            String idEstacion = "";
+            List<String> idsEstaciones = new ArrayList<>();
+
+            for (int i = 0; i < necessary; i++) {
+                for (Map.Entry<String, List<Double>> e : map.entrySet()) {
+                    if (!idsEstaciones.contains(e.getKey()) && valorMax < e.getValue().get(0) / e.getValue().get(1)) {
+                        valorMax = e.getValue().get(0) / e.getValue().get(1);
+                        idEstacion = e.getKey();
+                    }
+                }
+                idsEstaciones.add(idEstacion);
+            }
+            return idsEstaciones;
         }
     }
 
