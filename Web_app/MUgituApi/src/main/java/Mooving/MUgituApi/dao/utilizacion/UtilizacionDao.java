@@ -18,4 +18,6 @@ public interface UtilizacionDao {
     Utilizacion addUtilizacion(Utilizacion utilizacion);
 
     List<Utilizacion> getUtilizacionSinFin();
+
+    Utilizacion finishUtilizacion(Long biciId);
 }

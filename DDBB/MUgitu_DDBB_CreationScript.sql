@@ -16,7 +16,8 @@ create table estacion(
 	latitud double,
 	longitud double,
 	plazas int,
-	activa boolean
+	activa boolean,
+    ia boolean
 );
 
 create table tipo_usuario(
@@ -148,8 +149,8 @@ INSERT INTO tipo_averia (tipo_averia_id, descripcion) VALUES
 (3, 'Averia grave (bicicleta inutilizable)');
 
 #Estacion
-INSERT INTO estacion (estacion_id, nombre, latitud, longitud, plazas, activa) VALUES
-    (1, 'Puerta del sol', 40.416926, -3.703537, 100, true);
+INSERT INTO estacion (estacion_id, nombre, latitud, longitud, plazas, activa, ia) VALUES
+    (1, 'Puerta del sol', 40.416926, -3.703537, 100, true, true);
 
 #Bicis
 INSERT INTO  bici (bici_id, modelo, electrica, SOC, estado) VALUES

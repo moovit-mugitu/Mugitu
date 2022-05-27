@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns = "http://www.w3.org/1999/xhtml" xmlns:th = "http://www.thymeleaf.org"
       xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
 <head>
     <title>MainPage</title>
 </head>
@@ -11,12 +10,6 @@
     <input type = "submit" value = "Sign Out"/>
 </form>
 
-<form th:action="@{/bici/delete/1}" method = "post">
-    <input type = "submit" value = "Delete bici 1"/>
-</form>
-<form th:action="@{/estacionar/delete/1}" method = "post">
-    <input type = "submit" value = "Delete estacionar 1"/>
-</form>
 <a th:href="@{/bici/libre}" >
     <button>Bicis libres</button>
 </a>
@@ -30,16 +23,21 @@
 <a th:href="@{/user/all}" >
     <button>Todos los users</button>
 </a>
-<a th:href="@{/user/id/1}" >
+<a th:href="@{/user/email/admin@admin}" >
     <button>ADMIN user</button>
 </a>
-<a th:href="@{/user/id/2}" >
+<a th:href="@{/user/email/user@user}" >
     <button>USER user</button>
 </a>
-<br>
-<a th:href="@{/user/edit/2}" >
-    <button>ADMIN user</button>
+<a th:href="@{/user/email/worker@worker}" >
+    <button>WORKER user</button>
 </a>
+<br>
+<form th:action="@{/utilizar/create}" method="post">
+    <input type="text" placeholder="Bici Id" name="biciId">
+    <input type="text" placeholder="user Id" name="userId">
+    <button type="submit">Create</button>
+</form>
 
 </body>
 </html>

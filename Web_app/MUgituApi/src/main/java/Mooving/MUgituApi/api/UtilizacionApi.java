@@ -30,7 +30,8 @@ public class UtilizacionApi {
     @PutMapping(path = "/create/{biciId}/{userId}")
     public Utilizacion createUtilizacion(@PathVariable("biciId") long biciId, @PathVariable("userId") long userId,
                                          HttpServletResponse response, Authentication authentication) {
-        if(UserApi.getPrincipal(usuarioDao, authentication).getUserId() != userId){
+        if(UserApi.getPrincipal(usuarioDao, authentication).getUserId() != userId &&
+                !UserApi.getPrincipal(usuarioDao, authentication).getTipo_usuario().getDescripcion().equals("ADMIN")){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return null;
         }

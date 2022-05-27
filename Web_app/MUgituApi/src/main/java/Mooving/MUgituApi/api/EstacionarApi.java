@@ -3,17 +3,16 @@ package Mooving.MUgituApi.api;
 import Mooving.MUgituApi.dao.estacionar.EstacionarDao;
 import Mooving.MUgituApi.dao.tipoUser.TipoUsuarioDao;
 import Mooving.MUgituApi.dao.user.UsuarioDao;
-import Mooving.MUgituApi.entities.Estacion;
+import Mooving.MUgituApi.dao.utilizacion.UtilizacionDao;
 import Mooving.MUgituApi.entities.Estacionar;
+import Mooving.MUgituApi.entities.Utilizacion;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -24,11 +23,13 @@ public class EstacionarApi {
     final UsuarioDao usuarioDao;
     final TipoUsuarioDao tipoUsuarioDao;
     final EstacionarDao estacionarDao;
+    final UtilizacionDao utilizacionDao;
 
-    public EstacionarApi(UsuarioDao usuarioDao, TipoUsuarioDao tipoUsuarioDao, EstacionarDao estacionarDao) {
+    public EstacionarApi(UsuarioDao usuarioDao, TipoUsuarioDao tipoUsuarioDao, EstacionarDao estacionarDao, UtilizacionDao utilizacionDao) {
         this.usuarioDao = usuarioDao;
         this.tipoUsuarioDao = tipoUsuarioDao;
         this.estacionarDao = estacionarDao;
+        this.utilizacionDao = utilizacionDao;
     }
 
     ///  GET METHODS  ///
@@ -70,8 +71,14 @@ public class EstacionarApi {
     }
 
     @PutMapping(path = "/create")
-    public ResponseEntity<Estacionar> createBici(@RequestBody Estacionar estacionar) {
+    public ResponseEntity<Estacionar> createBici(@RequestBody Estacionar estacionar, HttpServletResponse response) {
         if (estacionar == null || estacionar.getEstacionarId() != null) return ResponseEntity.notFound().build();
+        try {
+            utilizacionDao.finishUtilizacion(estacionar.getBici().getBiciId());
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         Estacionar saved = estacionarDao.addEstacionar(estacionar);
         return ResponseEntity.created(URI.create("/estacionar/id/" + saved.getEstacionarId())).build();
     }

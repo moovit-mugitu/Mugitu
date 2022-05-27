@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{bikeView.htmlTitle}"></title>
+</head>
+<body>
+
+<table class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{bikeView.id}"></th>
+        <th scope="col" th:text="#{bikeView.model}"></th>
+        <th scope="col" th:text="#{bikeView.electric}"></th>
+        <th scope="col" th:text="#{bikeView.soc}"></th>
+        <th scope="col" th:text="#{bikeView.status}"></th>
+        <th th:text="#{bikeView.edit}"></th>
+        <th th:text="#{bikeView.delete}"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="bici: ${bicis}">
+        <th scope="row" th:text="${bici.biciId}"/>
+        <td th:text="${bici.modelo}"/>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${bici.electrica}" disabled>
+        </td>
+        <td th:text="${bici.SOC == null || bici.SOC == 0}? '-' : ${bici.SOC}"/>
+        <td th:text="${bici.estado} ? 'Active' : 'Maintenance'"/>
+        <td>
+            <a th:href="@{/bici/edit/} + ${bici.biciId}">
+                <button class="btn btn-warning" th:text="#{bikeView.edit}"></button>
+            </a>
+        </td>
+        <td>
+            <form th:action="@{/bici/delete/} + ${bici.biciId}" method = "post">
+                <button type="submit" class="btn btn-danger" th:text="#{bikeView.delete}"></button>
+            </form>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

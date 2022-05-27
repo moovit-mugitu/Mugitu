@@ -4,6 +4,7 @@ import Mooving.MUgituApi.entities.Utilizacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,5 +46,13 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
     @Override
     public List<Utilizacion> getUtilizacionSinFin() {
         return repository.getUtilizacionsByFechaFinIsNull();
+    }
+
+    @Override
+    public Utilizacion finishUtilizacion(Long biciId) {
+        Utilizacion u = repository.getUtilizacionBiciBiciIdAndFechaFinIsNull(biciId);
+        u.setFechaFin(new  java.util.Date());
+        repository.save(u);
+        return u;
     }
 }

@@ -31,12 +31,12 @@ public class BiciController {
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody
-    public List<Bici> getAllBicis() {
+    public String getAllBicis(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("bicis", bicis);
+        return "biciView";
     }
 
     @GetMapping(path = "/id/{id}")

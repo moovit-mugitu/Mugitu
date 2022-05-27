@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{userView.htmlTitle}"></title>
+</head>
+<body>
+
+<table class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{userView.id}"></th>
+        <th scope="col" th:text="#{userView.name}"></th>
+        <th scope="col" th:text="#{userView.surname}"></th>
+        <th scope="col" th:text="#{userView.email}"></th>
+        <th scope="col" th:text="#{userView.phone}"></th>
+        <th scope="col" th:text="#{userView.dni}"></th>
+        <th scope="col" th:text="#{userView.sex}"></th>
+        <th scope="col" th:text="#{userView.birthDate}"></th>
+        <th scope="col" th:text="#{userView.verified}"></th>
+        <th scope="col" th:text="#{userView.userType}"></th>
+        <th th:text="#{form.edit}"></th>
+        <th th:text="#{form.delete}"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="user: ${users}">
+        <th scope="row" th:text="${user.userId}"/>
+        <td th:text="${user.nombre}"/>
+        <td th:text="${user.apellidos}"/>
+        <td th:text="${user.correo}"/>
+        <td th:text="${user.telefono}"/>
+        <td th:text="${user.DNI}"/>
+        <td th:switch="${user.sexo}">
+            <span th:case = "0" th:text="#{sex.woman}"></span>
+            <span th:case = "1" th:text="#{sex.man}"></span>
+            <span th:case = "2" th:text="#{sex.noBinary}"></span>
+        </td>
+        <td th:text="${user.fecha_nacimiento}"/>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${user.verificado}" disabled>
+        </td>
+        <td th:text="${user.tipo_usuario.descripcion}"/>
+        <td>
+            <a th:href="@{/user/edit/} + ${user.userId}">
+                <button class="btn btn-warning" th:text="#{form.edit}"></button>
+            </a>
+        </td>
+        <td>
+            <form th:action="@{/user/delete/} + ${user.userId}" method = "post">
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

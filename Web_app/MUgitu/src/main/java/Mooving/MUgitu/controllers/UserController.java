@@ -49,12 +49,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody
-    public List<Usuario> getAllUsers() {
+    public String getAllUsers(Model model) {
         ResponseEntity<Usuario[]> response = RestRequests.RestRequestWithHeaders(
                 "/user/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Usuario> users = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("users", users);
+        return "userView";
     }
 
     @GetMapping(path = "/id/{id}")
