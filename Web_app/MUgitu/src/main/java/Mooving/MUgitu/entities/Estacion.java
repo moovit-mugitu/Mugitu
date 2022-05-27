@@ -28,15 +28,27 @@ public class Estacion {
     @Column(name = "longitud")
     private Double longitud;
 
+    @Column(name = "ia", nullable = false)
+    private Boolean ia = false;
+
+    public Boolean getIa() {
+        return ia;
+    }
+
+    public void setIa(Boolean ia) {
+        this.ia = ia;
+    }
+
     public Estacion(){}
 
-    public Estacion(Long id, String nombre, Integer plazas, Boolean activa, Double latitud, Double longitud) {
+    public Estacion(Long id, String nombre, Integer plazas, Boolean activa, Double latitud, Double longitud, boolean ia) {
         this.id = id;
         this.nombre = nombre;
         this.plazas = plazas;
         this.activa = activa;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.ia = ia;
     }
 
     public Double getLongitud() {
@@ -86,5 +98,4 @@ public class Estacion {
     public void setActiva(Boolean activa) {
         this.activa = activa;
     }
-
 }
