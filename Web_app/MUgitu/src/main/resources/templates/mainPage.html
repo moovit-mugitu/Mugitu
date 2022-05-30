@@ -16,14 +16,14 @@
 <a th:href="@{/bici/libre}" >
     <button>Bicis libres</button>
 </a>
-<a th:href="@{/bici/parada}" >
+<a th:href="@{/bici/parada}" sec:authorize="hasRole('ROLE_ADMIN')">
     <button>Bicis paradas</button>
 </a>
-<a th:href="@{/bici/ocupada}" >
+<a th:href="@{/bici/ocupada}" sec:authorize="hasRole('ROLE_ADMIN')">
     <button>Bicis ocupadas</button>
 </a>
 <br>
-<a th:href="@{/user/all}" >
+<a th:href="@{/user/all}" sec:authorize="hasRole('ROLE_ADMIN')">
     <button>Todos los users</button>
 </a>
 <a th:href="@{/user/email/admin@admin}" >
@@ -42,7 +42,6 @@
     <input type="text" placeholder="User Id" th:value="${user.userId}" name="userId" th:disabled="${!user.tipo_usuario.descripcion.equals('ADMIN')}">
     <button type="submit">Create</button>
 </form>
-
 <form th:action="@{/estacionar/create}" method="post">
     <label>Create Estacionamiento</label>
     <input type="text" placeholder="Bici Id" name="biciId">
@@ -50,6 +49,12 @@
     <input type="text" placeholder="User Id"  th:value="${user.userId}" name="userId" th:disabled="${!user.tipo_usuario.descripcion.equals('ADMIN')}">
     <button type="submit">Create</button>
 </form>
-
+<br>
+<a th:href="@{/averia/create}" sec:authorize="hasRole('ROLE_WORKER')" >
+    <button>Create averia</button>
+</a>
+<a th:href="@{/averia/edit/1}" sec:authorize="hasAnyRole('ROLE_WORKER','ROLE_ADMIN')" >
+    <button>Edit averia 1</button>
+</a>
 </body>
 </html>

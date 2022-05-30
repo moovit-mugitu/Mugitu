@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] WORKER_POST_MATCHERS = {"/averia/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
-            "/","/index","/home","/login", "/user/register", "/mainPage", "/ia/**"};
+            "/", "/index", "/home", "/login", "/user/register", "/mainPage", "/ia/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
     @Autowired
@@ -56,8 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        //Filter pages based on the authority or role the user has
-
+                //Filter pages based on the authority or role the user has
                 .antMatchers(GET, ADMIN_GET_MATCHERS).hasRole("ADMIN")
                 .antMatchers(POST, ADMIN_POST_MATCHERS).hasRole("ADMIN")
                 .antMatchers(GET, WORKER_GET_MATCHERS).hasAnyRole("WORKER", "ADMIN")
@@ -77,10 +76,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error")
                 .defaultSuccessUrl("/mainPage")
                 .and()
-        //Logout control
+                //Logout control
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
-        //Enable all types POST, PUT...
+                //Enable all types POST, PUT...
                 .and()
                 .cors().and().csrf().disable();
     }

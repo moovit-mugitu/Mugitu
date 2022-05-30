@@ -8,16 +8,16 @@
 <div class="container-fluid d-flex justify-content-center align-items-center">
     <div class="text-center card p-3 py-4 m-4">
         <form name="register-form" th:action="@{/averia} + ${url}" th:object="${averia}" method="post">
-            <h4 th:text="#{averiaEdit.editing} + ${averia.averiaId}"></h4>
+            <h4 th:text="#{averiaEdit.editing} + ${averia?.averiaId?}"></h4>
             <div class="px-3 mt-3">
                 <label class="form-label" th:text="#{averiaEdit.bici}">Bici</label>
                 <input class="form-control" type="number" name="biciId" th:placeholder="#{averiaEdit.bici}"
-                       th:value="${averia.bici.biciId}" required>
+                       th:value="${averia?.bici?.biciId}" required>
             </div>
             <select class="form-select px-3 mt-3" name="tipoAveriaId" required>
-                <option value="1" th:text="#{averia.leve}" th:selected="${averia.tipoAveria.id == 1}"></option>
-                <option value="2" th:text="#{averia.moderada}" th:selected="${averia.tipoAveria.id == 2}"></option>
-                <option value="3" th:text="#{averia.grave}" th:selected="${averia.tipoAveria.id == 3}"></option>
+                <option value="1" th:text="#{averia.leve}" th:selected="${averia?.tipoAveria?.id == 1}"></option>
+                <option value="2" th:text="#{averia.moderada}" th:selected="${averia?.tipoAveria?.id == 2}"></option>
+                <option value="3" th:text="#{averia.grave}" th:selected="${averia?.tipoAveria?.id == 3}"></option>
             </select>
             <div class="container ">
                 <div class="row">
@@ -31,10 +31,10 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <input type="datetime-local" name="fechaIni" th:value="${averia.fechaInicio}" th:field="*{fechaInicio}" th:placeholder="#{averiaEdit.fechaInicio}" required>
+                        <input type="datetime-local" name="fechaIni" th:value="${averia?.fechaInicio}" th:field="*{fechaInicio}" th:placeholder="#{averiaEdit.fechaInicio}" required>
                     </div>
                     <div class="col">
-                        <input type="datetime-local" name="fechaFin" th:value="${averia.fechaFin}" th:placeholder="#{averiaEdit.fechaFin}">
+                        <input type="datetime-local" name="fechaFin" th:value="${averia?.fechaFin}" th:placeholder="#{averiaEdit.fechaFin}">
                     </div>
                 </div>
             </div>
