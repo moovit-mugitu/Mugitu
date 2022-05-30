@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] WORKER_POST_MATCHERS = {"/averia/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
-            "/","/index","/home","/login", "/user/register", "/mainPage"};
+            "/","/index","/home","/login", "/user/register", "/mainPage", "/ia/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
     @Autowired
