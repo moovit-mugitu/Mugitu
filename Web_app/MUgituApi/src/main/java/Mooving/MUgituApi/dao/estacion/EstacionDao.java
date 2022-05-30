@@ -13,4 +13,5 @@ import java.util.List;
      void deleteEstacion(Estacion estacion);
      Estacion addEstacion(Estacion estacion);
      List<Estacion> getEstacionesActivas(boolean activa);
+     List<Estacion> getEstacionesConIa(boolean ia);
  }

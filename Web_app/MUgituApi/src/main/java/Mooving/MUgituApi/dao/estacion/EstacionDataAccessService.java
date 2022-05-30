@@ -48,4 +48,9 @@ public class EstacionDataAccessService implements EstacionDao {
         return repository.getEstacionsByActiva(activa);
     }
 
+    @Override
+    public List<Estacion> getEstacionesConIa(boolean ia) {
+        return repository.getEstacionsByIa(ia);
+    }
+
 }

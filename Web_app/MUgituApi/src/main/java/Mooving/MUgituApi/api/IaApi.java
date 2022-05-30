@@ -39,17 +39,15 @@ public class IaApi {
     @GetMapping(path = "/biciEstacion")
     public Map<Long, Integer[]> getBicisPorEstaciones() {
         Map<Long, Integer[]> map = new HashMap<>();
-        List<Estacion> estaciones = estacionDao.getAllEstacions();
+        List<Estacion> estaciones = estacionDao.getEstacionesConIa(true);
 
         for (Estacion estacion : estaciones) {
-            if (estacion.getIa()) {
-                int libres = 0;
-                try {
-                    libres = requestIa(estacion.getId()).intValue();
-                    map.put(estacion.getId(), new Integer[]{libres, estacion.getPlazas()});
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            int libres = 0;
+            try {
+                libres = requestIa(estacion.getId()).intValue();
+                map.put(estacion.getId(), new Integer[]{libres, estacion.getPlazas()});
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         /*map.put(1L, new Integer[] { 2, 10 });
@@ -81,7 +79,7 @@ public class IaApi {
         return (double) -1;
     }
 
-    private SimpleDateFormat getDateFormat(){
+    private SimpleDateFormat getDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
     }
 }

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface EstacionRepository extends JpaRepository<Estacion, Long> {
     List<Estacion> getEstacionsByActiva(Boolean activa);
+    List<Estacion> getEstacionsByIa(Boolean ia);
 }
