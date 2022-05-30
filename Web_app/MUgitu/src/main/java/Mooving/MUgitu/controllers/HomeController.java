@@ -1,9 +1,12 @@
 package Mooving.MUgitu.controllers;
 
+import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.ServletContextAware;
 
@@ -33,7 +36,9 @@ public class HomeController implements ServletContextAware {
     }
 
     @GetMapping("/mainPage")
-    public String mainPage() {
+    public String mainPage(Model model, Authentication authentication) {
+        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
+        model.addAttribute("user", u.getUser());
         return "mainPage";
     }
 

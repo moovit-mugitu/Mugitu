@@ -10,6 +10,9 @@
     <input type = "submit" value = "Sign Out"/>
 </form>
 
+<a th:href="@{/bici/all}" >
+    <button>Todas las bicis</button>
+</a>
 <a th:href="@{/bici/libre}" >
     <button>Bicis libres</button>
 </a>
@@ -34,15 +37,17 @@
 </a>
 <br>
 <form th:action="@{/utilizar/create}" method="post">
+    <label>Create Utilizacion</label>
     <input type="text" placeholder="Bici Id" name="biciId">
-    <input type="text" placeholder="User Id" name="userId">
+    <input type="text" placeholder="User Id" th:value="${user.userId}" name="userId" th:disabled="${!user.tipo_usuario.descripcion.equals('ADMIN')}">
     <button type="submit">Create</button>
 </form>
 
 <form th:action="@{/estacionar/create}" method="post">
+    <label>Create Estacionamiento</label>
     <input type="text" placeholder="Bici Id" name="biciId">
     <input type="text" placeholder="Estacion Id" name="estacionId">
-    <input type="text" placeholder="User Id" name="userId">
+    <input type="text" placeholder="User Id"  th:value="${user.userId}" name="userId" th:disabled="${!user.tipo_usuario.descripcion.equals('ADMIN')}">
     <button type="submit">Create</button>
 </form>
 

@@ -67,30 +67,30 @@ public class BiciController {
     }
 
     @GetMapping(path = "/libre")
-    @ResponseBody
-    public List<Bici> getBicisLibres() {
+    public String getBicisLibres(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/libre", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("bicis", bicis);
+        return "biciView";
     }
 
     @GetMapping(path = "/parada")
-    @ResponseBody
-    public List<Bici> getBicisParada() {
+    public String getBicisParada(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/parada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("bicis", bicis);
+        return "biciView";
     }
 
     @GetMapping(path = "/ocupada")
-    @ResponseBody
-    public List<Bici> getBicisOcupada() {
+    public String getBicisOcupada(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/ocupada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("bicis", bicis);
+        return "biciView";
     }
 
     ///  POST  ///

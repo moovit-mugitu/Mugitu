@@ -14,8 +14,8 @@
         <th scope="col" th:text="#{bikeView.electric}"></th>
         <th scope="col" th:text="#{bikeView.soc}"></th>
         <th scope="col" th:text="#{bikeView.status}"></th>
-        <th th:text="#{bikeView.edit}"></th>
-        <th th:text="#{bikeView.delete}"></th>
+        <th th:text="#{form.edit}"></th>
+        <th th:text="#{form.delete}"></th>
     </tr>
     </thead>
 
@@ -30,12 +30,12 @@
         <td th:text="${bici.estado} ? 'Active' : 'Maintenance'"/>
         <td>
             <a th:href="@{/bici/edit/} + ${bici.biciId}">
-                <button class="btn btn-warning" th:text="#{bikeView.edit}"></button>
+                <button class="btn btn-warning" th:text="#{form.edit}"></button>
             </a>
         </td>
         <td>
             <form th:action="@{/bici/delete/} + ${bici.biciId}" method = "post">
-                <button type="submit" class="btn btn-danger" th:text="#{bikeView.delete}"></button>
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
             </form>
             </a>
         </td>

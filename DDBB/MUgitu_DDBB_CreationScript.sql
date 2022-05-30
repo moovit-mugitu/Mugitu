@@ -16,8 +16,8 @@ create table estacion(
 	latitud double,
 	longitud double,
 	plazas int,
-	activa boolean,
-    ia boolean
+	activa boolean default true,
+    ia boolean default false
 );
 
 create table tipo_usuario(

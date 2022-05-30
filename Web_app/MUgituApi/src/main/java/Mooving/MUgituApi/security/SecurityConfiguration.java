@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
 
-    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**", "/rabbitmq/**"};
+    private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**", "/rabbitmq/**", "/estacion/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register", "/rabbitmq/**"};
 
 
