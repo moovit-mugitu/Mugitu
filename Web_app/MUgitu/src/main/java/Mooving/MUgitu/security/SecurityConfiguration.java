@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "bici/**"};
-    private final static String[] USER_POST_MATCHERS = {""};
+    private final static String[] USER_POST_MATCHERS = {"/utilizar/create", "/estacionar/create"};
 
     private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
     private final static String[] WORKER_POST_MATCHERS = {"/averia/**"};
@@ -63,10 +63,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(GET, WORKER_GET_MATCHERS).hasAnyRole("WORKER", "ADMIN")
                 .antMatchers(POST, WORKER_POST_MATCHERS).hasAnyRole("WORKER", "ADMIN")
                 .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN", "WORKER")
-                //.antMatchers(POST, USER_POST_MATCHERS).hasRole("USER", "ADMIN", "WORKER")
+                .antMatchers(POST, USER_POST_MATCHERS).hasAnyRole("USER", "ADMIN", "WORKER")
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().denyAll();
 
         //Login control
         http.formLogin()

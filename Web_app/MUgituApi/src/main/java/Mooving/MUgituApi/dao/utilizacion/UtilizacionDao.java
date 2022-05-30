@@ -19,5 +19,5 @@ public interface UtilizacionDao {
 
     List<Utilizacion> getUtilizacionSinFin();
 
-    Utilizacion finishUtilizacion(Long biciId);
+    Utilizacion finishUtilizacion(Long biciId, long userId);
 }

@@ -9,14 +9,14 @@ import org.springframework.web.context.request.WebRequest;
 @RequestMapping(path = "/utilizar")
 public class UtilizacionController {
 
-    @PostMapping(path = "/create/{biciId}/{userId}")
+    @PostMapping(path = "/create")
     @ResponseBody
     public String createUtilizacion(WebRequest request) {
         long biciId = Long.parseLong(request.getParameter("biciId"));
         long userId = Long.parseLong(request.getParameter("userId"));
 
         ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders("/utilizar/create/" + biciId + "/" + userId,
-                HttpMethod.PUT, RestRequests.ACCESSTOKEN, Void.class);
+                HttpMethod.PUT, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
         return "created";
     }
 }

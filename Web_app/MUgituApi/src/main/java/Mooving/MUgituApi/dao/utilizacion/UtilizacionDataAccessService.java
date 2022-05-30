@@ -2,9 +2,12 @@ package Mooving.MUgituApi.dao.utilizacion;
 
 import Mooving.MUgituApi.entities.Utilizacion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -49,8 +52,11 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
     }
 
     @Override
-    public Utilizacion finishUtilizacion(Long biciId) {
-        Utilizacion u = repository.getUtilizacionBiciBiciIdAndFechaFinIsNull(biciId);
+    public Utilizacion finishUtilizacion(Long biciId, long userId) {
+        Utilizacion u = repository.getUtilizacionByBiciBiciIdAndFechaFinIsNull(biciId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(userId != u.getUser().getUserId() &&
+                !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) throw new NoResultException();
         u.setFechaFin(new  java.util.Date());
         repository.save(u);
         return u;

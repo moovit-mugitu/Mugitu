@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,5 +59,17 @@ public class EstacionarController {
         ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders(
                 "/estacionar/delete/" + id, HttpMethod.DELETE, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
         return "deleted";
+    }
+
+    @PostMapping(path = "/create")
+    @ResponseBody
+    public String createEstacionar(WebRequest request) {
+        long biciId = Long.parseLong(request.getParameter("biciId"));
+        long estacionId = Long.parseLong(request.getParameter("estacionId"));
+        long userId = Long.parseLong(request.getParameter("userId"));
+
+        ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders("/estacionar/create/" + biciId + "/" + estacionId + "/" + userId,
+                HttpMethod.PUT, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
+        return "created";
     }
 }

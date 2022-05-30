@@ -41,10 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
             "/averia/**", "/estacionar/**", "/api/biciEstacion"};
-    private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/**"};
+    private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
-    private final static String[] AUTHENTICATED_GET_MATCHERS = {""};
-    private final static String[] AUTHENTICATED_POST_MATCHERS = {""};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**", "/rabbitmq/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register", "/rabbitmq/**"};
@@ -72,14 +70,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(DELETE, WORKER_DELETE_MATCHERS).hasAnyRole("ADMIN", "WORKER")
                 .antMatchers(PUT, WORKER_PUT_MATCHERS).hasAnyRole("ADMIN", "WORKER")
 
-                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "ADMIN")
-                .antMatchers(PUT, USER_PUT_MATCHERS).hasAnyRole("USER", "ADMIN")
+                .antMatchers(GET, USER_GET_MATCHERS).hasAnyRole("USER", "WORKER", "ADMIN")
+                .antMatchers(PUT, USER_PUT_MATCHERS).hasAnyRole("USER", "WORKER", "ADMIN")
                 .antMatchers(GET, EVERYONE_GET_MATCHERS).permitAll()
                 .antMatchers(POST, EVERYONE_POST_MATCHERS).permitAll()
-
-
-
-                .anyRequest().authenticated();
+                .anyRequest().denyAll();
 
         //Creation of JWT...
         http.addFilter(new MyAuthenticationFilter(authenticationManagerBean()));
