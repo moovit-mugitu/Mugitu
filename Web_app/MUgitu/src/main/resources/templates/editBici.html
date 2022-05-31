@@ -5,11 +5,14 @@
 </head>
 <body>
 
+<header th:replace="include.html :: headercontent"></header>
+
 <div class="container-fluid d-flex justify-content-center align-items-center">
     <div class="card p-3 py-4 m-4">
-        <form name="register-form" th:action="@{/bici/edit/} + ${bici.biciId}" th:object="${bici}" method="post">
+        <form name="register-form" th:action="@{/bici} + ${url}" th:object="${bici}" method="post">
             <div class="text-center">
-                <h4 th:text="#{bikeEdit.editing} + ${bici.biciId}"></h4>
+                <h4 th:if="${url.startsWith('/edit/')}" th:text="#{bikeEdit.editing} + ${bici.biciId}"></h4>
+                <h4 th:if="${url.equals('/create')}" th:text="#{bikeEdit.creating}"></h4>
                 <div class="px-3 mt-3">
                     <label th:text="#{bikeEdit.model}">Model</label>
                     <input type="text" th:field="*{modelo}" th:placeholder="#{bikeEdit.model}" th:value="*{modelo}" required>

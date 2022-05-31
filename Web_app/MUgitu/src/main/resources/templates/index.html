@@ -1,28 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-    <!-- Leaflet import -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-          integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-          crossorigin=""/>
-
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{menu.index}">Index</title>
 </head>
 <body>
-<h1>THIS IS THE INDEX</h1>
+<header th:replace="include.html :: headercontent"></header>
 
-<a th:href="@{/login}">
-    <button>LOGIN</button>
-</a>
-
-<!--<iframe width="100%" height="300px" allowfullscreen
-        src="//umap.openstreetmap.fr/es/map/mapa-bicimad_756245?scaleControl=true&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=false&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=false&onLoadPanel=undefined&captionBar=false"></iframe>-->
-<div id="map" style="width: 100%; height: 300px;"></div>
-<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin=""></script>
-<script th:src="@{'/js/map.js'}"></script>
 
 </body>
 </html>

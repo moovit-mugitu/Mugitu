@@ -1,0 +1,184 @@
+:root{
+  --mublue-very-soft: #E0FBFC;
+  --mublue-soft: #98C1D9;
+  --mublue: #3D5A80;
+  --mublue-hard: #293241;
+  --musalmon: #EE6C4D;
+}
+
+.salmon{
+  background-color: var(--musalmon);
+  color: black;
+}
+
+/*######################   aboutUs #######################*/
+
+@media(min-width: 1024px){
+.img-about-us{
+  max-width: 290px;
+  max-height: 175px;
+}
+}
+
+/*######################   faq #######################*/
+
+#create-faq-btn{
+    float: right;
+}
+
+
+/*######################   item  #######################*/
+
+body {
+    background-color: #f7f6f6
+}
+
+.card {
+    width: 350px;
+    border: none;
+    border-radius: 12px;
+    background-color: #dadada;
+}
+
+.circle-image img {
+    border: 6px solid #fff;
+    border-radius: 100%;
+    padding: 0px;
+    top: -28px;
+    position: relative;
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    z-index: 1;
+    background: #e7d184;
+    cursor: pointer
+}
+
+.dot {
+    height: 18px;
+    width: 18px;
+    background-color: blue;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    border: 3px solid #fff;
+    top: -48px;
+    left: 186px;
+    z-index: 1000
+}
+
+.name {
+    margin-top: -21px;
+    font-size: 18px
+}
+
+.fw-500 {
+    font-weight: 500 !important
+}
+
+.start {
+    color: green
+}
+
+.stop {
+    color: red
+}
+
+.rate {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+    position: relative;
+    width: 1em;
+    font-size: 30px;
+    font-weight: 300;
+    color: #FFD600;
+    cursor: pointer
+}
+
+.rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+    opacity: 1
+}
+
+.rating:hover>input:checked~label:before {
+    opacity: 0.4
+}
+
+.buttons {
+    top: 36px;
+    position: relative
+}
+
+.rating-submit {
+    border-radius: 15px;
+    color: #fff;
+    height: 49px
+}
+
+.rating-submit:hover {
+    color: #fff
+}
+
+/*######################   login   #######################*/
+
+.btn-login{
+background-color: var(--musalmon);
+color: black;
+}
+
+.btn-register{
+    background-color: lightgray;
+    color:black;
+}
+
+/*######################   createNew   #######################*/
+
+
+.createNew-div{
+	background-color: #f7f6f6;
+}
+
+/*######################   carousel   #######################*/
+
+.carousel-item {
+    height: 32rem;
+    background: #3D5A80;
+    position: relative;
+    color: white;
+}
+
+.carousel-caption > img {
+    max-width: 200px;
+}
+
+/*######################   ERROR messages  #######################*/
+
+.errorMsg{
+    background-color: rgb(209, 18, 18);
+    color: white;
+    border-radius: 8px;
+}
+

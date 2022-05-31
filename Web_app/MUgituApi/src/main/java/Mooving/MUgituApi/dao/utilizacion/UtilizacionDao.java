@@ -1,5 +1,6 @@
 package Mooving.MUgituApi.dao.utilizacion;
 
+import Mooving.MUgituApi.entities.Usuario;
 import Mooving.MUgituApi.entities.Utilizacion;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface UtilizacionDao {
     List<Utilizacion> getUtilizacionSinFin();
 
     Utilizacion finishUtilizacion(Long biciId, long userId);
+
+    List<Utilizacion> getUtilizacionByUser(long id);
 }

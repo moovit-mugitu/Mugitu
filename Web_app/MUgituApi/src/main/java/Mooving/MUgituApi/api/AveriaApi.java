@@ -65,7 +65,8 @@ public class AveriaApi {
     public ResponseEntity<Averia> createAveria(@RequestBody Averia averia) {
         if (averia == null || averia.getAveriaId() != null) return ResponseEntity.notFound().build();
         Averia saved = averiaDao.addAveria(averia);
-        return ResponseEntity.created(URI.create("/averia/id/" + saved.getAveriaId())).build();
+
+        return ResponseEntity.created(URI.create("/averia/id/" + saved.getAveriaId())).body(averia);
     }
 
     ///  DELETE METHODS  ///

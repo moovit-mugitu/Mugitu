@@ -5,55 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Bootstrap import-->
-    <!-- Latest minified CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- Bootstrap Packaged JS (Bundle) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+          integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+          crossorigin=""/>
 
-
-    <link rel="icon" href="/images/logo_trasp.png"/>
+    <link rel="icon" href="/images/logoMUgitu.png"/>
+    <link rel="stylesheet" href="/css/header.css"/>
+    <link rel="stylesheet" href="/css/footer.css"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
 
     <title th:replace=" :: #Ptitle"></title>
 </head>
+
 <body>
 <header class="mb-3 border-bottom" th:fragment="headercontent">
     <div class="d-lg-flex align-items-center container">
         <div class="d-flex align-items-center justify-content-center justify-content-lg-start col">
-            <a href="/index" class="d-flex  justify-content-center trackGrafana" grafanaId="6">
-                <img src="/images/logo_mubook.png" alt="Logo MUBook" class="bi me-2 w-50 d-none d-lg-flex"
+            <a href="/index" class="d-flex  justify-content-center">
+                <img src="/images/logoMUgitu.png" alt="Logo mugitu" class="bi me-2 w-50 d-none d-lg-flex"
                      aria-label="Bootstrap"/>
-                <img src="/images/logo_web.png" alt="Logo MUBook"
-                     class="m-2 w-50 d-lg-none d-flex justify-content-center d-block" aria-label="Bootstrap"/>
             </a>
         </div>
         <div class="dropdown text-end d-none d-lg-flex justify-content-end col">
-            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle trackGrafana" grafanaId="7"
+            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
                id="dropdownProfile"
                data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="/images/profile.png" alt="mdo" width="32" height="32" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownProfile">
-                <li sec:authorize="hasRole('USER')"><a class="dropdown-item trackGrafana" grafanaId="10"
-                                                       href="/reservations/all" th:text="#{menu.myReservations}"></a>
+                <li sec:authorize="hasRole('USER')"><a class="dropdown-item"
+                                                       href="/utilizacion/user" th:text="#{menu.myReservations}"></a>
                 </li>
-                <li sec:authorize="hasAnyRole('ADMIN','WORKER')"><a class="dropdown-item trackGrafana" grafanaId="10"
-                                                                    href="/reservations/all"
+                <li sec:authorize="hasAnyRole('ADMIN','WORKER')"><a class="dropdown-item"
+                                                                    href="/utilizacion/all"
                                                                     th:text="#{menu.reservations}"></a></li>
-                <li sec:authorize="isAuthenticated()"><a class="dropdown-item trackGrafana" grafanaId="11"
+                <li sec:authorize="isAuthenticated()"><a class="dropdown-item"
                                                          href="/user/profile" th:text="#{menu.myProfile}"></a></li>
-                <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item trackGrafana" grafanaId="29" href="/data"
-                                                        th:text="#{menu.dataCharts}"></a></li>
                 <li sec:authorize="isAuthenticated()">
                     <hr class="dropdown-divider">
                 </li>
-                <li sec:authorize="isAnonymous()"><a class="dropdown-item trackGrafana" grafanaId="8"
+                <li sec:authorize="isAnonymous()"><a class="dropdown-item"
                                                      th:href="@{/login}" th:text="#{menu.signIn}"></a></li>
                 <li sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Sign Out" class="dropdown-item trackGrafana" grafanaId="9"/>
+                        <input type="submit" value="Sign Out" class="dropdown-item"/>
                     </form>
                 </li>
             </ul>
@@ -63,7 +65,7 @@
         <!-- container for responsiveness -->
         <div class="container">
             <!-- first item: brand name -->
-            <a class="navbar-brand text-white d-lg-none w-mi" id="mubook-text" href="#">MuBook</a>
+            <a class="navbar-brand text-white d-lg-none w-mi" id="mugitu-text" href="#">MUgitu</a>
             <!-- this is the button when it collapses due to small screen size (data-bs-target must match the ID of the div below)-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -75,39 +77,39 @@
                 <!-- this list contains the "menu options (items)" such as download, contact, pricing, etc. -->
                 <ul id="my-ul" class="navbar-nav w-100">
                     <li class="nav-item">
-                        <a class="nav-link text-white trackGrafana" grafanaId="1"
+                        <a class="nav-link text-white"
                            th:classappend="${navPage eq 'index'}? active" th:href="@{/}" th:text="#{menu.home}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white trackGrafana" grafanaId="2"
-                           th:classappend="${navPage eq 'search'}? active" th:href="@{/search}"
-                           th:text="#{menu.search}"></a>
+                        <a class="nav-link text-white"
+                           th:classappend="${navPage eq 'stations'}? active" th:href="@{/estacion}"
+                           th:text="#{menu.station}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white trackGrafana" grafanaId="3"
-                           th:classappend="${navPage eq 'faq'}? active" th:href="@{/faq}" th:text="#{menu.faq}"></a>
+                        <a class="nav-link text-white"
+                           th:classappend="${navPage eq 'bikes'}? active" th:href="@{/bici}" th:text="#{menu.bike}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white trackGrafana" grafanaId="4"
-                           th:classappend="${navPage eq 'aboutUs'}? active" th:href="@{/aboutUs}"
-                           th:text="#{menu.aboutUs}"></a>
+                        <a class="nav-link text-white"
+                           th:classappend="${navPage eq 'users'}? active"
+                           sec:authorize="hasRole('ADMIN')" th:href="@{/user}" th:text="#{menu.users}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white trackGrafana" grafanaId="5"
-                           th:classappend="${navPage eq 'userPage'}? active"
-                           sec:authorize="hasAnyRole('ADMIN','WORKER')" th:href="@{/user}" th:text="#{menu.users}"></a>
+                        <a class="nav-link text-white"
+                           th:classappend="${navPage eq 'averias'}? active"
+                           sec:authorize="hasAnyRole('WORKER', 'ADMIN')" th:href="@{/averia}"
+                           th:text="#{menu.averias}"></a>
                     </li>
+
                     <hr>
                     <li sec:authorize="hasRole('USER')"><a class="nav-link text-white d-lg-none"
-                                                           href="/reservations/all"
+                                                           href="/utilizacion/all"
                                                            th:text="#{menu.myReservations}"></a></li>
                     <li sec:authorize="hasAnyRole('ADMIN','WORKER')"><a class="nav-link text-white d-lg-none"
-                                                                        href="/reservations/all"
+                                                                        href="/utilizacion/all"
                                                                         th:text="#{menu.reservations}"></a></li>
                     <li sec:authorize="isAuthenticated()"><a class="nav-link text-white d-lg-none" href="/user/profile"
                                                              th:text="#{menu.myProfile}"></a></li>
-                    <li sec:authorize="hasRole('ADMIN')"><a class="nav-link text-white d-lg-none" href="/data"
-                                                            th:text="#{menu.dataCharts}"></a></li>
                     <li sec:authorize="isAuthenticated()">
                         <hr class="dropdown-divider ">
                     </li>
@@ -135,6 +137,7 @@
         </div>
     </nav>
 </header>
+
 <footer class="bg-light text-center text-white" th:fragment="footercontent">
     <!-- Section: Links  -->
     <div class="" style="background-color: #333333;">
@@ -145,15 +148,15 @@
                 <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
                     <!-- Content -->
                     <h6 class="text-uppercase fw-bold mb-4" th:text="#{footer.contactUs}"></h6>
-                    <a href="mailto:mubook@mondragon.edu" class="text-white">
-                        mubook@mondragon.edu
+                    <a href="mailto:mugitu@mondragon.edu" class="text-white">
+                        mugitu@mondragon.edu
                     </a>
                 </div>
                 <!-- Grid column -->
                 <div class="col-md-2 col-lg-3 col-xl-3 mx-auto mb-4 text-center">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold">
-                        MuBook
+                        mugitu
                     </h6>
                     <hr/>
                     <h6 th:text="#{footer.engagement}"></h6>
@@ -170,7 +173,7 @@
                             <a
                                     class="btn btn-primary btn-floating m-1"
                                     style="background-color: #3b5998;"
-                                    href="https://www.facebook.com/mubook"
+                                    href="https://www.facebook.com/mugitu"
                                     role="button"
                             ><em class="fab fa-facebook-f"></em
                             ></a>
@@ -178,7 +181,7 @@
                             <a
                                     class="btn btn-primary btn-floating m-1"
                                     style="background-color: #ac2bac;"
-                                    href="https://www.instagram.com/mubook"
+                                    href="https://www.instagram.com/mugitu"
                                     role="button"
                             ><em class="fab fa-instagram"></em
                             ></a>
@@ -186,7 +189,7 @@
                             <a
                                     class="btn btn-primary btn-floating m-1"
                                     style="background-color: #55acee;"
-                                    href="https://www.twitter.com/mubook"
+                                    href="https://www.twitter.com/mugitu"
                                     role="button"
                             ><em class="fab fa-twitter"></em
                             ></a>
@@ -194,7 +197,7 @@
                             <a
                                     class="btn btn-primary btn-floating m-1"
                                     style="background-color: #333333;"
-                                    href="https://github.com/PeioM/mubook"
+                                    href="https://github.com/PeioM/mugitu"
                                     role="button"
                             ><em class="fab fa-github"></em
                             ></a>

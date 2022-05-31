@@ -27,11 +27,11 @@
                                 <div class="form-group">
                                     <label for="username" th:text="#{login.username}"></label>
                                     <input type="text" id="username" name="username" placeholder="Username"
-                                        class="form-control" autofocus>
+                                        class="form-control" autofocus required>
                                 </div>
                                 <label for="password" th:text="#{login.password}"></label>
                                 <input type="password" id="password" name="password" placeholder="Password"
-                                    class="form-control">
+                                    class="form-control" required>
                                 <div class="form-group">
                                     <!--<label for="checkRememberMe" class="text-info"><span th:text="#{login.rememberMe}"></span> <span>
                                             <input id="checkRememberMe" name="checkRememberMe"

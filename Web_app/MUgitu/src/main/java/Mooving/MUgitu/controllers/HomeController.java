@@ -26,7 +26,8 @@ public class HomeController implements ServletContextAware {
     }
 
     @GetMapping(path = {"/", "/index", "/home"})
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("navPage", "index");
         return "index";
     }
 

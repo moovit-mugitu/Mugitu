@@ -5,11 +5,14 @@
 </head>
 <body>
 
+<header th:replace="include.html :: headercontent"></header>
+
 <div class="container-fluid d-flex justify-content-center align-items-center">
     <div class="text-center card p-3 py-4 m-4">
         <form name="register-form" th:action="@{/averia} + ${url}" th:object="${averia}" method="post">
-            <h4 th:text="#{averiaEdit.editing} + ${averia?.averiaId?}"></h4>
-            <div class="px-3 mt-3">
+            <h4 th:if="${url.startsWith('/edit/')}" th:text="#{averiaEdit.editing} + ${averia.averiaId}"></h4>
+            <h4 th:if="${url.equals('/create')}" th:text="#{averiaEdit.creating}"></h4>
+            <div>
                 <label class="form-label" th:text="#{averiaEdit.bici}">Bici</label>
                 <input class="form-control" type="number" name="biciId" th:placeholder="#{averiaEdit.bici}"
                        th:value="${averia?.bici?.biciId}" required>
@@ -19,23 +22,15 @@
                 <option value="2" th:text="#{averia.moderada}" th:selected="${averia?.tipoAveria?.id == 2}"></option>
                 <option value="3" th:text="#{averia.grave}" th:selected="${averia?.tipoAveria?.id == 3}"></option>
             </select>
-            <div class="container ">
-                <div class="row">
-                    <div class="col">
-                        <label class="form-check-label" th:text="#{averiaEdit.fechaInicio}"></label>
-                    </div>
-                    <div class="col">
-                        <label class="form-check-label" th:text="#{averiaEdit.fechaFin}"></label>
-                    </div>
+            <br>
+            <div class="form-group row">
+                <div>
+                    <label for="ini" th:text="#{averiaEdit.fechaInicio}"/>
+                    <input type="datetime-local" class="form-control" name="fechaIni" id="ini" th:value="${averia?.fechaInicio}" th:field="*{fechaInicio}" required>
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <input type="datetime-local" name="fechaIni" th:value="${averia?.fechaInicio}" th:field="*{fechaInicio}" th:placeholder="#{averiaEdit.fechaInicio}" required>
-                    </div>
-                    <div class="col">
-                        <input type="datetime-local" name="fechaFin" th:value="${averia?.fechaFin}" th:placeholder="#{averiaEdit.fechaFin}">
-                    </div>
+                <div>
+                    <label for="end" th:text="#{averiaEdit.fechaFin}"/>
+                    <input type="datetime-local" class="form-control" name="fechaFin" id="end" th:value="${averia?.fechaFin}" th:field="*{fechaFin}">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary text-uppercase mt-4" th:text="#{form.edit}">Submit</button>

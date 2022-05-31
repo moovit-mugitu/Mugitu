@@ -3,9 +3,11 @@ package Mooving.MUgitu.controllers;
 import Mooving.MUgitu.entities.Averia;
 import Mooving.MUgitu.entities.Bici;
 import Mooving.MUgitu.entities.TipoAveria;
+import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,14 @@ import java.util.*;
 @Controller
 @RequestMapping("/averia")
 public class AveriaController {
+
+    @GetMapping
+    public String getAveriaMenu(Model model, Authentication authentication) {
+        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
+        model.addAttribute("user", u.getUser());
+        model.addAttribute("navPage", "averias");
+        return "mainPage";
+    }
 
     @GetMapping("/edit/{id}")
     public String editAveria(@PathVariable("id") long id, Model model) {

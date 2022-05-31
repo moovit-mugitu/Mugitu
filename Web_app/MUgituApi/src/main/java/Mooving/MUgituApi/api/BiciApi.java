@@ -118,7 +118,8 @@ public class BiciApi {
     public ResponseEntity<Bici> createBici(@RequestBody Bici bici) {
         if (bici == null || bici.getBiciId() != null) return ResponseEntity.notFound().build();
         Bici saved = biciDao.addBici(bici);
-        return ResponseEntity.created(URI.create("/bici/id/"+saved.getBiciId())).build();
+
+        return ResponseEntity.created(URI.create("/bici/id/"+saved.getBiciId())).body(saved);
     }
 
     ///  DELETE METHODS  ///

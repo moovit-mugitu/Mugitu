@@ -98,7 +98,7 @@ public class EstacionarApi {
         e.setEstacion(estacionDao.getEstacion(estacionId));
         e.setFechaInicio(new Date());
         Estacionar saved = estacionarDao.addEstacionar(e);
-        return ResponseEntity.created(URI.create("/estacionar/id/" + saved.getEstacionarId())).build();
+        return ResponseEntity.created(URI.create("/estacionar/id/" + saved.getEstacionarId())).body(saved);
     }
 
     ///  DELETE METHODS  ///

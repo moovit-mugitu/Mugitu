@@ -67,7 +67,7 @@ public class EstacionApi {
     public ResponseEntity<Estacion> createBici(@RequestBody Estacion estacion) {
         if (estacion == null || estacion.getId() != null) return ResponseEntity.notFound().build();
         Estacion saved = estacionDao.addEstacion(estacion);
-        return ResponseEntity.created(URI.create("/estacion/id/" + saved.getId())).build();
+        return ResponseEntity.created(URI.create("/estacion/id/" + saved.getId())).body(saved);
     }
 
     ///  DELETE METHODS  ///

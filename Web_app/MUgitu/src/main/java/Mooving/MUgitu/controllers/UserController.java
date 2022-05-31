@@ -1,9 +1,11 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Usuario;
+import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +19,12 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
 
-    public UserController() {
+    @GetMapping
+    public String getUserMenu(Model model, Authentication authentication) {
+        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
+        model.addAttribute("user", u.getUser());
+        model.addAttribute("navPage", "users");
+        return "mainPage";
     }
 
     @GetMapping(path = "/register")
@@ -65,6 +72,14 @@ public class UserController {
                 "/user/id/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario.class);
 
         return responseUser.getBody();
+    }
+
+    @GetMapping(path = "/profile")
+    @ResponseBody
+    public Usuario getUserById(Authentication authentication) {
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+
+        return userDetails.getUser();
     }
 
     @GetMapping(path = "/email/{email}")

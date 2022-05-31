@@ -63,14 +63,14 @@ public class EstacionarController {
     }
 
     @PostMapping(path = "/create")
-    @ResponseBody
     public String createEstacionar(WebRequest request) {
         long biciId = Long.parseLong(Objects.requireNonNull(request.getParameter("biciId")));
         long estacionId = Long.parseLong(Objects.requireNonNull(request.getParameter("estacionId")));
         long userId = Long.parseLong(Objects.requireNonNull(request.getParameter("userId")));
 
-        ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders("/estacionar/create/" + biciId + "/" + estacionId + "/" + userId,
-                HttpMethod.PUT, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
-        return "created";
+        ResponseEntity<Estacionar> response = RestRequests.RestRequestWithHeaders("/estacionar/create/" + biciId + "/" + estacionId + "/" + userId,
+                HttpMethod.PUT, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar.class);
+
+        return "redirect:/estacionar/id/"+response.getBody().getEstacionarId();
     }
 }

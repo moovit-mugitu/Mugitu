@@ -1,9 +1,10 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Bici;
+import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,14 @@ public class BiciController {
 
     ///  GET  ///
 
+    @GetMapping
+    public String getMenuBicis(Model model, Authentication authentication) {
+        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
+        model.addAttribute("user", u.getUser());
+        model.addAttribute("navPage", "bikes");
+        return "mainPage";
+    }
+
     @GetMapping("/edit/{id}")
     public String editBici(@PathVariable("id") long id, Model model) {
         ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders("/bici/id/" + id,
@@ -27,6 +36,14 @@ public class BiciController {
         Bici bici = response.getBody();
         bici.setBiciId(id);
         model.addAttribute("bici", bici);
+        model.addAttribute("url", "/edit/"+id);
+        return "editBici";
+    }
+
+    @GetMapping("/create")
+    public String createBici(Model model) {
+        model.addAttribute("bici", new Bici());
+        model.addAttribute("url", "/create");
         return "editBici";
     }
 
@@ -106,6 +123,18 @@ public class BiciController {
         ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
                 "/bici/edit/" + id, HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), String.class);
         return "updated";
+    }
+
+    @PostMapping(path = "/create")
+    @ResponseBody
+    public Bici createBici(@ModelAttribute Bici bici, WebRequest request) {
+        boolean electric = Objects.equals(request.getParameter("electric"), "on");
+        boolean estado = Objects.equals(request.getParameter("estado"), "on");
+        bici.setElectrica(electric);
+        bici.setEstado(estado);
+        ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders(
+                "/bici/create/", HttpMethod.PUT, bici, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
+        return response.getBody();
     }
 
     @PostMapping(path = "/delete/{id}")

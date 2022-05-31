@@ -1,0 +1,58 @@
+:root{
+    --mublue-very-soft: #E0FBFC;
+    --mublue-soft: #98C1D9;
+    --mublue: #3D5A80;
+    --mublue-hard: #293241;
+    --musalmon: #EE6C4D;
+}
+
+a{
+    color: black !important;
+}
+
+.nav-item {
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+
+}
+
+.navbar-nav > li > a.active{
+    color: var(--musalmon) !important;
+    font-weight: 600;
+}
+
+.navbar{
+    background-color: var(--mublue);
+}
+
+.nav-item.language a {
+    padding: 0.5rem; 
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+}
+
+
+.nav-item.language a {
+    padding: 0.5rem; 
+    display: inline-block;
+    width: 30%;
+    text-align: center;
+}
+
+.menu-items a{
+    font: 16px/30px Arial, Helvetica, sans-serif;
+    padding:10px;
+}
+
+.menu-items a:hover{
+    font-size: 110%;
+}
+/*  BIG SCREEN  */
+
+@media (min-width: 990px){
+
+    li:last-child{
+        right: 0 !important;
+    }
+}

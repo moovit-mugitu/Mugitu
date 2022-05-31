@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns = "http://www.w3.org/1999/xhtml" xmlns:th = "http://www.thymeleaf.org"
       xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <title>MainPage</title>
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle">MainPage</title>
 </head>
 <body>
+
+<header th:replace="include.html :: headercontent"></header>
+
 <h1>Hello <span sec:authentication="name" ></span></h1>
 <form th:action="@{/logout}" method = "post">
     <input type = "submit" value = "Sign Out"/>

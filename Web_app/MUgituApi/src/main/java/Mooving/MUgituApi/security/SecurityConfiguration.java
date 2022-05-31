@@ -28,19 +28,19 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada", "/utilizar/all", "/utilizar/user/**"};
     private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
             "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*",
-            "user/delete/**"};
+            "/user/delete/**"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
-            "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**"};
+            "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**", "/estacion/create/**"};
 
     private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
     private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete"};
     private static final String[] WORKER_PUT_MATCHERS = {"/averia/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
-            "/averia/**", "/estacionar/**", "/api/biciEstacion"};
+            "/averia/**", "/estacionar/**", "/api/biciEstacion", "/utilizar/user"};
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
 

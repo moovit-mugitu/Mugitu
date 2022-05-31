@@ -1,0 +1,26 @@
+:root{
+    --mublue-very-soft: #E0FBFC;
+    --mublue-soft: #98C1D9;
+    --mublue: #3D5A80;
+    --mublue-hard: #293241;
+    --musalmon: #EE6C4D;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 2px solid var(--mublue);
+}
+
+.footer2-div{
+    background-color: #C4C4C4;
+}
+
+.footer2 *{
+    color: var(--mublue);
+}
+
+.fab{
+    color: white;
+}

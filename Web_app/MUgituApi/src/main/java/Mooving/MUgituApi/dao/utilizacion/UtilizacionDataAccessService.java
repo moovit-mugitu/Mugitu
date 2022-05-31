@@ -1,5 +1,7 @@
 package Mooving.MUgituApi.dao.utilizacion;
 
+import Mooving.MUgituApi.dao.user.UsuarioRepository;
+import Mooving.MUgituApi.entities.Usuario;
 import Mooving.MUgituApi.entities.Utilizacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,8 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
 
     @Autowired
     private UtilizacionRepository repository;
+    @Autowired
+    private UsuarioRepository userRepository;
 
     @Override
     public List<Utilizacion> getAllUtilizacions() {
@@ -60,5 +64,10 @@ public class UtilizacionDataAccessService implements UtilizacionDao {
         u.setFechaFin(new  java.util.Date());
         repository.save(u);
         return u;
+    }
+
+    @Override
+    public List<Utilizacion> getUtilizacionByUser(long id) {
+        return repository.getAllByUserUserId(id);
     }
 }
