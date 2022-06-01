@@ -68,7 +68,7 @@ public class Cliente {
         }
     }
 
-    public class Publisher extends Thread {
+    public class Publisher extends Thread  {
         @Override
         public void run() {
             String linea;

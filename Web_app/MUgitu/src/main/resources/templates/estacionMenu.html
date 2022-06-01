@@ -17,7 +17,15 @@
     <label th:text="#{stationView.id}" class="d-inline"></label>
     <input class="form-control d-inline w-auto" type="number" name="id" required/>
     <button type="submit" class="btn btn-primary d-inline " th:text="#{form.find}"></button>
+    <input class="form-control d-inline w-auto" type="datetime-local" name="date"/>
+    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.predict}" th:formaction="@{/estacion/prediccion}"></button>
 </form>
+
+<!--<form th:action="@{/estacion/prediccion}" method="get" class="d-inline">
+    <label th:text="#{stationView.id}" class="d-inline"></label>
+    <input class="form-control d-inline w-auto" type="number" name="id" required/>
+    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.find}"></button>
+</form>-->
 
 <a th:href="@{/estacion/create}" class="btn btn-primary d-inline" th:text="#{form.create}"/>
 <br>

@@ -48,6 +48,7 @@ public class RestRequests {
     public static <T, G> ResponseEntity<T> RestRequestWithHeaders(String requestUrl, HttpMethod method, G sendEntity, String token, Class<T> returnClass){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(AUTHORIZATION, TokenPrefix + token);
 
         String url = BASE_PATH+requestUrl;
@@ -73,6 +74,7 @@ public class RestRequests {
     public static <T> ResponseEntity<T> RestRequestWithHeaders(String requestUrl, HttpMethod method, String token, Class<T> returnClass) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(AUTHORIZATION, TokenPrefix + token);
 
         String url = BASE_PATH+requestUrl;

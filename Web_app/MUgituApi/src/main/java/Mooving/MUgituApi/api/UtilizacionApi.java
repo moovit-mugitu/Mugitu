@@ -37,27 +37,28 @@ public class UtilizacionApi {
     }
 
     @PutMapping(path = "/create/{biciId}/{userId}")
-    public ResponseEntity<Utilizacion> createUtilizacion(@PathVariable("biciId") long biciId, @PathVariable("userId") long userId,
-                                                        HttpServletResponse response, Authentication authentication) {
-        if(UserApi.getPrincipal(usuarioDao, authentication).getUserId() != userId &&
-                !UserApi.getPrincipal(usuarioDao, authentication).getTipo_usuario().getDescripcion().equals("ADMIN")){
+    public ResponseEntity<Utilizacion> createUtilizacion(@PathVariable("biciId") long biciId,
+                                                         @PathVariable("userId") long userId,
+                                                         Authentication authentication) {
+        if (UserApi.getPrincipal(usuarioDao, authentication).getUserId() != userId &&
+                !UserApi.getPrincipal(usuarioDao, authentication).getTipo_usuario().getDescripcion().equals("ADMIN")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Utilizacion u = new Utilizacion();
         u.setBici(biciDao.getBici(biciId));
         u.setFechaInicio(new Date());
         u.setUser(usuarioDao.getUser(userId));
-        try{
+        try {
             estacionarDao.finishEstacionar(biciId);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
         Utilizacion saved = utilizacionDao.addUtilizacion(u);
-        return ResponseEntity.created(URI.create("/utilizar/id/"+saved.getUtilizaId())).body(saved);
+        return ResponseEntity.created(URI.create("/utilizar/id/" + saved.getUtilizaId())).body(saved);
     }
 
     @GetMapping(path = "/user")
-    public ResponseEntity<List<Utilizacion>> getUtilizacionesPropias(Authentication authentication){
+    public ResponseEntity<List<Utilizacion>> getUtilizacionesPropias(Authentication authentication) {
         Usuario user = UserApi.getPrincipal(usuarioDao, authentication);
         List<Utilizacion> u = utilizacionDao.getUtilizacionByUser(user.getUserId());
 
@@ -65,14 +66,14 @@ public class UtilizacionApi {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<Utilizacion>> getAllUtilizaciones(){
+    public ResponseEntity<List<Utilizacion>> getAllUtilizaciones() {
         List<Utilizacion> u = utilizacionDao.getAllUtilizacions();
 
         return ResponseEntity.ok(u);
     }
 
     @GetMapping(path = "/user/{id}")
-    public ResponseEntity<List<Utilizacion>> getUtilizacionesUserId(@PathVariable("id") long id){
+    public ResponseEntity<List<Utilizacion>> getUtilizacionesUserId(@PathVariable("id") long id) {
         List<Utilizacion> u = utilizacionDao.getUtilizacionByUser(id);
 
         return ResponseEntity.ok(u);

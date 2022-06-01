@@ -1,18 +1,22 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Estacion;
+import org.apache.tomcat.jni.Local;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 @RequestMapping("/estacion")
@@ -85,6 +89,7 @@ public class EstacionController {
 
         return response.getBody();
     }
+
     @GetMapping(path = "/id")
     @ResponseBody
     public Estacion getEstacionesByIdRequest(@RequestParam("id") long id) {
@@ -105,5 +110,20 @@ public class EstacionController {
         return "estacionView";
     }
 
+    @GetMapping(path = "/prediccion")
+    @ResponseBody
+    public Integer predecirBicisEnEstacion(WebRequest request, @RequestParam("id") long estacionId) {
+        Date date = new Date();
+        try{
+            String dateStr = request.getParameter("date");
+            LocalDateTime l = LocalDateTime.parse(dateStr);
+            date = java.sql.Timestamp.valueOf(l);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect date format");
+        }
+        ResponseEntity<Integer> response = RestRequests.RestRequestWithHeaders("/ia/biciEstacion/"+estacionId+"?date="+date.toString().substring(0, date.toString().length()-2),
+                HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Integer.class);
 
+        return Objects.requireNonNull(response.getBody());
+    }
 }

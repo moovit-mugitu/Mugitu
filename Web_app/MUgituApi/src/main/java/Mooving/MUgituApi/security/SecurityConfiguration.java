@@ -37,10 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
     private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete"};
-    private static final String[] WORKER_PUT_MATCHERS = {"/averia/**"};
+    private static final String[] WORKER_PUT_MATCHERS = {"/averia/**", "/notificacion/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
-            "/averia/**", "/estacionar/**", "/api/biciEstacion", "/utilizar/user"};
+            "/averia/**", "/estacionar/**", "/api/biciEstacion", "/utilizar/user", "/ia/**"};
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
 

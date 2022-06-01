@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface NotificacionDao {
      List<NotificacionAveria> getAllNotificacions();
+     List<NotificacionAveria> getNotificacionesNuevas(boolean nueva);
+     List<NotificacionAveria> getNotificacionesResueltas(boolean resuelta);
      NotificacionAveria getNotificacion(long id);
      void editNotificacion(NotificacionAveria notificacion);
      void deleteNotificacion(long id);
