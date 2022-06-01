@@ -1,36 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head th:replace="include.html :: headerfiles">
-    <title id="Ptitle" th:text="#{menu.notificaciones}"></title>
+    <title id="Ptitle" th:text="#{notificationMenu.htmlTitle}"></title>
 </head>
 <body>
 
 <header th:replace="include.html :: headercontent"></header>
 
-<a th:href="@{/notificacion/all}" class="btn btn-primary d-inline" th:text="#{stationMenu.all}"/>
+<a sec:authorize="hasAnyRole('ADMIN','WORKER')" th:href="@{/notificacion/worker/all}" class="btn btn-primary d-inline"
+   th:text="#{notificationView.all}"/>
+<a sec:authorize="hasRole('USER')" th:href="@{/notificacion/user/all}" class="btn btn-primary d-inline"
+   th:text="#{notificationView.all}"/>
 
-<a th:href="@{/notificacion/activa/1}" class="btn btn-primary d-inline" th:text="#{stationMenu.activas}"/>
-
-<a th:href="@{/notificacion/activa/0}" class="btn btn-primary d-inline" th:text="#{stationMenu.inactivas}"/>
-
-<form th:action="@{/estacion/id}" method="get" class="d-inline">
-    <label th:text="#{stationView.id}" class="d-inline"></label>
-    <input class="form-control d-inline w-auto" type="number" name="id" required/>
-    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.find}"></button>
-    <input class="form-control d-inline w-auto" type="datetime-local" name="date"/>
-    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.predict}" th:formaction="@{/estacion/prediccion}"></button>
+<form th:action="@{/notificacion/create}" method="post" class="d-inline">
+    <label th:text="#{notificationView.biciId}" class="d-inline"></label>
+    <input class="form-control d-inline w-auto" type="number" name="bikeId" required/>
+    <label th:text="#{notificationView.userId}" class="d-inline"></label>
+    <input class="form-control d-inline w-auto" type="number" name="userId"
+           th:readonly="${#authentication.getPrincipal().getUser().getTipo_usuario().getDescripcion().equals('USER')}"
+           th:value="${#authentication.getPrincipal().getUser().getUserId()}" required/>
+    <select class="form-select d-inline w-auto" name="tipoAveriaId" required>
+        <option value="1" th:text="#{averia.leve}" selected></option>
+        <option value="2" th:text="#{averia.moderada}"></option>
+        <option value="3" th:text="#{averia.grave}"></option>
+    </select>
+    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.create}"></button>
 </form>
 
-<a th:href="@{/estacion/create}" class="btn btn-primary d-inline" th:text="#{form.create}"/>
-<br><br>
+<a sec:authorize="hasAnyRole('ADMIN','WORKER')" th:href="@{/notificacion/worker/all}" class="btn btn-primary d-inline"
+   th:text="#{notificationView.all}"/>
 
-<!--<iframe width="100%" height="300px" allowfullscreen
-        src="//umap.openstreetmap.fr/es/map/mapa-bicimad_756245?scaleControl=true&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=false&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=false&onLoadPanel=undefined&captionBar=false"></iframe>-->
-<div id="map" style="width: 100%; height: 600px;"></div>
-<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin=""></script>
-<script th:src="@{'/js/map.js'}"></script>
+<a sec:authorize="hasAnyRole('ADMIN','WORKER')" th:href="@{/notificacion/worker/all}" class="btn btn-primary d-inline"
+   th:text="#{notificationView.all}"/>
+
+<!--
+CREAR TABLA PARA ENSEÑAR NOTIFICACIONES
+-->
+
+<table class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{notificationView.notificacionId }"></th>
+        <th scope="col" th:text="#{notificationView.biciId}"></th>
+        <th scope="col" th:text="#{notificationView.userNameId}"></th>
+        <th scope="col" th:text="#{notificationView.fecha}"></th>
+        <th scope="col" th:text="#{notificationView.message}"></th>
+        <th scope="col" th:text="#{notificationView.tipoAveria}"></th>
+        <th scope="col" th:text="#{notificationView.nueva}"></th>
+        <th scope="col" th:text="#{notificationView.resuelta}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+    </tr>
+    </thead>
+
+    <tbody th:if="${notificaciones.size() > 0}">
+    <tr th:each="notificacion: ${notificaciones}">
+        <th scope="row" th:text="${notificacion.notificacionId}"/>
+        <td th:text="${notificacion.bici.biciId}"/>
+        <td th:text="${notificacion.user.correo + notificacion.user.userId}"/>
+        <td th:text="${notificacion.fecha}"/>
+        <td th:text="${notificacion.mensaje}"/>
+        <td th:switch="${notificacion.tipoAveria.id}">
+            <label th:case="1" th:text="#{averia.leve}"></label>
+            <label th:case="2" th:text="#{averia.moderada}"></label>
+            <label th:case="3" th:text="#{averia.grave}"></label>
+        </td>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${notificacion.nueva}" disabled>
+        </td>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${notificacion.resuelta}" disabled>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <a th:href="@{/notificacion/edit/} + ${notificacion.notificacionId}" class="btn btn-warning"
+               th:text="#{form.edit}"></a>
+            <form th:action="@{/notificacion/worker/solved/} + ${notificacion.notificacionId}" method="post">
+                <button type="submit" class="btn btn-primary" th:text="#{form.solved}"></button>
+            </form>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <form th:action="@{/notificacion/delete/} + ${notificacion.notificacionId}" method="post">
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

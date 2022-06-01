@@ -26,7 +26,12 @@ public class NotificacionApi {
     @GetMapping(path = "/worker/all")
     public ResponseEntity<List<NotificacionAveria>> getAllNotificaciones() {
         List<NotificacionAveria> notificaciones = notificacionDao.getAllNotificacions();
-
+        for(NotificacionAveria n : notificaciones){
+            if(n.getNueva()){
+                n.setNueva(false);
+                notificacionDao.editNotificacion(n);
+            }
+        }
         return ResponseEntity.ok(notificaciones);
     }
 
@@ -54,21 +59,32 @@ public class NotificacionApi {
     @GetMapping(path = "/worker/consultar/nuevas")
     public ResponseEntity<Boolean> consultarHayNotificacionesNuevas() {
         List<NotificacionAveria> notificaciones = notificacionDao.getNotificacionesNuevas(true);
-        if (notificaciones.size() > 0) return ResponseEntity.ok(true);
-        return ResponseEntity.ok(false);
+        if (notificaciones.size() == 0) return ResponseEntity.ok(false);
+
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping(path = "/worker/nuevas/{nueva}")
     public ResponseEntity<List<NotificacionAveria>> getNotificacionesNuevas(@PathVariable("nueva") boolean nueva) {
         List<NotificacionAveria> notificaciones = notificacionDao.getNotificacionesNuevas(nueva);
-
+        //Quitar de nuevas una vez ya se miran cuales son
+        for(NotificacionAveria n : notificaciones){
+            n.setNueva(false);
+            notificacionDao.editNotificacion(n);
+        }
         return ResponseEntity.ok(notificaciones);
     }
 
     @GetMapping(path = "/worker/resuelta/{resuelta}")
     public ResponseEntity<List<NotificacionAveria>> getNotificacionesResueltas(@PathVariable("resuelta") boolean resuelta) {
         List<NotificacionAveria> notificaciones = notificacionDao.getNotificacionesResueltas(resuelta);
-
+        //Quitar de nuevas una vez ya se miran cuales son
+        for(NotificacionAveria n : notificaciones){
+            if(n.getNueva()){
+                n.setNueva(false);
+                notificacionDao.editNotificacion(n);
+            }
+        }
         return ResponseEntity.ok(notificaciones);
     }
 
@@ -77,5 +93,12 @@ public class NotificacionApi {
         NotificacionAveria saved = notificacionDao.addNotificacion(notificacion);
 
         return ResponseEntity.created(URI.create("/notificacion/id/" + saved.getNotificacionId())).body(saved);
+    }
+
+    @PutMapping(path = "/edit")
+    public ResponseEntity<NotificacionAveria> editNotificacion(@RequestBody NotificacionAveria notificacion) {
+        notificacionDao.editNotificacion(notificacion);
+
+        return ResponseEntity.ok().build();
     }
 }

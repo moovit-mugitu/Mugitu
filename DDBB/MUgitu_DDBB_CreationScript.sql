@@ -113,6 +113,7 @@ ALTER TABLE estacionar ADD CONSTRAINT fk_estacionar_estacion FOREIGN KEY (estaci
 ALTER TABLE estacionar ADD CONSTRAINT fk_estacionar_bici FOREIGN KEY (bici_id) REFERENCES bici(bici_id);
 ALTER TABLE notificacion_averia ADD CONSTRAINT fk_notificacion_user FOREIGN KEY (user_id) REFERENCES usuario(user_id);
 ALTER TABLE notificacion_averia ADD CONSTRAINT fk_notificacion_bici FOREIGN KEY (bici_id) REFERENCES bici(bici_id);
+ALTER TABLE notificacion_averia ADD CONSTRAINT fk_notificacion_tipoAveria FOREIGN KEY (tipo_averia) REFERENCES tipo_averia(tipo_averia_id);
 ALTER TABLE averia ADD CONSTRAINT fk_averia_bici FOREIGN KEY (bici_id) REFERENCES bici (bici_id);
 ALTER TABLE evento ADD CONSTRAINT fk_evento_bici FOREIGN KEY (bici_id) REFERENCES bici (bici_id);
 ALTER TABLE utilizacion ADD CONSTRAINT fk_utiliza_user FOREIGN KEY (user_id) REFERENCES usuario (user_id);

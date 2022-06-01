@@ -20,8 +20,8 @@
         <th scope="col" th:text="#{userView.birthDate}"></th>
         <th scope="col" th:text="#{userView.verified}"></th>
         <th scope="col" th:text="#{userView.userType}"></th>
-        <th th:text="#{form.edit}"></th>
-        <th th:text="#{form.delete}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
     </tr>
     </thead>
 
@@ -43,12 +43,12 @@
             <input class="form-check-input" type="checkbox" th:checked="${user.verificado}" disabled>
         </td>
         <td th:text="${user.tipo_usuario.descripcion}"/>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <a th:href="@{/user/edit/} + ${user.userId}">
                 <button class="btn btn-warning" th:text="#{form.edit}"></button>
             </a>
         </td>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <form th:action="@{/user/delete/} + ${user.userId}" method = "post">
                 <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
             </form>

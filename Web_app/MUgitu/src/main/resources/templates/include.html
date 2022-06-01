@@ -91,7 +91,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white"
-                           th:classappend="${navPage eq 'notifications'}? active" th:href="@{/notificaciones}" th:text="#{menu.notificaciones}"></a>
+                           th:classappend="${navPage eq 'notifications'}? active" th:href="@{/notificacion}" th:text="#{menu.notificaciones}"
+                           sec:authorize="isAuthenticated()"></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white"

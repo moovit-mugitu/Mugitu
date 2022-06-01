@@ -15,8 +15,8 @@
         <th scope="col" th:text="#{bikeView.electric}"></th>
         <th scope="col" th:text="#{bikeView.soc}"></th>
         <th scope="col" th:text="#{bikeView.status}"></th>
-        <th th:text="#{form.edit}"></th>
-        <th th:text="#{form.delete}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
     </tr>
     </thead>
 
@@ -29,16 +29,15 @@
         </td>
         <td th:text="${bici.SOC == null || bici.SOC == 0}? '-' : ${bici.SOC}"/>
         <td th:text="${bici.estado} ? 'Active' : 'Maintenance'"/>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <a th:href="@{/bici/edit/} + ${bici.biciId}">
                 <button class="btn btn-warning" th:text="#{form.edit}"></button>
             </a>
         </td>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <form th:action="@{/bici/delete/} + ${bici.biciId}" method = "post">
                 <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
             </form>
-            </a>
         </td>
     </tr>
     </tbody>

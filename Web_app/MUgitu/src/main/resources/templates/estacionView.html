@@ -17,8 +17,8 @@
         <th scope="col" th:text="#{stationView.latitud}"></th>
         <th scope="col" th:text="#{stationView.activa}"></th>
         <th scope="col" th:text="#{stationView.ia}"></th>
-        <th th:text="#{form.edit}"></th>
-        <th th:text="#{form.delete}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
     </tr>
     </thead>
 
@@ -35,16 +35,15 @@
         <td>
             <input class="form-check-input" type="checkbox" th:checked="${station.ia}" disabled>
         </td>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <a th:href="@{/estacion/edit/} + ${station.id}">
                 <button class="btn btn-warning" th:text="#{form.edit}"></button>
             </a>
         </td>
-        <td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <form th:action="@{/estacion/delete/} + ${station.id}" method = "post">
                 <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
             </form>
-            </a>
         </td>
     </tr>
     </tbody>

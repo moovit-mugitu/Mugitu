@@ -27,8 +27,9 @@ public class NotificacionAveria {
     @Column(name = "fecha")
     private Date fecha;
 
-    @Column(name = "tipo_averia")
-    private int tipoAveria;
+    @ManyToOne
+    @JoinColumn(name = "tipo_averia")
+    private TipoAveria tipoAveria;
 
     @Column(name = "nueva")
     private Boolean nueva;
@@ -101,11 +102,11 @@ public class NotificacionAveria {
         this.fecha = fecha;
     }
 
-    public int getTipoAveria() {
+    public TipoAveria getTipoAveria() {
         return tipoAveria;
     }
 
-    public void setTipoAveria(int tipoAveria) {
+    public void setTipoAveria(TipoAveria tipoAveria) {
         this.tipoAveria = tipoAveria;
     }
 }
