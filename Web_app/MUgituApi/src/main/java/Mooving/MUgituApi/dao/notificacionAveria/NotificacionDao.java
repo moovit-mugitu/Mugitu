@@ -13,4 +13,5 @@ public interface NotificacionDao {
      void deleteNotificacion(long id);
      void deleteNotificacion(NotificacionAveria notificacion);
      NotificacionAveria addNotificacion(NotificacionAveria notificacion);
- }
+     List<NotificacionAveria> getNotificacionesByUser(Long userId);
+}

@@ -36,13 +36,6 @@ public class HomeController implements ServletContextAware {
         return "login";
     }
 
-    @GetMapping("/mainPage")
-    public String mainPage(Model model, Authentication authentication) {
-        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
-        model.addAttribute("user", u.getUser());
-        return "mainPage";
-    }
-
     @GetMapping(path = "/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseEntity<Void> result = RestRequests.RESTgetRequestResponseEntity("/token/refresh", Void.class);

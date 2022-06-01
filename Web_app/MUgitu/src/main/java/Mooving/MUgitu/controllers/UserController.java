@@ -24,7 +24,7 @@ public class UserController {
         MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
         model.addAttribute("user", u.getUser());
         model.addAttribute("navPage", "users");
-        return "mainPage";
+        return "index";
     }
 
     @GetMapping(path = "/register")

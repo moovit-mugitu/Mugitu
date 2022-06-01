@@ -18,6 +18,16 @@ public class NotificacionDataAccessService implements NotificacionDao {
     }
 
     @Override
+    public List<NotificacionAveria> getNotificacionesNuevas(boolean nueva) {
+        return repository.getAllByNueva(nueva);
+    }
+
+    @Override
+    public List<NotificacionAveria> getNotificacionesResueltas(boolean resuelta) {
+        return repository.getAllByResuelta(resuelta);
+    }
+
+    @Override
     public NotificacionAveria getNotificacion(long id) {
         return repository.findById(id).orElse(null);
     }
@@ -40,5 +50,10 @@ public class NotificacionDataAccessService implements NotificacionDao {
     @Override
     public NotificacionAveria addNotificacion(NotificacionAveria notificacion) {
         return repository.save(notificacion);
+    }
+
+    @Override
+    public List<NotificacionAveria> getNotificacionesByUser(Long userId) {
+        return repository.getAllByUserUserId(userId);
     }
 }

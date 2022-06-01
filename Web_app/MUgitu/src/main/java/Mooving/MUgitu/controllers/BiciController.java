@@ -26,7 +26,7 @@ public class BiciController {
         MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
         model.addAttribute("user", u.getUser());
         model.addAttribute("navPage", "bikes");
-        return "mainPage";
+        return "index";
     }
 
     @GetMapping("/edit/{id}")

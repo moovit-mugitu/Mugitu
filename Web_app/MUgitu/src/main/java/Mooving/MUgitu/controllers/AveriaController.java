@@ -27,7 +27,7 @@ public class AveriaController {
         MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
         model.addAttribute("user", u.getUser());
         model.addAttribute("navPage", "averias");
-        return "mainPage";
+        return "index";
     }
 
     @GetMapping("/edit/{id}")

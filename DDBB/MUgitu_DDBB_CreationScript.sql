@@ -44,7 +44,9 @@ create table notificacion_averia(
 	bici_id bigint,
 	user_id bigint,
 	fecha datetime,
-	tipo_averia int
+	tipo_averia int,
+    nueva boolean default true,
+    resuelta boolean default false
 );
 
 create table tipo_averia(

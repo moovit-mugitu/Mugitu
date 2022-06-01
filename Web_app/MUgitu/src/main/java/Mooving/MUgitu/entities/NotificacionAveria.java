@@ -7,11 +7,11 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name= "notificacion_averia")
+@Table(name = "notificacion_averia")
 public class NotificacionAveria {
     @Id
-    @GenericGenerator(name="notificacion" , strategy="increment")
-    @GeneratedValue(generator="notificacion")
+    @GenericGenerator(name = "notificacion", strategy = "increment")
+    @GeneratedValue(generator = "notificacion")
     @Column(name = "notificacion_id", nullable = false)
     private Long notificacionId;
 
@@ -30,16 +30,43 @@ public class NotificacionAveria {
     @Column(name = "tipo_averia")
     private int tipoAveria;
 
-    public NotificacionAveria(){
+    @Column(name = "nueva")
+    private Boolean nueva;
+
+    @Column(name = "resuelta")
+    private Boolean resuelta;
+
+    @Column(name = "mensaje", length = 128)
+    private String mensaje;
+
+    public NotificacionAveria() {
         this.fecha = new Date();
+        this.nueva = true;
+        this.resuelta = false;
     }
 
-    public NotificacionAveria(Long notificacionId, Bici bici, Usuario user, Date fecha, int tipoAveria) {
-        this.notificacionId = notificacionId;
-        this.bici = bici;
-        this.user = user;
-        this.fecha = fecha;
-        this.tipoAveria = tipoAveria;
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public Boolean getResuelta() {
+        return resuelta;
+    }
+
+    public void setResuelta(Boolean resuelta) {
+        this.resuelta = resuelta;
+    }
+
+    public Boolean getNueva() {
+        return nueva;
+    }
+
+    public void setNueva(Boolean nueva) {
+        this.nueva = nueva;
     }
 
     public Long getNotificacionId() {

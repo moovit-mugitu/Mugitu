@@ -35,15 +35,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/bici/parada", "/bici/ocupada", "/bici/edit/**", "/user", "/estacion/create", "/utilizar/all", "/utilizar/user/**"};
     private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**", "/estacion/delete/**", "/bici/delete/**"};
 
-    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/mainPage/**", "/bici/**",
-            "/utilizar/user", "/user/profile", "/estacion/prediccion/**"};
-    private final static String[] USER_POST_MATCHERS = {"/utilizar/create", "/estacionar/create"};
+    private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**",
+            "/utilizar/user", "/user/profile", "/estacion/prediccion/**", "/notificacion/user/**"};
+    private final static String[] USER_POST_MATCHERS = {"/utilizar/create", "/estacionar/create", "/notificacion/create/**"};
 
-    private final static String[] WORKER_GET_MATCHERS = {"/averia/**"};
-    private final static String[] WORKER_POST_MATCHERS = {"/averia/**"};
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**"};
+    private final static String[] WORKER_POST_MATCHERS = {"/averia/**", "/notificacion/worker/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
-            "/", "/index", "/home", "/login", "/user/register", "/mainPage", "/ia/**", "/estacion/**"};
+            "/", "/index", "/home", "/login", "/user/register", "/ia/**", "/estacion/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register"};
 
     @Autowired
@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/mainPage")
+                .defaultSuccessUrl("/index")
                 .and()
                 //Logout control
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
