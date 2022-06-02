@@ -5,6 +5,8 @@ import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -13,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@RestController
+@Controller
 @RequestMapping(path = "/utilizar")
 public class UtilizacionController {
 
@@ -29,31 +31,33 @@ public class UtilizacionController {
     }
 
     @GetMapping(path = "/user")
-    @ResponseBody
-    public List<Utilizacion> getUtilizacionesPropias(Authentication authentication){
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user/"+userDetails.getUser().getUserId(),
+    public String getUtilizacionesPropias(Model model){
+        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("utilizaciones", utilizacions);
+        return "utilizarView";
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody
-    public List<Utilizacion> getAllUtilizaciones(Authentication authentication){
+    public String getAllUtilizaciones(Authentication authentication, Model model){
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user/"+userDetails.getUser().getUserId(),
+        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/all",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("utilizaciones", utilizacions);
+        return "utilizarView";
     }
 
-    @GetMapping(path = "/user/{id}")
-    @ResponseBody
-    public List<Utilizacion> getUtilizacionesUserId(@PathVariable("id") long id){
-        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user/"+id,
+    @GetMapping(path = "/user/id/{id}")
+    public String getUtilizacionesUserId(@PathVariable("id") long id, Model model){
+        ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("utilizaciones", utilizacions);
+        return "utilizarView";
     }
 }

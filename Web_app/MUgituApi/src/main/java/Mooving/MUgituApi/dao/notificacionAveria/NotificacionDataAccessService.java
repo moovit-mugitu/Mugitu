@@ -4,6 +4,8 @@ import Mooving.MUgituApi.entities.NotificacionAveria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -55,5 +57,21 @@ public class NotificacionDataAccessService implements NotificacionDao {
     @Override
     public List<NotificacionAveria> getNotificacionesByUser(Long userId) {
         return repository.getAllByUserUserId(userId);
+    }
+
+    @Override
+    public void markAsNotNew(List<NotificacionAveria> notificaciones) {
+        List<Integer> news = new ArrayList<>();
+
+        for(NotificacionAveria n: notificaciones){
+            if(n.getNueva()){
+                news.add(notificaciones.indexOf(n));
+                n.setNueva(false);
+                repository.save(n);
+            }
+        }
+        for(int i : news){
+            notificaciones.get(i).setNueva(true);
+        }
     }
 }

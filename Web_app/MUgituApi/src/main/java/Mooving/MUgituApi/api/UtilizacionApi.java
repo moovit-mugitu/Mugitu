@@ -72,7 +72,7 @@ public class UtilizacionApi {
         return ResponseEntity.ok(u);
     }
 
-    @GetMapping(path = "/user/{id}")
+    @GetMapping(path = "/user/id/{id}")
     public ResponseEntity<List<Utilizacion>> getUtilizacionesUserId(@PathVariable("id") long id) {
         List<Utilizacion> u = utilizacionDao.getUtilizacionByUser(id);
 

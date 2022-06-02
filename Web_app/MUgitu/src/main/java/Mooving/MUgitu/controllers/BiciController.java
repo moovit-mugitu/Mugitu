@@ -22,11 +22,9 @@ public class BiciController {
     ///  GET  ///
 
     @GetMapping
-    public String getMenuBicis(Model model, Authentication authentication) {
-        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
-        model.addAttribute("user", u.getUser());
+    public String getMenuBicis(Model model) {
         model.addAttribute("navPage", "bikes");
-        return "index";
+        return "biciMenu";
     }
 
     @GetMapping("/edit/{id}")

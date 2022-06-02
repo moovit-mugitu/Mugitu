@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{utilizarView.htmlTitle}"></title>
+</head>
+<body>
+
+<header th:replace="include.html :: headercontent"></header>
+
+
+<table th:if="${utilizaciones != null && utilizaciones.size() > 0}" class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{utilizarView.utilizarId }"></th>
+        <th scope="col" th:text="#{notificationView.biciId}"></th>
+        <th scope="col" th:text="#{bikeView.electric}"></th>
+        <th scope="col" th:text="#{notificationView.userNameId}"  sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th scope="col" th:text="#{averiaEdit.fechaInicio}"></th>
+        <th scope="col" th:text="#{averiaEdit.fechaFin}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="utilizacion: ${utilizaciones}">
+        <th scope="row" th:text="${utilizacion.utilizaId}"/>
+        <td th:text="${utilizacion.bici.biciId}"/>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${utilizacion.bici.electrica}" disabled>
+        </td>
+        <td th:text="${utilizacion.fechaInicio}"/>
+        <td th:text="${utilizacion.fechaFin}"/>
+        <td th:text="${utilizacion.user.correo + utilizacion.user.userId}" sec:authorize="hasAnyRole('ADMIN','WORKER')"/>
+
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <a th:href="@{/utilizacion/edit/} + ${utilizacion.utilizaId}" class="btn btn-warning"
+               th:text="#{form.edit}"></a>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <form th:action="@{/utilizacion/delete/} + ${utilizacion.utilizaId}" method="post">
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<header th:replace="include.html :: footercontent"></header>
+
+</body>
+</html>

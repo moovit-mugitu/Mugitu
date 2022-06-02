@@ -32,14 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public final static int ENCRYPT_STRENGTH = 10;
 
     private final static String[] ADMIN_GET_MATCHERS = {"/user/all", "/bici/edit/**", "/estacion/edit/**",
-            "/bici/parada", "/bici/ocupada", "/bici/edit/**", "/user", "/estacion/create", "/utilizar/all", "/utilizar/user/**"};
+            "/bici/parada", "/bici/ocupada", "/bici/edit/**", "/user", "/estacion/create"};
     private final static String[] ADMIN_POST_MATCHERS = {"/bici/edit/**", "/estacion/edit/**", "/estacion/delete/**", "/bici/delete/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**",
             "/utilizar/user", "/user/profile", "/estacion/prediccion/**", "/notificacion/user/**", "/notificacion"};
     private final static String[] USER_POST_MATCHERS = {"/utilizar/create", "/estacionar/create", "/notificacion/create/**"};
 
-    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**"};
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/utilizar/all", "/utilizar/user/id/**"};
     private final static String[] WORKER_POST_MATCHERS = {"/averia/**", "/notificacion/worker/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",

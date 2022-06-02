@@ -19,14 +19,6 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping
-    public String getUserMenu(Model model, Authentication authentication) {
-        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
-        model.addAttribute("user", u.getUser());
-        model.addAttribute("navPage", "users");
-        return "index";
-    }
-
     @GetMapping(path = "/register")
     public String registerUser(Model model) {
         model.addAttribute("user", new Usuario());

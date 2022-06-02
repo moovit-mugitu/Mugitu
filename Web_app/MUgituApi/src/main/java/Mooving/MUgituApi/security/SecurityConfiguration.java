@@ -28,15 +28,15 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada", "/utilizar/all", "/utilizar/user/**"};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
     private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
-            "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*", "/utilizar/delete/*",
+            "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*",
             "/user/delete/**"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
             "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**", "/estacion/create/**"};
 
-    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/notificacion/id/**"};
-    private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete"};
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/notificacion/id/**", "/utilizar/all", "/utilizar/user/id/**"};
+    private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete", "/utilizar/delete/*"};
     private static final String[] WORKER_PUT_MATCHERS = {"/averia/**", "/notificacion/edit/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",

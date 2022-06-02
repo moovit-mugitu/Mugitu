@@ -45,6 +45,27 @@ public class NotificacionController {
         return "notificacionMenu";
     }
 
+    @GetMapping(path = "/worker/nuevas/{nueva}")
+    public String getNotificacionesNuevas(@PathVariable("nueva") boolean nueva, Model model) {
+        ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/worker/nuevas/"+nueva,
+                HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), NotificacionAveria[].class);
+
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("notificaciones", notificaciones);
+        return "notificacionMenu";
+    }
+
+    @GetMapping(path = "/worker/resuelta/{resuelta}")
+    public String getNotificacionesResueltas(@PathVariable("resuelta") boolean resuelta, Model model) {
+        ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/worker/resuelta/"+resuelta,
+                HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), NotificacionAveria[].class);
+
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("notificaciones", notificaciones);
+        return "notificacionMenu";
+    }
+
+
     @PostMapping("/worker/solved/{id}")
     @ResponseBody
     public String getNotificacionesWorker(@PathVariable("id") long id) {
@@ -74,10 +95,11 @@ public class NotificacionController {
         notificacion.setMensaje(request.getParameter("message"));
         notificacion.setTipoAveria(tipoAveria);
 
-        //CASCAAAAAAAAAAAAA REVISAR
         ResponseEntity<NotificacionAveria> response = RestRequests.RestRequestWithHeaders("/notificacion/create",
                 HttpMethod.PUT, notificacion,RestRequests.getToken(RestRequests.ACCESSTOKEN),NotificacionAveria.class);
 
         return "created";
     }
+
+
 }

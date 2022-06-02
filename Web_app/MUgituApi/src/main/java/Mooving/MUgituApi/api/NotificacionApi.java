@@ -11,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,12 +28,7 @@ public class NotificacionApi {
     @GetMapping(path = "/worker/all")
     public ResponseEntity<List<NotificacionAveria>> getAllNotificaciones() {
         List<NotificacionAveria> notificaciones = notificacionDao.getAllNotificacions();
-        for(NotificacionAveria n : notificaciones){
-            if(n.getNueva()){
-                n.setNueva(false);
-                notificacionDao.editNotificacion(n);
-            }
-        }
+        notificacionDao.markAsNotNew(notificaciones);
         return ResponseEntity.ok(notificaciones);
     }
 
@@ -67,11 +64,7 @@ public class NotificacionApi {
     @GetMapping(path = "/worker/nuevas/{nueva}")
     public ResponseEntity<List<NotificacionAveria>> getNotificacionesNuevas(@PathVariable("nueva") boolean nueva) {
         List<NotificacionAveria> notificaciones = notificacionDao.getNotificacionesNuevas(nueva);
-        //Quitar de nuevas una vez ya se miran cuales son
-        for(NotificacionAveria n : notificaciones){
-            n.setNueva(false);
-            notificacionDao.editNotificacion(n);
-        }
+        notificacionDao.markAsNotNew(notificaciones);
         return ResponseEntity.ok(notificaciones);
     }
 
@@ -79,12 +72,7 @@ public class NotificacionApi {
     public ResponseEntity<List<NotificacionAveria>> getNotificacionesResueltas(@PathVariable("resuelta") boolean resuelta) {
         List<NotificacionAveria> notificaciones = notificacionDao.getNotificacionesResueltas(resuelta);
         //Quitar de nuevas una vez ya se miran cuales son
-        for(NotificacionAveria n : notificaciones){
-            if(n.getNueva()){
-                n.setNueva(false);
-                notificacionDao.editNotificacion(n);
-            }
-        }
+        notificacionDao.markAsNotNew(notificaciones);
         return ResponseEntity.ok(notificaciones);
     }
 
