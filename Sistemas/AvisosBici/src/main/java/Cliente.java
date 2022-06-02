@@ -154,7 +154,7 @@ public class Cliente {
                         System.out.println(" Enviado: " + lineaNecesidad);
 
                         channel.basicPublish(SOLUCIONES_EXCHANGE, "", null, lineaSolucion.getBytes());
-                        System.out.println(" Enviado: " + lineaNecesidad);
+                        System.out.println(" Enviado: " + lineaSolucion);
                         Thread.sleep(10000);
                     }
                 }
@@ -176,6 +176,7 @@ public class Cliente {
                     }
                 }
                 idsEstaciones.add(idEstacion);
+                valorMax = -1;
             }
             return idsEstaciones;
         }
