@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="include.html :: headerfiles">
+    <title id="Ptitle" th:text="#{stationMenu.htmlTitle}"></title>
+</head>
+<body>
+
+<header th:replace="include.html :: headercontent"></header>
+
+<a th:href="@{/averia/all}" class="btn btn-primary d-inline" th:text="#{stationMenu.all}"/>
+<form class="d-inline" th:action="@{/averia/tipo}" method="get">
+<select class="form-select d-inline w-auto" name="tipoAveriaId" required>
+    <option value="1" th:text="#{averia.leve}" selected></option>
+    <option value="2" th:text="#{averia.moderada}"></option>
+    <option value="3" th:text="#{averia.grave}"></option>
+</select>
+    <button type="submit" class="btn btn-primary d-inline" th:text="#{form.find}"></button>
+</form>
+<a th:href="@{/averia/activas}" class="btn btn-primary d-inline" th:text="#{averiaMenu.activas}"/>
+<a th:href="@{/averia/create}" class="btn btn-primary d-inline" th:text="#{form.create}"/>
+<br><br>
+
+<table th:if="${averias != null && averias.size() > 0}" class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{averiaMenu.averiaId}"></th>
+        <th scope="col" th:text="#{averiaEdit.bici}"></th>
+        <th scope="col" th:text="#{averiaEdit.fechaInicio}"></th>
+        <th scope="col" th:text="#{averiaEdit.fechaFin}"></th>
+        <th scope="col" th:text="#{averiaEdit.tipoAveria}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="averia: ${averias}">
+        <th scope="row" th:text="${averia.averiaId}"/>
+        <td th:text="${averia.bici.biciId}"/>
+        <td th:text="${averia.fechaInicio}"/>
+        <td th:text="${averia.fechaFin}"/>
+        <td th:switch="${averia.tipoAveria.id}">
+            <label th:case="1" th:text="#{averia.leve}"></label>
+            <label th:case="2" th:text="#{averia.moderada}"></label>
+            <label th:case="3" th:text="#{averia.grave}"></label>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <a th:href="@{/averia/edit/} + ${averia.averiaId}" class="btn btn-warning"
+               th:text="#{form.edit}"></a>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <form th:action="@{/averia/delete/} + ${averia.averiaId}" method="post">
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<header th:replace="include.html :: footercontent"></header>
+
+</body>
+</html>

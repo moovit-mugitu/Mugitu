@@ -3,6 +3,7 @@ package Mooving.MUgitu.controllers;
 import Mooving.MUgitu.entities.Averia;
 import Mooving.MUgitu.entities.Bici;
 import Mooving.MUgitu.entities.TipoAveria;
+import Mooving.MUgitu.entities.Utilizacion;
 import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,9 @@ import java.util.*;
 public class AveriaController {
 
     @GetMapping
-    public String getAveriaMenu(Model model, Authentication authentication) {
-        MyUserDetails u = (MyUserDetails) authentication.getPrincipal();
-        model.addAttribute("user", u.getUser());
+    public String getAveriaMenu(Model model) {
         model.addAttribute("navPage", "averias");
-        return "index";
+        return "averiaMenu";
     }
 
     @GetMapping("/edit/{id}")
@@ -64,12 +63,23 @@ public class AveriaController {
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody
-    public List<Averia> getAllAverias() {
+    public String getAllAverias(Model model) {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("averias", averias);
+        return "averiaMenu";
+    }
+
+    @GetMapping(path = "/activas")
+    public String getAveriasActivas(Model model) {
+        ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
+                "/averia/activas", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
+
+        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("averias", averias);
+        return "averiaMenu";
     }
 
     @GetMapping(path = "/id/{id}")
@@ -81,13 +91,14 @@ public class AveriaController {
         return response.getBody();
     }
 
-    @GetMapping(path = "/tipo/{tipo}")
-    @ResponseBody
-    public List<Averia> getAveriasByTipo(@PathVariable("tipo") int tipo) {
+    @GetMapping(path = "/tipo")
+    public String getAveriasByTipo(@RequestParam("tipoAveriaId") int tipo, Model model) {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/tipo/"+tipo, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("averias", averias);
+        return "averiaMenu";
     }
 
     @GetMapping(path = "/create")

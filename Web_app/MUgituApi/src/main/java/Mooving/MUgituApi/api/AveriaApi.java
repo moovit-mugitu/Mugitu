@@ -45,6 +45,13 @@ public class AveriaApi {
         return ResponseEntity.ok(averias);
     }
 
+    @GetMapping(path = "/activas")
+    public ResponseEntity<List<Averia>> getAveriasActivas() {
+        List<Averia> averias = averiaDao.getAveriasActivas();
+        if (averias == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(averias);
+    }
+
     @GetMapping(path = "/tipo/{tipo}")
     public ResponseEntity<List<Averia>> getAveriaByTipo(@PathVariable("tipo") int tipo) {
         List<Averia> averias = averiaDao.getAveriaByTipo(tipo);

@@ -23,6 +23,49 @@
 
 <a th:href="@{/estacion/create}" class="btn btn-primary d-inline" th:text="#{form.create}"/>
 <br><br>
+<table th:if="${stations != null && stations.size() > 0}" class="table table-striped" style="width: auto; table-layout: auto">
+    <thead>
+    <tr>
+        <th scope="col" th:text="#{stationView.id}"></th>
+        <th scope="col" th:text="#{stationView.name}"></th>
+        <th scope="col" th:text="#{stationView.plazas}"></th>
+        <th scope="col" th:text="#{stationView.longitud}"></th>
+        <th scope="col" th:text="#{stationView.latitud}"></th>
+        <th scope="col" th:text="#{stationView.activa}"></th>
+        <th scope="col" th:text="#{stationView.ia}"></th>
+        <th th:text="#{form.edit}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+        <th th:text="#{form.delete}" sec:authorize="hasAnyRole('ADMIN','WORKER')"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="station: ${stations}">
+        <th scope="row" th:text="${station.id}"/>
+        <td th:text="${station.nombre}"/>
+        <td th:text="${station.plazas}"/>
+        <td th:text="${station.longitud}"/>
+        <td th:text="${station.latitud}"/>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${station.activa}" disabled>
+        </td>
+        <td>
+            <input class="form-check-input" type="checkbox" th:checked="${station.ia}" disabled>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <a th:href="@{/estacion/edit/} + ${station.id}">
+                <button class="btn btn-warning" th:text="#{form.edit}"></button>
+            </a>
+        </td>
+        <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
+            <form th:action="@{/estacion/delete/} + ${station.id}" method = "post">
+                <button type="submit" class="btn btn-danger" th:text="#{form.delete}"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br><br>
 
 <!--<iframe width="100%" height="300px" allowfullscreen
         src="//umap.openstreetmap.fr/es/map/mapa-bicimad_756245?scaleControl=true&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=false&searchControl=null&tilelayersControl=null&embedControl=null&datalayersControl=false&onLoadPanel=undefined&captionBar=false"></iframe>-->

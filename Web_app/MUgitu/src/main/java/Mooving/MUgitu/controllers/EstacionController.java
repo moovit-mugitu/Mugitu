@@ -78,7 +78,7 @@ public class EstacionController {
         List<Estacion> estaciones = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("stations", estaciones);
 
-        return "estacionView";
+        return "estacionMenu";
     }
 
     @GetMapping(path = "/id/{id}")
@@ -107,7 +107,7 @@ public class EstacionController {
         List<Estacion> estaciones = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("stations", estaciones);
 
-        return "estacionView";
+        return "estacionMenu";
     }
 
     @GetMapping(path = "/prediccion")

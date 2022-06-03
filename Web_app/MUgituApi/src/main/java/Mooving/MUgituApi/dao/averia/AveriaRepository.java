@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface AveriaRepository extends JpaRepository<Averia, Long> {
     List<Averia> getAveriasByTipoAveria(TipoAveria tipoAveria);
+    List<Averia> getAveriasByFechaFinIsNull();
 }

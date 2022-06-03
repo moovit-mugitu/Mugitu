@@ -51,7 +51,7 @@ public class BiciController {
                 "/bici/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
         List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("bicis", bicis);
-        return "biciView";
+        return "biciMenu";
     }
 
     @GetMapping(path = "/id/{id}")
@@ -87,7 +87,7 @@ public class BiciController {
                 "/bici/libre", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
         List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("bicis", bicis);
-        return "biciView";
+        return "biciMenu";
     }
 
     @GetMapping(path = "/parada")
@@ -96,7 +96,7 @@ public class BiciController {
                 "/bici/parada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
         List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("bicis", bicis);
-        return "biciView";
+        return "biciMenu";
     }
 
     @GetMapping(path = "/ocupada")
@@ -105,7 +105,7 @@ public class BiciController {
                 "/bici/ocupada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
         List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
         model.addAttribute("bicis", bicis);
-        return "biciView";
+        return "biciMenu";
     }
 
     ///  POST  ///

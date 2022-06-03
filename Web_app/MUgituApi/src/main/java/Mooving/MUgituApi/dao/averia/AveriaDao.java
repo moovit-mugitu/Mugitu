@@ -13,4 +13,5 @@ import java.util.List;
      void deleteAveria(Averia averia);
      Averia addAveria(Averia averia);
      List<Averia> getAveriaByTipo(Integer tipo);
+     List<Averia> getAveriasActivas();
  }

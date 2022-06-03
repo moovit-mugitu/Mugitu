@@ -33,14 +33,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*",
             "/user/delete/**"};
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
-            "/averia/edit/**", "/estacionar/edit/**", "/tipoAveria/edit/**", "/estacion/create/**"};
+            "/estacionar/edit/**", "/tipoAveria/edit/**", "/estacion/create/**", "/user/**"};
 
     private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/notificacion/id/**", "/utilizar/all", "/utilizar/user/id/**"};
     private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete", "/utilizar/delete/*"};
     private static final String[] WORKER_PUT_MATCHERS = {"/averia/**", "/notificacion/edit/**"};
 
     private final static String[] USER_GET_MATCHERS = {"/user/email/**", "/user/id/**", "/bici/**", "/estacion/**",
-            "/averia/**", "/estacionar/**", "/api/biciEstacion", "/utilizar/user", "/ia/**","/notificacion/user/**", "/notificacion/id/**"};
+            "/estacionar/**", "/api/biciEstacion", "/utilizar/user", "/ia/**","/notificacion/user/**", "/notificacion/id/**"};
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
 

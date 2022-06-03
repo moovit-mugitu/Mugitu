@@ -34,7 +34,12 @@ public class MyUserDetailsService implements UserDetailsService {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("password", password);
         map.add("username", username);
-        String responseToken = RestRequests.RESTpostRequestForm("/login", map, String.class);
+        String responseToken;
+        try {
+            responseToken = RestRequests.RESTpostRequestForm("/login", map, String.class);
+        }catch(Exception e){
+            return null;
+        }
         JSONObject jsonObj;
         String accessToken ="", refreshToken = "";
         try {

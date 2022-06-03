@@ -51,4 +51,9 @@ public class AveriaDataAccessService implements AveriaDao {
         TipoAveria tipoAveria = repositoryTipo.getById(tipo);
         return repository.getAveriasByTipoAveria(tipoAveria);
     }
+
+    @Override
+    public List<Averia> getAveriasActivas() {
+        return repository.getAveriasByFechaFinIsNull();
+    }
 }
