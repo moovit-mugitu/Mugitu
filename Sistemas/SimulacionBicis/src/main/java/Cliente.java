@@ -41,7 +41,7 @@ public class Cliente {
         generador = new Random();
     }
 
-    public void enviarMensaje() {
+    public void iniciar() {
         try (Connection connection = factory.newConnection()) {
             //Crear exchanges
             channel = connection.createChannel();
@@ -84,7 +84,6 @@ public class Cliente {
                     linea = id + "/" + electrica;
                     if (!this.isInterrupted()) {
                         channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_ESTACION, null, linea.getBytes());
-                        System.out.println(" Enviado: " + linea);
                         Thread.sleep(1000);
                     }
                 }
@@ -106,22 +105,24 @@ public class Cliente {
             String[] messages = message.split("/");
             long biciId = new BigInteger(messages[1]).longValue();
             long estacionId = new BigInteger(messages[0]).longValue();
-            System.out.println("bici id: " + biciId);
             if (biciId >= 0) {
                 Random r = new Random();
                 int userId = r.nextInt(4) + 4;
 
                 String token = loggearseConUser(userId);
                 if (token != null) {
-                    crearRequest(biciId, userId, token);
-                    SimularMovimiento simular = new SimularMovimiento(biciId, estacionId, userId, channel);
-                    simular.start();
+                    boolean creada = crearRequest(biciId, userId, token);
+                    if (creada){
+                        SimularMovimiento simular = new SimularMovimiento(biciId, estacionId, userId, channel);
+                        simular.start();
+                    }
                 }
             }
         }
 
-        private void crearRequest(long biciId, long userId, String token) {
+        private boolean crearRequest(long biciId, long userId, String token) {
             HttpClient client = HttpClient.newHttpClient();
+            boolean creada = false;
             HttpRequest request = HttpRequest.newBuilder(
                             URI.create("http://localhost:8000/MUgitu/REST/api/utilizar/create/" + biciId + "/" + userId))
                     .header("accept", "application/json")
@@ -133,13 +134,15 @@ public class Cliente {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() == 200 || response.statusCode() == 201) {
                     JSONObject json = new JSONObject(response.body());
-                    System.out.println("Utilizacion creada, ID: " + json.get("utilizaId"));
+                    System.out.println("Utilizacion creada, ID: " + json.get("utilizaId")+ " bici: "+biciId);
+                    creada = true;
                 } else {
-                    System.out.println("Request error: " + response.statusCode());
+                    System.out.println("Request error: " + response.statusCode() + " Bici: "+biciId);
                 }
             } catch (InterruptedException | JSONException | IOException e) {
                 e.printStackTrace();
             }
+            return creada;
         }
 
         private String loggearseConUser(long userId) {
@@ -179,9 +182,11 @@ public class Cliente {
     }
 
     public static class ConsumerDeadLetter extends DefaultConsumer {
+        Map<String, Integer> reintentoMensajes;
 
         public ConsumerDeadLetter(Channel channel) {
             super(channel);
+            reintentoMensajes = new HashMap<>();
         }
 
         @Override
@@ -189,19 +194,30 @@ public class Cliente {
                 throws IOException {
             String message = new String(body, StandardCharsets.UTF_8);
             System.out.println("valor rechazado: " + message);
-            String tipo = message.split("/")[0];
+            String[] messages = message.split("/");
             message = message.replace("$", "");
-            message = message.substring(message.indexOf("/"));
-            switch (tipo){
-                case "utilizar":
-                    System.out.println("La estacion seleccionada no tiene el tipo de bici solicitado");
+
+            //Maximo 5 reenvios por mensaje rechazado
+            if(reintentoMensajes.containsKey(message)){
+                if(reintentoMensajes.get(message) > 5) {
+                    System.out.println("Limite maximo de intentos superado "+"\n");
+                    return;
+                }
+                reintentoMensajes.put(message, reintentoMensajes.get(message)+1);
+            }else{
+                reintentoMensajes.put(message, 1);
+            }
+
+            switch (messages.length){
+                case 2:
+                    System.out.println("La estacion seleccionada no tiene el tipo de bici solicitado"+"\n");
                     break;
-                case "evento":
-                    System.out.println("Reenvio: "+message);
+                case 4:
+                    System.out.println("Reenvio: "+message+"\n");
                     channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_EVENTO, null, message.getBytes(StandardCharsets.UTF_8));
                     break;
-                case "estacionar":
-                    System.out.println("Reenvio: "+message);
+                case 3:
+                    System.out.println("Reenvio: "+message+"\n");
                     channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_ESTACIONAR, null, message.getBytes(StandardCharsets.UTF_8));
                     break;
             }
@@ -221,7 +237,7 @@ public class Cliente {
             cliente.stop();
         });
         hiloEspera.start();
-        cliente.enviarMensaje();
+        cliente.iniciar();
         teclado.close();
     }
 }

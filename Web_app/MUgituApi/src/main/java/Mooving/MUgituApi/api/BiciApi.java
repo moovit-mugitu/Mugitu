@@ -83,6 +83,7 @@ public class BiciApi {
     public ResponseEntity<List<Bici>> getBiciParadas() {
         List<Evento> eventos = eventoDao.getUltimosEventosByEstado(false);
         List<Bici> bicis = eventos.stream().map(Evento::getBici).collect(Collectors.toList());
+
         return ResponseEntity.ok(bicis);
     }
 

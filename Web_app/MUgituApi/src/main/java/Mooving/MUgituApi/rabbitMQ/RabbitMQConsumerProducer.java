@@ -110,8 +110,8 @@ public class RabbitMQConsumerProducer {
             estacionar.setBici(bici);
             estacionar.setEstacion(estacion);
             estacionar.setFechaInicio(new Date());
-            estacionarDao.addEstacionar(estacionar);
             utilizacionDao.finishUtilizacion(biciId, userId);
+            estacionarDao.addEstacionar(estacionar);
         }catch (Exception e){
             throw new AmqpRejectAndDontRequeueException("estacionar/"+message, true, null);
         }

@@ -51,12 +51,15 @@ public class SimularMovimiento extends Thread {
         try {
             for (int i = 0; i < movements; i++) {
                 boolean estado = new Random().nextBoolean();
-                channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_EVENTO, null, (biciId + "/" + estado + "/" + latitud + "/" + longitud).getBytes(StandardCharsets.UTF_8));
+                boolean dollar = new Random().nextInt(10) == 1; // Un porcentaje de 1/10 para poner dolar
+                channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_EVENTO, null, (
+                        biciId + "/" + estado + "/" + latitud + ((dollar)?"$":"") + "/" + longitud).getBytes(StandardCharsets.UTF_8));
                 latitud += latIncrement;
                 longitud += lonIncrement;
-                Thread.sleep(3000);
+                Thread.sleep(500);
             }
             channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_ESTACIONAR, null, (biciId+"/"+estacionFin+"/"+userId).getBytes(StandardCharsets.UTF_8));
+            System.out.println("Estacionar bici "+biciId+"; Termina utilizacion");
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
