@@ -14,10 +14,14 @@ public class RabbitMQConfiguration {
 
     public final static String ESTACION_QUEUE = "queueEstacion";
     public final static String BICI_QUEUE = "queueBici";
+    public final static String EVENTO_QUEUE = "queueEvento";
+    public final static String ESTACIONAR_QUEUE = "queueEstacionar";
     public final static String DLQ_NAME = "queueDeadletter";
 
     public final static String ROUTING_KEY_ESTACION = "estacionId";
     public final static String ROUTING_KEY_BICI = "biciId";
+    public final static String ROUTING_KEY_EVENTO = "eventoId";
+    public final static String ROUTING_KEY_ESTACIONAR = "estacionarId";
 
     // EXCHANGES
     @Bean
@@ -42,6 +46,18 @@ public class RabbitMQConfiguration {
         return new Queue(BICI_QUEUE, false);
     }
     @Bean
+    Queue eventoQueue() {
+        return QueueBuilder.durable(EVENTO_QUEUE)
+                .withArgument("x-dead-letter-exchange", DLX_NAME)
+                .build();
+    }
+    @Bean
+    Queue estacionarQueue() {
+        return QueueBuilder.durable(ESTACIONAR_QUEUE)
+                .withArgument("x-dead-letter-exchange", DLX_NAME)
+                .build();
+    }
+    @Bean
     Queue dlQueue() {
         return new Queue(DLQ_NAME, true);
     }
@@ -51,6 +67,14 @@ public class RabbitMQConfiguration {
     @Bean
     Binding estacionBinding(Queue estacionQueue, DirectExchange exchange) {
         return BindingBuilder.bind(estacionQueue).to(exchange).with(ROUTING_KEY_ESTACION);
+    }
+    @Bean
+    Binding eventoBinding(Queue eventoQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(eventoQueue).to(exchange).with(ROUTING_KEY_EVENTO);
+    }
+    @Bean
+    Binding estacionarBinding(Queue estacionarQueue, DirectExchange exchange) {
+        return BindingBuilder.bind(estacionarQueue).to(exchange).with(ROUTING_KEY_ESTACIONAR);
     }
     /*@Bean
     Binding biciBinding(Queue biciQueue, DirectExchange exchange) {

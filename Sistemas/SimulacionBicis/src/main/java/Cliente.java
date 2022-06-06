@@ -4,7 +4,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -19,16 +18,19 @@ public class Cliente {
     public final static String EXCHANGE_NAME = "exchangeApiSimulator";
     public final static String DLX_NAME = "dlxApiSimulator";
 
-    public final static String ESTACION_QUEUE = "queueEstacion";
     public final static String BICI_QUEUE = "queueBici";
     public final static String DLQ_NAME = "queueDeadletter";
 
     public final static String ROUTING_KEY_ESTACION = "estacionId";
     public final static String ROUTING_KEY_BICI = "biciId";
+    public final static String ROUTING_KEY_EVENTO = "eventoId";
+    public final static String ROUTING_KEY_ESTACIONAR = "estacionarId";
+
+    private final static int NUM_BICIS = 5;
 
     ConnectionFactory factory;
     Random generador;
-    Channel channel;
+    static Channel channel;
 
     public Cliente() {
         factory = new ConnectionFactory();
@@ -68,7 +70,7 @@ public class Cliente {
         }
     }
 
-    public class Publisher extends Thread  {
+    public static class Publisher extends Thread {
         @Override
         public void run() {
             String linea;
@@ -76,15 +78,15 @@ public class Cliente {
             boolean electrica;
             Random generador = new Random();
             try {
-                while (!this.isInterrupted()) {
-                id = generador.nextInt(264) + 1;
-                electrica = generador.nextBoolean();
-                linea = id + "/" + electrica;
-                if (!this.isInterrupted()) {
-                    channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_ESTACION, null, linea.getBytes());
-                    System.out.println(" Enviado: " + linea);
-                    Thread.sleep(1000);
-                }
+                for(int i = 0; i < NUM_BICIS; i++){
+                    id = generador.nextInt(264) + 1;
+                    electrica = generador.nextBoolean();
+                    linea = id + "/" + electrica;
+                    if (!this.isInterrupted()) {
+                        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY_ESTACION, null, linea.getBytes());
+                        System.out.println(" Enviado: " + linea);
+                        Thread.sleep(1000);
+                    }
                 }
             } catch (IOException | InterruptedException e) {
                 System.out.println("hilo interrumpido");
@@ -99,16 +101,22 @@ public class Cliente {
         }
 
         @Override
-        public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties, byte[] body)
-                throws IOException {
-            long biciId = new BigInteger(body).longValue();
+        public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties, byte[] body) {
+            String message = new String(body, StandardCharsets.UTF_8);
+            String[] messages = message.split("/");
+            long biciId = new BigInteger(messages[1]).longValue();
+            long estacionId = new BigInteger(messages[0]).longValue();
             System.out.println("bici id: " + biciId);
             if (biciId >= 0) {
                 Random r = new Random();
                 int userId = r.nextInt(4) + 4;
 
                 String token = loggearseConUser(userId);
-                if(token != null)crearRequest(biciId, userId, token);
+                if (token != null) {
+                    crearRequest(biciId, userId, token);
+                    SimularMovimiento simular = new SimularMovimiento(biciId, estacionId, userId, channel);
+                    simular.start();
+                }
             }
         }
 
@@ -117,25 +125,24 @@ public class Cliente {
             HttpRequest request = HttpRequest.newBuilder(
                             URI.create("http://localhost:8000/MUgitu/REST/api/utilizar/create/" + biciId + "/" + userId))
                     .header("accept", "application/json")
-                    .header("Authorization", "Bearer "+token)
+                    .header("Authorization", "Bearer " + token)
                     .PUT(HttpRequest.BodyPublishers.noBody())
                     .build();
 
             try {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if(response.statusCode() == 200){
+                if (response.statusCode() == 200 || response.statusCode() == 201) {
                     JSONObject json = new JSONObject(response.body());
-                    System.out.println("Utilizacion creada, ID: "+json.get("utilizaId"));
-                }
-                else{
-                    System.out.println("Request error: "+response.statusCode());
+                    System.out.println("Utilizacion creada, ID: " + json.get("utilizaId"));
+                } else {
+                    System.out.println("Request error: " + response.statusCode());
                 }
             } catch (InterruptedException | JSONException | IOException e) {
                 e.printStackTrace();
             }
         }
 
-        private String loggearseConUser(long userId) throws UnsupportedEncodingException {
+        private String loggearseConUser(long userId) {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder(
                             URI.create("http://localhost:8000/MUgitu/REST/api/login"))
@@ -147,12 +154,11 @@ public class Cliente {
             // use the client to send the request
             try {
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if(response.statusCode() == 200){
+                if (response.statusCode() == 200) {
                     JSONObject json = new JSONObject(response.body());
                     return (String) json.get("accessToken");
-                }
-                else{
-                    System.out.println("Request error: "+response.statusCode());
+                } else {
+                    System.out.println("Request error: " + response.statusCode());
                 }
             } catch (InterruptedException | JSONException | IOException e) {
                 e.printStackTrace();
@@ -160,14 +166,14 @@ public class Cliente {
             return null;
         }
 
-        private byte[] createBodyForLogin(long userId) throws UnsupportedEncodingException {
-            Map<String,String> arguments = new HashMap<>();
-            arguments.put("username", "user"+userId+"@user");
+        private byte[] createBodyForLogin(long userId) {
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put("username", "user" + userId + "@user");
             arguments.put("password", "user");
             StringJoiner sj = new StringJoiner("&");
-            for(Map.Entry<String,String> entry : arguments.entrySet())
-                sj.add(URLEncoder.encode(entry.getKey(), "UTF-8") + "="
-                        + URLEncoder.encode(entry.getValue(), "UTF-8"));
+            for (Map.Entry<String, String> entry : arguments.entrySet())
+                sj.add(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8) + "="
+                        + URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
             return sj.toString().getBytes(StandardCharsets.UTF_8);
         }
     }
@@ -181,8 +187,24 @@ public class Cliente {
         @Override
         public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties, byte[] body)
                 throws IOException {
-            String message = new String(body, "UTF-8");
+            String message = new String(body, StandardCharsets.UTF_8);
             System.out.println("valor rechazado: " + message);
+            String tipo = message.split("/")[0];
+            message = message.replace("$", "");
+            message = message.substring(message.indexOf("/"));
+            switch (tipo){
+                case "utilizar":
+                    System.out.println("La estacion seleccionada no tiene el tipo de bici solicitado");
+                    break;
+                case "evento":
+                    System.out.println("Reenvio: "+message);
+                    channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_EVENTO, null, message.getBytes(StandardCharsets.UTF_8));
+                    break;
+                case "estacionar":
+                    System.out.println("Reenvio: "+message);
+                    channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_ESTACIONAR, null, message.getBytes(StandardCharsets.UTF_8));
+                    break;
+            }
         }
     }
 

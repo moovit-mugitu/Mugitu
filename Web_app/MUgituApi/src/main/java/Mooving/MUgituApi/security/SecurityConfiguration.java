@@ -28,7 +28,7 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     public final static int ENCRYPT_STRENGTH = 10;
-    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada"};
+    private final static String[] ADMIN_GET_MATCHERS = {"/user/all/**", "/bici/parada", "/bici/ocupada", "/bici/generar"};
     private final static String[] ADMIN_DELETE_MATCHERS = {"/bici/delete/*", "/estacionar/delete/*", "/estacion/delete/*",
             "/evento/delete/*", "/notificacion/delete/*", "/tipoAveria/delete/*", "/tipoUsuario/delete/*",
             "/user/delete/**"};

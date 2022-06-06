@@ -14,6 +14,7 @@ public interface EstacionarRepository extends JpaRepository<Estacionar, Long> {
     List<Estacionar> getEstacionarByBici(Bici bici);
     List<Estacionar> getEstacionarByEstacion(Estacion estacion);
     List<Estacionar> getEstacionarByFechaFinIsNull();
+    List<Estacionar> getEstacionarByFechaFinIsNotNull();
     List<Estacionar> getEstacionarByFechaFinIsNullAndEstacion(Estacion estacion);
     Estacionar getEstacionarByBiciBiciIdAndFechaFinIsNull(long id);
 }
