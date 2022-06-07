@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Random;
 
-public class SimularMovimiento extends Thread {
+public class SimularMovimiento implements Runnable {
     private final long biciId;
     private final long estacionIni;
     private final long userId;
@@ -56,7 +56,7 @@ public class SimularMovimiento extends Thread {
                         biciId + "/" + estado + "/" + latitud + ((dollar)?"$":"") + "/" + longitud).getBytes(StandardCharsets.UTF_8));
                 latitud += latIncrement;
                 longitud += lonIncrement;
-                Thread.sleep(500);
+                Thread.sleep(1000);
             }
             channel.basicPublish(Cliente.EXCHANGE_NAME, Cliente.ROUTING_KEY_ESTACIONAR, null, (biciId+"/"+estacionFin+"/"+userId).getBytes(StandardCharsets.UTF_8));
             System.out.println("Estacionar bici "+biciId+"; Termina utilizacion");
