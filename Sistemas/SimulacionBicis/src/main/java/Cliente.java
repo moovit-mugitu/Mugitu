@@ -28,7 +28,7 @@ public class Cliente {
     public final static String ROUTING_KEY_ESTACIONAR = "estacionarId";
 
     public final static int NUM_BICIS_CREAR = 5;
-    public static int NUM_BICIS_CREADAS;
+    public static int NUM_BICIS_CREADAS = 0;
 
     ConnectionFactory factory;
     Random generador;
@@ -57,7 +57,7 @@ public class Cliente {
             Consumer consumerBiciId = new BiciConsumer(channel);
             channel.basicConsume(BICI_QUEUE, true, consumerBiciId);
 
-            Publisher publisher = new Publisher();
+            Publisher publisher = new Publisher(this);
             publisher.start();
 
             synchronized (this) {
@@ -75,6 +75,13 @@ public class Cliente {
     }
 
     public static class Publisher extends Thread {
+
+        Cliente cliente;
+
+        public Publisher(Cliente cliente) {
+            this.cliente = cliente;
+        }
+
         @Override
         public void run() {
             String linea;
@@ -82,7 +89,7 @@ public class Cliente {
             boolean electrica;
             Random generador = new Random();
             try {
-                for (NUM_BICIS_CREADAS = 0; NUM_BICIS_CREADAS < NUM_BICIS_CREAR; NUM_BICIS_CREADAS++) {
+                for (int i = 0; i < NUM_BICIS_CREAR; i++) {
                     id = generador.nextInt(264) + 1;
                     electrica = generador.nextBoolean();
                     linea = id + "/" + electrica;
@@ -94,7 +101,18 @@ public class Cliente {
             } catch (IOException | InterruptedException e) {
                 System.out.println("hilo interrumpido");
             }
-            System.out.println("Acaba hilo publisher");
+            //CUANDO SE HAYAN CREADO TODOS ESPERAR A QUE ACABEN HILOS
+            while(NUM_BICIS_CREADAS < NUM_BICIS_CREAR){
+                Thread.yield();
+            }
+            executor.shutdown();
+            try {
+                boolean terminado = executor.awaitTermination(200, TimeUnit.SECONDS);
+                System.out.println((terminado)?"Hilos Simuladores acabados":"Superado el tiempo maximo para simular");
+                cliente.stop();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -122,19 +140,12 @@ public class Cliente {
                 if (token != null) {
                     boolean creada = crearRequest(biciId, userId, token);
                     if (creada) {
-                        //AÑADIR A EXECUTOR Y SI ES EL ULTIMO ESPERAR
+                        //AÑADIR A EXECUTOR
                         executor.execute(new SimularMovimiento(biciId, estacionId, userId, channel));
-                        if (NUM_BICIS_CREADAS+1 == NUM_BICIS_CREAR) {
-                            executor.shutdown();
-                            try {
-                                executor.awaitTermination(200, TimeUnit.SECONDS);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
                 }
             }
+            NUM_BICIS_CREADAS++;    //SE HA RECIBIDO EL MENSAJE DE VUELTA
         }
 
         private boolean crearRequest(long biciId, long userId, String token) {
@@ -228,6 +239,7 @@ public class Cliente {
             switch (messages.length) {
                 case 2:
                     System.out.println("La estacion seleccionada no tiene el tipo de bici solicitado" + "\n");
+                    NUM_BICIS_CREADAS++;    //NO SE HA CREADO PERO SE HA RECIBIDO EL MENSAJE DE VUELTA
                     break;
                 case 4:
                     System.out.println("Reenvio: " + message + "\n");
@@ -239,6 +251,10 @@ public class Cliente {
                     break;
             }
         }
+    }
+
+    public synchronized void stop() {
+        this.notify();
     }
 
     public static void main(String[] args) {
