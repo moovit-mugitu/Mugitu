@@ -11,6 +11,12 @@
 <a th:href="@{/bici/libre}" class="btn btn-primary d-inline" th:text="#{bikeView.libre}"/>
 <a th:href="@{/bici/parada}" class="btn btn-primary d-inline" th:text="#{bikeView.parada}"/>
 <a th:href="@{/bici/ocupada}" class="btn btn-primary d-inline" th:text="#{bikeView.ocupada}"/>
+<form th:action="@{/bici/estacion}" method="get" class="d-inline">
+    <label th:text="#{stationView.id}" class="d-inline"></label>
+    <input class="form-control d-inline w-auto" type="number" name="estacionId" required/>
+    <button type="submit" class="btn btn-primary d-inline " th:text="#{form.find}"></button>
+</form>
+
 <br><br>
 <div class="d-flex flex-row">
     <form th:action="@{/utilizar/create}" method="post">

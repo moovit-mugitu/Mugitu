@@ -108,6 +108,15 @@ public class BiciController {
         return "biciMenu";
     }
 
+    @GetMapping(path = "/estacion")
+    public String getBicisByEstacion(Model model, @RequestParam("estacionId") long estacionId) {
+            ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
+                "/bici/estacion/"+estacionId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        model.addAttribute("bicis", bicis);
+        return "biciMenu";
+    }
+
     ///  POST  ///
 
     @PostMapping(path = "/edit/{id}")

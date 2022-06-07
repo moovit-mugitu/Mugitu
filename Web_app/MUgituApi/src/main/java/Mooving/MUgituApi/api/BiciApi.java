@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -137,6 +138,19 @@ public class BiciApi {
             utilizacionDao.addUtilizacion(u);
             System.out.println(u);
         }*/
+    }
+
+    @GetMapping(path = "/estacion/{estacionId}")
+    public ResponseEntity<List<Bici>> getBicisPorEstacion(@PathVariable("estacionId") long estacionId){
+        List<Estacionar> estacionars;
+        List<Bici> bicis;
+        try {
+            estacionars = estacionarDao.getEstacionarSinFechaFinByEstacion(estacionId);
+            bicis = estacionars.stream().map(Estacionar::getBici).collect(Collectors.toList());
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(bicis);
     }
 
     ///  PUT METHODS  ///
