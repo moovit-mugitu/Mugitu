@@ -67,7 +67,6 @@ public class Cliente {
                     e.printStackTrace();
                 }
             }
-            publisher.interrupt();
             channel.close();
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
