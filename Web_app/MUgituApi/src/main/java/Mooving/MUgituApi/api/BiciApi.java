@@ -15,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -76,23 +73,22 @@ public class BiciApi {
     @GetMapping(path = "/libre")
     public ResponseEntity<List<Bici>> getBiciLibres() {
         List<Estacionar> estacionarList = estacionarDao.getEstacionarSinFechaFin();
-        List<Bici> bicis = estacionarList.stream().map(Estacionar::getBici).collect(Collectors.toList());
-        return ResponseEntity.ok(bicis);
+        Set<Bici> bicis = estacionarList.stream().map(Estacionar::getBici).collect(Collectors.toSet());
+        return ResponseEntity.ok(new ArrayList<>(bicis));
     }
 
     @GetMapping(path = "/parada")
     public ResponseEntity<List<Bici>> getBiciParadas() {
         List<Evento> eventos = eventoDao.getUltimosEventosByEstado(false);
-        List<Bici> bicis = eventos.stream().map(Evento::getBici).collect(Collectors.toList());
-
-        return ResponseEntity.ok(bicis);
+        Set<Bici> bicis = eventos.stream().map(Evento::getBici).collect(Collectors.toSet());
+        return ResponseEntity.ok(new ArrayList<>(bicis));
     }
 
     @GetMapping(path = "/ocupada")
     public ResponseEntity<List<Bici>> getBiciOcupadas() {
         List<Utilizacion> utilizaciones = utilizacionDao.getUtilizacionSinFin();
-        List<Bici> bicis = utilizaciones.stream().map(Utilizacion::getBici).collect(Collectors.toList());
-        return ResponseEntity.ok(bicis);
+        Set<Bici> bicis = utilizaciones.stream().map(Utilizacion::getBici).collect(Collectors.toSet());
+        return ResponseEntity.ok(new ArrayList<>(bicis));
     }
 
     @GetMapping(path = "/random/estacion/{id}/{electrica}")
