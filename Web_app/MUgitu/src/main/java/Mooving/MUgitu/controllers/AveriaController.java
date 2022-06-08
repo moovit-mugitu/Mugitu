@@ -124,4 +124,13 @@ public class AveriaController {
                 "/averia/create", HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
         return response.getBody();
     }
+
+    @PostMapping(path = "/delete/{id}")
+    @ResponseBody
+    public String deleteAveria(@PathVariable("id") long id) {
+        ResponseEntity<Void> response = RestRequests.RestRequestWithHeaders(
+                "/averia/delete/"+id, HttpMethod.DELETE, RestRequests.getToken(RestRequests.ACCESSTOKEN), Void.class);
+
+        return "deleted";
+    }
 }

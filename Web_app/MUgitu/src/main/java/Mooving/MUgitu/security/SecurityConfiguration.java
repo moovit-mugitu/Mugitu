@@ -40,8 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/utilizar/user", "/user/profile", "/estacion/prediccion/**", "/notificacion/user/**", "/notificacion"};
     private final static String[] USER_POST_MATCHERS = {"/utilizar/create", "/estacionar/create", "/notificacion/create/**"};
 
-    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/utilizar/all", "/utilizar/user/id/**"};
-    private final static String[] WORKER_POST_MATCHERS = {"/averia/**", "/notificacion/worker/**"};
+    private final static String[] WORKER_GET_MATCHERS = {"/notificacion/edit/*","/averia/**", "/notificacion/worker/**", "/utilizar/all", "/utilizar/user/id/**"};
+    private final static String[] WORKER_POST_MATCHERS = {"/notificacion/edit/*", "/notificacion/delete/**","/averia/**", "/notificacion/worker/**"};
 
     private final static String[] EVERYONE_GET_MATCHERS = {"/error", "/css/**", "/images/**", "/js/**",
             "/", "/index", "/home", "/login", "/user/register", "/ia/**", "/estacion/**"};
@@ -80,10 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 //Logout control
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                //Enable all types POST, PUT...
-                .and()
-                .cors().and().csrf().disable();
+                .logoutSuccessUrl("/login?logout");
     }
 
     @Bean
