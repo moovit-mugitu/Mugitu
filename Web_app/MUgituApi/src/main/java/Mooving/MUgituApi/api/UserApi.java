@@ -79,6 +79,7 @@ public class UserApi {
     @PostMapping(path = "/register")
     public ResponseEntity<String> createNewUser(@RequestBody Usuario usuario) {
         String error = checkUserDuplicated(usuario);
+        usuario.setTipo_usuario(tipoUsuarioDao.getTipoUsuario(2));
 
         BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder(SecurityConfiguration.ENCRYPT_STRENGTH);
         usuario.setPassword(encrypt.encode(usuario.getPassword()));

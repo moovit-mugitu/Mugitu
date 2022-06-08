@@ -35,11 +35,11 @@
 
     <tbody>
     <tr th:each="averia: ${averias}">
-        <th scope="row" th:text="${averia.averiaId}"/>
-        <td th:text="${averia.bici.biciId}"/>
-        <td th:text="${averia.fechaInicio}"/>
-        <td th:text="${averia.fechaFin}"/>
-        <td th:switch="${averia.tipoAveria.id}">
+        <th scope="row" th:text="${averia?.averiaId}"/>
+        <td th:text="${averia?.bici?.biciId}"/>
+        <td th:text="${averia?.fechaInicio}"/>
+        <td th:text="${averia?.fechaFin}"/>
+        <td th:switch="${averia?.tipoAveria?.id}">
             <label th:case="1" th:text="#{averia.leve}"></label>
             <label th:case="2" th:text="#{averia.moderada}"></label>
             <label th:case="3" th:text="#{averia.grave}"></label>

@@ -46,7 +46,6 @@ public class AveriaController {
     public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia, WebRequest request) throws ParseException {
         int tipoAveriaId = Integer.parseInt(request.getParameter("tipoAveriaId"));
         int biciId = Integer.parseInt(request.getParameter("biciId"));
-        String fechaFin = request.getParameter("fechaFin");
 
         ResponseEntity<TipoAveria> response1 = RestRequests.RestRequestWithHeaders(
                 "/tipoAveria/id/"+tipoAveriaId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), TipoAveria.class);
@@ -56,7 +55,6 @@ public class AveriaController {
         averia.setAveriaId(id);
         averia.setTipoAveria(response1.getBody());
         averia.setBici(response2.getBody());
-        if(fechaFin != null && !fechaFin.equals("")) averia.setFechaFin(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm"). parse(fechaFin));
         ResponseEntity<Averia> response3 = RestRequests.RestRequestWithHeaders(
                 "/averia/edit/"+id, HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
         return response3.getBody();
@@ -110,7 +108,18 @@ public class AveriaController {
 
     @PostMapping(path = "/create")
     @ResponseBody
-    public Averia createAveria(Model model, @ModelAttribute Averia averia) {
+    public Averia createAveria(WebRequest request, @ModelAttribute Averia averia) {
+        int tipoAveriaId = Integer.parseInt(request.getParameter("tipoAveriaId"));
+        int biciId = Integer.parseInt(request.getParameter("biciId"));
+
+        ResponseEntity<TipoAveria> response1 = RestRequests.RestRequestWithHeaders(
+                "/tipoAveria/id/"+tipoAveriaId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), TipoAveria.class);
+        ResponseEntity<Bici> response2 = RestRequests.RestRequestWithHeaders(
+                "/bici/id/"+biciId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
+
+        averia.setTipoAveria(response1.getBody());
+        averia.setBici(response2.getBody());
+
         ResponseEntity<Averia> response = RestRequests.RestRequestWithHeaders(
                 "/averia/create", HttpMethod.PUT, averia, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
         return response.getBody();
