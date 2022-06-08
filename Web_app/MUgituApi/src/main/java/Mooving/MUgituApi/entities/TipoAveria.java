@@ -1,14 +1,15 @@
 package Mooving.MUgituApi.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tipo_averia")
 public class TipoAveria {
     @Id
+    @GenericGenerator(name="tipoAveria" , strategy="increment")
+    @GeneratedValue(generator="tipoAveria")
     @Column(name = "tipo_averia_id", nullable = false)
     private Integer id;
 

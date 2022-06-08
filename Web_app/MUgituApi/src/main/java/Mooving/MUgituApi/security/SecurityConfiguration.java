@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] ADMIN_PUT_MATCHERS = {"/bici/edit/**", "/estacion/edit/**",
             "/estacionar/edit/**", "/tipoAveria/edit/**", "/estacion/create/**", "/user/**"};
 
-    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/notificacion/worker/**", "/notificacion/id/**", "/utilizar/all", "/utilizar/user/id/**"};
+    private final static String[] WORKER_GET_MATCHERS = {"/averia/**", "/averia/tipo/**", "/notificacion/worker/**", "/notificacion/id/**", "/utilizar/all", "/utilizar/user/id/**"};
     private final static String[] WORKER_DELETE_MATCHERS = {"/averia/delete/*", "/utilizar/delete/*", "/notificacion/delete/*"};
     private static final String[] WORKER_PUT_MATCHERS = {"/averia/**", "/notificacion/edit/**"};
 
@@ -43,12 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/estacionar/**", "/api/biciEstacion", "/utilizar/user", "/ia/**","/notificacion/user/**", "/notificacion/id/**"};
     private final static String[] USER_PUT_MATCHERS = {"/notificacion/create", "/utilizar/create/**", "/estacionar/create/**"};
 
-
     private final static String[] EVERYONE_GET_MATCHERS = {"/token/refresh", "/tipoAveria/**", "/rabbitmq/**", "/estacion/**"};
     private final static String[] EVERYONE_POST_MATCHERS = {"/login", "/user/register", "/rabbitmq/**"};
-
-
-
 
     @Autowired
     UserDetailsService userDetailsService;

@@ -48,7 +48,7 @@ public class AveriaDataAccessService implements AveriaDao {
 
     @Override
     public List<Averia> getAveriaByTipo(Integer tipo) {
-        TipoAveria tipoAveria = repositoryTipo.getById(tipo);
+        TipoAveria tipoAveria = repositoryTipo.findById(tipo).orElse(null);
         return repository.getAveriasByTipoAveria(tipoAveria);
     }
 
