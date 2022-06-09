@@ -21,7 +21,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Component
-public class RabbitMQConsumerProducer {
+public class RabbitMQClient {
 
     private final AmqpTemplate rabbitTemplate;
     private final EstacionarDao estacionarDao;
@@ -30,7 +30,7 @@ public class RabbitMQConsumerProducer {
     private final EventoDao eventoDao;
     private final UtilizacionDao utilizacionDao;
 
-    public RabbitMQConsumerProducer(AmqpTemplate rabbitTemplate, EstacionarDao estacionarDao, EstacionDao estacionDao, BiciDao biciDao, EventoDao eventoDao, UtilizacionDao utilizacionDao) {
+    public RabbitMQClient(AmqpTemplate rabbitTemplate, EstacionarDao estacionarDao, EstacionDao estacionDao, BiciDao biciDao, EventoDao eventoDao, UtilizacionDao utilizacionDao) {
         this.rabbitTemplate = rabbitTemplate;
         this.estacionarDao = estacionarDao;
         this.estacionDao = estacionDao;

@@ -91,7 +91,7 @@ public class Cliente {
         return sj.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    public void enviarMensaje() {
+    public void iniciar() {
         try (Connection connection = factory.newConnection()) {
 
             channel = connection.createChannel();
@@ -198,7 +198,7 @@ public class Cliente {
             cliente.stop();
         });
         hiloEspera.start();
-        cliente.enviarMensaje();
+        cliente.iniciar();
         teclado.close();
     }
 }
