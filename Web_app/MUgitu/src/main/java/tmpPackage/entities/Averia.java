@@ -1,4 +1,4 @@
-package mooving.mugitu.entities;
+package tmpPackage.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,21 +7,21 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name= "utilizacion")
-public class Utilizacion {
+@Table(name= "averia")
+public class Averia {
     @Id
-    @GenericGenerator(name="utiliza" , strategy="increment")
-    @GeneratedValue(generator="utiliza")
-    @Column(name = "utiliza_id", nullable = false)
-    private Long utilizaId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Usuario user;
+    @GenericGenerator(name="averia" , strategy="increment")
+    @GeneratedValue(generator="averia")
+    @Column(name = "averia_id", nullable = false)
+    private Long averiaId;
 
     @ManyToOne
     @JoinColumn(name = "bici_id")
     private Bici bici;
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_averia")
+    private TipoAveria tipoAveria;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "fecha_inicio")
@@ -31,33 +31,22 @@ public class Utilizacion {
     @Column(name = "fecha_fin")
     private Date fechaFin;
 
-    public Utilizacion(){
-        this.fechaInicio = new Date();
-        this.fechaFin = null;
-    }
+    public Averia(){}
 
-    public Utilizacion(Long utilizaId, Usuario user, Bici bici, Date fechaInicio, Date fechaFin) {
-        this.utilizaId = utilizaId;
-        this.user = user;
+    public Averia(Long averiaId, Bici bici, TipoAveria tipoAveria, Date fechaInicio, Date fechaFin) {
+        this.averiaId = averiaId;
         this.bici = bici;
+        this.tipoAveria = tipoAveria;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
 
-    public Long getUtilizaId() {
-        return utilizaId;
+    public Long getAveriaId() {
+        return averiaId;
     }
 
-    public void setUtilizaId(Long utilizaId) {
-        this.utilizaId = utilizaId;
-    }
-
-    public Usuario getUser() {
-        return user;
-    }
-
-    public void setUser(Usuario user) {
-        this.user = user;
+    public void setAveriaId(Long averiaId) {
+        this.averiaId = averiaId;
     }
 
     public Bici getBici() {
@@ -66,6 +55,14 @@ public class Utilizacion {
 
     public void setBici(Bici bici) {
         this.bici = bici;
+    }
+
+    public TipoAveria getTipoAveria() {
+        return tipoAveria;
+    }
+
+    public void setTipoAveria(TipoAveria tipoAveria) {
+        this.tipoAveria = tipoAveria;
     }
 
     public Date getFechaInicio() {

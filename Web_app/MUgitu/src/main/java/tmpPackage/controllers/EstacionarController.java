@@ -1,6 +1,6 @@
-package mooving.mugitu.controllers;
+package tmpPackage.controllers;
 
-import mooving.mugitu.entities.Estacionar;
+import tmpPackage.entities.Estacionar;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

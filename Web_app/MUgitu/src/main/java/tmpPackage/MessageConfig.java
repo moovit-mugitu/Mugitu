@@ -1,4 +1,4 @@
-package mooving.mugitu;
+package tmpPackage;
 
 import java.util.Locale;
 

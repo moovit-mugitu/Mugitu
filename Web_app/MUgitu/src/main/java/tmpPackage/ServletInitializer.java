@@ -1,4 +1,4 @@
-package mooving.mugitu;
+package tmpPackage;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

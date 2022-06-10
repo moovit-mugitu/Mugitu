@@ -1,4 +1,4 @@
-package mooving.mugitu.controllers;
+package tmpPackage.controllers;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;

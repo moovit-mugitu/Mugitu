@@ -1,4 +1,4 @@
-package mooving.mugitu.entities;
+package tmpPackage.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,17 +7,17 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "estacionar")
-public class Estacionar {
+@Table(name= "utilizacion")
+public class Utilizacion {
     @Id
-    @GenericGenerator(name="estacionar" , strategy="increment")
-    @GeneratedValue(generator="estacionar")
-    @Column(name = "estacionar_id", nullable = false)
-    private Long estacionarId;
+    @GenericGenerator(name="utiliza" , strategy="increment")
+    @GeneratedValue(generator="utiliza")
+    @Column(name = "utiliza_id", nullable = false)
+    private Long utilizaId;
 
     @ManyToOne
-    @JoinColumn(name = "estacion_id")
-    private Estacion estacion;
+    @JoinColumn(name = "user_id")
+    private Usuario user;
 
     @ManyToOne
     @JoinColumn(name = "bici_id")
@@ -31,31 +31,33 @@ public class Estacionar {
     @Column(name = "fecha_fin")
     private Date fechaFin;
 
-    public Estacionar() {
+    public Utilizacion(){
+        this.fechaInicio = new Date();
+        this.fechaFin = null;
     }
 
-    public Estacionar(Long estacionarId, Estacion estacion, Bici bici, Date fechaInicio, Date fechaFin) {
-        this.estacionarId = estacionarId;
-        this.estacion = estacion;
+    public Utilizacion(Long utilizaId, Usuario user, Bici bici, Date fechaInicio, Date fechaFin) {
+        this.utilizaId = utilizaId;
+        this.user = user;
         this.bici = bici;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
 
-    public Long getEstacionarId() {
-        return estacionarId;
+    public Long getUtilizaId() {
+        return utilizaId;
     }
 
-    public void setEstacionarId(Long estacionarId) {
-        this.estacionarId = estacionarId;
+    public void setUtilizaId(Long utilizaId) {
+        this.utilizaId = utilizaId;
     }
 
-    public Estacion getEstacion() {
-        return estacion;
+    public Usuario getUser() {
+        return user;
     }
 
-    public void setEstacion(Estacion estacion) {
-        this.estacion = estacion;
+    public void setUser(Usuario user) {
+        this.user = user;
     }
 
     public Bici getBici() {

@@ -1,6 +1,6 @@
-package mooving.mugitu.security;
+package tmpPackage.security;
 
-import mooving.mugitu.entities.Usuario;
+import tmpPackage.entities.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
