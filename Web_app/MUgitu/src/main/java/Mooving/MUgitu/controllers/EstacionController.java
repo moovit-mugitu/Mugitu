@@ -27,7 +27,7 @@ public class EstacionController {
     public String editEstacion(@PathVariable("id") long id, Model model) {
         ResponseEntity<Estacion> estacion = RestRequests.RestRequestWithHeaders("/estacion/id/" + id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacion.class);
-        if (estacion.getBody() != null && estacion.getBody().getId() == id) {
+        if (Objects.requireNonNull(estacion.getBody()).getId() == id) {
             model.addAttribute("estacion", estacion.getBody());
             model.addAttribute("url", "/edit/" + id);
             return "editEstacion";

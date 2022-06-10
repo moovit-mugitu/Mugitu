@@ -6,6 +6,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -88,12 +89,14 @@ public class RestRequests {
         }
         catch (HttpClientErrorException e){
             String responseString = RestRequests.manageException(e);
-            if(responseString.equals("login")){
+            if(Objects.equals(responseString, "login")){
                 throw new ResponseStatusException(
                         HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, "Login needed, refresh token expired", e);
             }else{
                 response = RestRequestWithHeaders(requestUrl,method,responseString,returnClass);
             }
+        }catch (RestClientException e){
+            e.printStackTrace();
         }
         return response;
     }
@@ -117,7 +120,7 @@ public class RestRequests {
                 return accessToken;
             }
         }
-        else if(e.getMessage().startsWith("403 : \"{\"error_message\":\"Refresh token expired:")){
+        else if(Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Refresh token expired:")){
             return "login";
         }
         else{

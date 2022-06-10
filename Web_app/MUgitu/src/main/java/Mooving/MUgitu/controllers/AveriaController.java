@@ -26,7 +26,7 @@ public class AveriaController {
     public String editAveria(@PathVariable("id") long id, Model model) {
         ResponseEntity<Averia> averia = RestRequests.RestRequestWithHeaders("/averia/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia.class);
-        if(averia.getBody() != null && averia.getBody().getAveriaId() == id){
+        if(Objects.requireNonNull(averia.getBody()).getAveriaId() == id){
             model.addAttribute("averia", averia.getBody());
             model.addAttribute("url", "/edit/"+id);
             return "editAveria";
