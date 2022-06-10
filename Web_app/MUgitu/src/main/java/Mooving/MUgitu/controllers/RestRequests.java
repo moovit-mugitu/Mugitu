@@ -25,16 +25,18 @@ public class RestRequests {
     public final static String ACCESSTOKEN = "accessToken";
     public final static String REFRESHTOKEN = "refreshToken";
 
-    public static HttpSession getSession(){
+    public static HttpSession getSession() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest().getSession(true);
     }
-    public static String getToken(String tokenId){
+
+    public static String getToken(String tokenId) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         return (String) session.getAttribute(tokenId);
     }
-    public static HttpServletRequest getRequest(){
+
+    public static HttpServletRequest getRequest() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest();
     }
@@ -42,39 +44,39 @@ public class RestRequests {
     public static <T> ResponseEntity<T> RESTgetRequestResponseEntity(String requestUrl, Class<T> returnClass) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String url = BASE_PATH+requestUrl;
+        String url = BASE_PATH + requestUrl;
         ResponseEntity<T> responseEntity = restTemplate.getForEntity(url, returnClass);
-        return  responseEntity;
+        return responseEntity;
     }
 
     //Headers and send something PROBABLY POST
-    public static <T, G> ResponseEntity<T> RestRequestWithHeaders(String requestUrl, HttpMethod method, G sendEntity, String token, Class<T> returnClass){
+    public static <T, G> ResponseEntity<T> RestRequestWithHeaders(String requestUrl, HttpMethod method, G sendEntity, String token, Class<T> returnClass) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(AUTHORIZATION, TokenPrefix + token);
 
-        String url = BASE_PATH+requestUrl;
-        HttpEntity<G> requestEntity = new HttpEntity<>(sendEntity,headers);
+        String url = BASE_PATH + requestUrl;
+        HttpEntity<G> requestEntity = new HttpEntity<>(sendEntity, headers);
         ResponseEntity<T> response = null;
         try {
             response = restTemplate.exchange(
                     url, method, requestEntity, returnClass);
-        }
-        catch (HttpClientErrorException e){
+        } catch (HttpClientErrorException e) {
             String responseString = RestRequests.manageException(e);
-            if(Objects.equals(responseString, "login")){
+            if (Objects.equals(responseString, "login")) {
                 throw new ResponseStatusException(
                         HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, "Login needed, refresh token expired", e);
-            }else{
-                response = RestRequestWithHeaders(requestUrl,method,responseString,returnClass);
+            } else {
+                response = RestRequestWithHeaders(requestUrl, method, responseString, returnClass);
             }
-        }catch (RestClientException e){
+        } catch (RestClientException e) {
             e.printStackTrace();
         }
 
         return response;
     }
+
     //Headers and send nothing PROBABLY GET
     public static <T> ResponseEntity<T> RestRequestWithHeaders(String requestUrl, HttpMethod method, String token, Class<T> returnClass) {
         RestTemplate restTemplate = new RestTemplate();
@@ -82,64 +84,65 @@ public class RestRequests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(AUTHORIZATION, TokenPrefix + token);
 
-        String url = BASE_PATH+requestUrl;
+        String url = BASE_PATH + requestUrl;
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<T> response = null;
         try {
             response = restTemplate.exchange(
                     url, method, requestEntity, returnClass);
-        }
-        catch (HttpClientErrorException e){
+        } catch (HttpClientErrorException e) {
             String responseString = RestRequests.manageException(e);
-            if(Objects.equals(responseString, "login")){
+            if (Objects.equals(responseString, "login")) {
                 throw new ResponseStatusException(
                         HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, "Login needed, refresh token expired", e);
-            }else{
-                response = RestRequestWithHeaders(requestUrl,method,responseString,returnClass);
+            } else {
+                response = RestRequestWithHeaders(requestUrl, method, responseString, returnClass);
             }
-        }catch (RestClientException e){
+        } catch (RestClientException e) {
             e.printStackTrace();
         }
         return response;
     }
 
     private static String manageException(HttpClientErrorException e) {
-        if(Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Access token expired:")){
+        if (Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Access token expired:")) {
             ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
                     "/token/refresh", HttpMethod.GET, getToken(REFRESHTOKEN), String.class);
-
-            JSONObject jsonObj;
-            String accessToken ="", refreshToken = "";
-            try {
-                jsonObj = new JSONObject(Objects.requireNonNull(response.getBody()));
-                accessToken = jsonObj.get(RestRequests.ACCESSTOKEN).toString();
-                refreshToken = jsonObj.get(RestRequests.REFRESHTOKEN).toString();
-            } catch (JSONException eJson) {
-                e.printStackTrace();
+            if (response != null && response.getBody() != null) {
+                String newToken = response.getBody();
+                RestRequests.getSession().setAttribute(ACCESSTOKEN, newToken);
+                JSONObject jsonObj;
+                String accessToken = "", refreshToken = "";
+                try {
+                    jsonObj = new JSONObject(Objects.requireNonNull(response.getBody()));
+                    accessToken = jsonObj.get(RestRequests.ACCESSTOKEN).toString();
+                    refreshToken = jsonObj.get(RestRequests.REFRESHTOKEN).toString();
+                } catch (JSONException eJson) {
+                    e.printStackTrace();
+                }
+                if (refreshToken.equals(getToken(REFRESHTOKEN))) {
+                    getSession().setAttribute(ACCESSTOKEN, accessToken);
+                    return accessToken;
+                }
             }
-            if(refreshToken.equals(getToken(REFRESHTOKEN))){
-                getSession().setAttribute(ACCESSTOKEN, accessToken);
-                return accessToken;
-            }
-        }
-        else if(Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Refresh token expired:")){
+        } else if (Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Refresh token expired:")) {
             return "login";
-        }
-        else{
+        } else {
             throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
         }
         return null;
     }
 
-    public static <T, G> T RESTpostRequestForm(String requestUrl, MultiValueMap<String, G> map, Class<T> returnClass) {
+    public static <T, G> T
+    RESTpostRequestForm(String requestUrl, MultiValueMap<String, G> map, Class<T> returnClass) {
         HttpHeaders headers = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, G>> request = new HttpEntity<>(map, headers);
 
-        String url = BASE_PATH+requestUrl;
+        String url = BASE_PATH + requestUrl;
         ResponseEntity<T> responseEntity = restTemplate.postForEntity(url, request, returnClass);
-        return  responseEntity.getBody();
+        return responseEntity.getBody();
     }
 
     public static <T, G> G RESTpostRequest(String requestUrl, T objToSend, Class<G> returnClass) {
@@ -148,9 +151,9 @@ public class RestRequests {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<T> requestEntity = new HttpEntity<>(objToSend, headers);
 
-        String url = BASE_PATH+requestUrl;
+        String url = BASE_PATH + requestUrl;
         ResponseEntity<G> responseEntity = restTemplate.postForEntity(url, requestEntity, returnClass);
-        return  responseEntity.getBody();
+        return responseEntity.getBody();
     }
 
 }
