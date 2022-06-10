@@ -1,4 +1,4 @@
-package Mooving.MUgitu.security;
+package mooving.mugitu.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

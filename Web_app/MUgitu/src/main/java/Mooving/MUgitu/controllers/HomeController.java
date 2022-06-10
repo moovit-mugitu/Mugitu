@@ -1,4 +1,4 @@
-package Mooving.MUgitu.controllers;
+package mooving.mugitu.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

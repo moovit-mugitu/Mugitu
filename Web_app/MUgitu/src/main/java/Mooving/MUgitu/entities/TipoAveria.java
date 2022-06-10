@@ -1,4 +1,4 @@
-package Mooving.MUgitu.entities;
+package mooving.mugitu.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

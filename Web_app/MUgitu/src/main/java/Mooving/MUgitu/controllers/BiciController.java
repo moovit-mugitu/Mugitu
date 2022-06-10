@@ -1,6 +1,6 @@
-package Mooving.MUgitu.controllers;
+package mooving.mugitu.controllers;
 
-import Mooving.MUgitu.entities.Bici;
+import mooving.mugitu.entities.Bici;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

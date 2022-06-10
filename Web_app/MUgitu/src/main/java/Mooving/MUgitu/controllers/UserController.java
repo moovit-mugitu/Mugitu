@@ -1,7 +1,7 @@
-package Mooving.MUgitu.controllers;
+package mooving.mugitu.controllers;
 
-import Mooving.MUgitu.entities.Usuario;
-import Mooving.MUgitu.security.MyUserDetails;
+import mooving.mugitu.entities.Usuario;
+import mooving.mugitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

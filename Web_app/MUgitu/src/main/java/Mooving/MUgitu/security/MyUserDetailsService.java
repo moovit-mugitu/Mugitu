@@ -1,11 +1,10 @@
-package Mooving.MUgitu.security;
+package mooving.mugitu.security;
 
-import Mooving.MUgitu.controllers.RestRequests;
-import Mooving.MUgitu.entities.Usuario;
+import mooving.mugitu.controllers.RestRequests;
+import mooving.mugitu.entities.Usuario;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,6 @@ import org.springframework.util.MultiValueMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
 @Transactional

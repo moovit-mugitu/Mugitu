@@ -1,6 +1,5 @@
-package Mooving.MUgitu.controllers;
+package mooving.mugitu.controllers;
 
-import Mooving.MUgitu.entities.Usuario;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.http.*;

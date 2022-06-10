@@ -1,9 +1,9 @@
-package Mooving.MUgitu.controllers;
+package mooving.mugitu.controllers;
 
-import Mooving.MUgitu.entities.Bici;
-import Mooving.MUgitu.entities.NotificacionAveria;
-import Mooving.MUgitu.entities.TipoAveria;
-import Mooving.MUgitu.entities.Usuario;
+import mooving.mugitu.entities.Bici;
+import mooving.mugitu.entities.NotificacionAveria;
+import mooving.mugitu.entities.TipoAveria;
+import mooving.mugitu.entities.Usuario;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
