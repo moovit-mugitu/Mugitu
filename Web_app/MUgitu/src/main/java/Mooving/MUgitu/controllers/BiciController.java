@@ -1,10 +1,8 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Bici;
-import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ public class BiciController {
     public String editBici(@PathVariable("id") long id, Model model) {
         ResponseEntity<Bici> response = RestRequests.RestRequestWithHeaders("/bici/id/" + id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici.class);
-        Bici bici = response.getBody();
+        Bici bici = Objects.requireNonNull(response.getBody());
         bici.setBiciId(id);
         model.addAttribute("bici", bici);
         model.addAttribute("url", "/edit/"+id);
@@ -49,7 +47,7 @@ public class BiciController {
     public String getAllBicis(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("bicis", bicis);
         return "biciMenu";
     }
@@ -69,7 +67,7 @@ public class BiciController {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/model/" + model, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        return new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
     }
 
     @GetMapping(path = "/electrica/{electric}")
@@ -78,14 +76,14 @@ public class BiciController {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/electrica/" + electric, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        return new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
     }
 
     @GetMapping(path = "/libre")
     public String getBicisLibres(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/libre", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("bicis", bicis);
         return "biciMenu";
     }
@@ -94,7 +92,7 @@ public class BiciController {
     public String getBicisParada(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/parada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("bicis", bicis);
         return "biciMenu";
     }
@@ -103,7 +101,7 @@ public class BiciController {
     public String getBicisOcupada(Model model) {
         ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/ocupada", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("bicis", bicis);
         return "biciMenu";
     }
@@ -112,7 +110,7 @@ public class BiciController {
     public String getBicisByEstacion(Model model, @RequestParam("estacionId") long estacionId) {
             ResponseEntity<Bici[]> response = RestRequests.RestRequestWithHeaders(
                 "/bici/estacion/"+estacionId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Bici[].class);
-        List<Bici> bicis = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Bici> bicis = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("bicis", bicis);
         return "biciMenu";
     }

@@ -14,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.Objects;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class RestRequests {
@@ -97,7 +99,7 @@ public class RestRequests {
     }
 
     private static String manageException(HttpClientErrorException e) {
-        if(e.getMessage().startsWith("403 : \"{\"error_message\":\"Access token expired:")){
+        if(Objects.requireNonNull(e.getMessage()).startsWith("403 : \"{\"error_message\":\"Access token expired:")){
             ResponseEntity<String> response = RestRequests.RestRequestWithHeaders(
                     "/token/refresh", HttpMethod.GET, getToken(REFRESHTOKEN), String.class);
 

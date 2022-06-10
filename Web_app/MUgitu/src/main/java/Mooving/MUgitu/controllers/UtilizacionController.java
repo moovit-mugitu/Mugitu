@@ -1,10 +1,8 @@
 package Mooving.MUgitu.controllers;
 
 import Mooving.MUgitu.entities.Utilizacion;
-import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,18 +33,17 @@ public class UtilizacionController {
         ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("utilizaciones", utilizacions);
         return "utilizarView";
     }
 
     @GetMapping(path = "/all")
-    public String getAllUtilizaciones(Authentication authentication, Model model){
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+    public String getAllUtilizaciones(Model model){
         ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/all",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("utilizaciones", utilizacions);
         return "utilizarView";
     }
@@ -56,7 +53,7 @@ public class UtilizacionController {
         ResponseEntity<Utilizacion[]> response = RestRequests.RestRequestWithHeaders("/utilizar/user/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Utilizacion[].class);
 
-        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Utilizacion> utilizacions = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("utilizaciones", utilizacions);
         return "utilizarView";
     }

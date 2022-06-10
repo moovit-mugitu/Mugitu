@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/notificacion")
@@ -30,7 +31,7 @@ public class NotificacionController {
         ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/user/all",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN),NotificacionAveria[].class);
 
-        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("notificaciones", notificaciones);
         return "notificacionMenu";
     }
@@ -40,7 +41,7 @@ public class NotificacionController {
         ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/worker/all",
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN),NotificacionAveria[].class);
 
-        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("notificaciones", notificaciones);
         return "notificacionMenu";
     }
@@ -50,7 +51,7 @@ public class NotificacionController {
         ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/worker/nuevas/"+nueva,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), NotificacionAveria[].class);
 
-        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("notificaciones", notificaciones);
         return "notificacionMenu";
     }
@@ -60,7 +61,7 @@ public class NotificacionController {
         ResponseEntity<NotificacionAveria[]> response = RestRequests.RestRequestWithHeaders("/notificacion/worker/resuelta/"+resuelta,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), NotificacionAveria[].class);
 
-        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<NotificacionAveria> notificaciones = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("notificaciones", notificaciones);
         return "notificacionMenu";
     }
@@ -71,7 +72,7 @@ public class NotificacionController {
     public String getNotificacionesWorker(@PathVariable("id") long id) {
         ResponseEntity<NotificacionAveria> response = RestRequests.RestRequestWithHeaders("/notificacion/id/"+id,
                 HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN),NotificacionAveria.class);
-        NotificacionAveria notificacionAveria = response.getBody();
+        NotificacionAveria notificacionAveria = Objects.requireNonNull(response.getBody());
         notificacionAveria.setResuelta(true);
         ResponseEntity<Void> response2 = RestRequests.RestRequestWithHeaders("/notificacion/edit",
                 HttpMethod.PUT, notificacionAveria, RestRequests.getToken(RestRequests.ACCESSTOKEN),Void.class);

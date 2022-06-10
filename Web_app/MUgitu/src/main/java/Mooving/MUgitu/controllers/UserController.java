@@ -3,7 +3,6 @@ package Mooving.MUgitu.controllers;
 import Mooving.MUgitu.entities.Usuario;
 import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -52,7 +54,7 @@ public class UserController {
         ResponseEntity<Usuario[]> response = RestRequests.RestRequestWithHeaders(
                 "/user/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Usuario[].class);
 
-        List<Usuario> users = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Usuario> users = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("users", users);
         return "userView";
     }

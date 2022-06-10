@@ -3,20 +3,13 @@ package Mooving.MUgitu.controllers;
 import Mooving.MUgitu.entities.Averia;
 import Mooving.MUgitu.entities.Bici;
 import Mooving.MUgitu.entities.TipoAveria;
-import Mooving.MUgitu.entities.Utilizacion;
-import Mooving.MUgitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -43,9 +36,9 @@ public class AveriaController {
 
     @PostMapping(path = "/edit/{id}")
     @ResponseBody
-    public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia, WebRequest request) throws ParseException {
-        int tipoAveriaId = Integer.parseInt(request.getParameter("tipoAveriaId"));
-        int biciId = Integer.parseInt(request.getParameter("biciId"));
+    public Averia editAveria(@PathVariable("id") long id, @ModelAttribute Averia averia, WebRequest request){
+        int tipoAveriaId = Integer.parseInt(Objects.requireNonNull(request.getParameter("tipoAveriaId")));
+        int biciId = Integer.parseInt(Objects.requireNonNull(request.getParameter("biciId")));
 
         ResponseEntity<TipoAveria> response1 = RestRequests.RestRequestWithHeaders(
                 "/tipoAveria/id/"+tipoAveriaId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), TipoAveria.class);
@@ -65,7 +58,7 @@ public class AveriaController {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
-        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Averia> averias = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("averias", averias);
         return "averiaMenu";
     }
@@ -75,7 +68,7 @@ public class AveriaController {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/activas", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
-        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Averia> averias = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("averias", averias);
         return "averiaMenu";
     }
@@ -94,7 +87,7 @@ public class AveriaController {
         ResponseEntity<Averia[]> response = RestRequests.RestRequestWithHeaders(
                 "/averia/tipo/"+tipo, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Averia[].class);
 
-        List<Averia> averias = new ArrayList<>(Arrays.asList(response.getBody()));
+        List<Averia> averias = new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
         model.addAttribute("averias", averias);
         return "averiaMenu";
     }
@@ -109,8 +102,8 @@ public class AveriaController {
     @PostMapping(path = "/create")
     @ResponseBody
     public Averia createAveria(WebRequest request, @ModelAttribute Averia averia) {
-        int tipoAveriaId = Integer.parseInt(request.getParameter("tipoAveriaId"));
-        int biciId = Integer.parseInt(request.getParameter("biciId"));
+        int tipoAveriaId = Integer.parseInt(Objects.requireNonNull(request.getParameter("tipoAveriaId")));
+        int biciId = Integer.parseInt(Objects.requireNonNull(request.getParameter("biciId")));
 
         ResponseEntity<TipoAveria> response1 = RestRequests.RestRequestWithHeaders(
                 "/tipoAveria/id/"+tipoAveriaId, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), TipoAveria.class);

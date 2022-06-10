@@ -22,7 +22,7 @@ public class EstacionarController {
         ResponseEntity<Estacionar[]> response = RestRequests.RestRequestWithHeaders(
                 "/estacionar/all", HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        return new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
     }
 
     @GetMapping(path = "/id/{id}")
@@ -40,7 +40,7 @@ public class EstacionarController {
         ResponseEntity<Estacionar[]> response = RestRequests.RestRequestWithHeaders(
                 "/estacionar/estacion/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        return new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
     }
 
     @GetMapping(path = "/bici/{id}")
@@ -49,7 +49,7 @@ public class EstacionarController {
         ResponseEntity<Estacionar[]> response = RestRequests.RestRequestWithHeaders(
                 "/estacionar/bici/"+id, HttpMethod.GET, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar[].class);
 
-        return new ArrayList<>(Arrays.asList(response.getBody()));
+        return new ArrayList<>(Arrays.asList(Objects.requireNonNull(response.getBody())));
     }
 
     ///  POST  ///
