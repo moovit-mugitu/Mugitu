@@ -68,7 +68,7 @@ public class SimularMovimiento implements Runnable {
     private JSONObject getEstacion(long estacionId) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("http://localhost:8000/MUgitu/REST/api/estacion/id/" + estacionId))
+                        URI.create("https://mugitu.eus/MUgitu/REST/api/estacion/id/" + estacionId))
                 .header("accept", "application/json")
                 .GET()
                 .build();

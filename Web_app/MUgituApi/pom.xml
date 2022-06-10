@@ -61,11 +61,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>Mooving</groupId>
-            <artifactId>MUgituApi</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
 		<dependency>
 			<groupId>com.auth0</groupId>

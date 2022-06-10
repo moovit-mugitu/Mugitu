@@ -27,7 +27,7 @@ public class Cliente {
 
     public Cliente() {
         factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost("ci.mugitu.eus");
         factory.setUsername("guest");
         factory.setPassword("guest");
         //puerto 5672 o 5673 para TLS
@@ -40,7 +40,7 @@ public class Cliente {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("http://localhost:8000/MUgitu/REST/api/ia/biciEstacion"))
+                        URI.create("https://mugitu.eus/MUgitu/REST/api/ia/biciEstacion"))
                 .header("accept", "application/json")
                 .header("Authorization", "Bearer " + token)
                 .GET()
@@ -59,7 +59,7 @@ public class Cliente {
     private String loggearseConUser() throws UnsupportedEncodingException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(
-                        URI.create("http://localhost:8000/MUgitu/REST/api/login"))
+                        URI.create("https://mugitu.eus/MUgitu/REST/api/login"))
                 .header("accept", "application/json")
                 .header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                 .POST(HttpRequest.BodyPublishers.ofByteArray(createBodyForLogin()))
