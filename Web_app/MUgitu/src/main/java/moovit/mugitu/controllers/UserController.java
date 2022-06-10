@@ -1,7 +1,7 @@
-package tmpPackage.controllers;
+package moovit.mugitu.controllers;
 
-import tmpPackage.entities.Usuario;
-import tmpPackage.security.MyUserDetails;
+import moovit.mugitu.entities.Usuario;
+import moovit.mugitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

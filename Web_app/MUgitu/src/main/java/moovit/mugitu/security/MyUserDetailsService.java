@@ -1,7 +1,7 @@
-package tmpPackage.security;
+package moovit.mugitu.security;
 
-import tmpPackage.controllers.RestRequests;
-import tmpPackage.entities.Usuario;
+import moovit.mugitu.controllers.RestRequests;
+import moovit.mugitu.entities.Usuario;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;

@@ -1,4 +1,4 @@
-package tmpPackage.entities;
+package moovit.mugitu.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;

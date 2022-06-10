@@ -1,4 +1,4 @@
-package tmpPackage.controllers;
+package moovit.mugitu.controllers;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;

@@ -1,6 +1,6 @@
-package tmpPackage.controllers;
+package moovit.mugitu.controllers;
 
-import tmpPackage.entities.Estacion;
+import moovit.mugitu.entities.Estacion;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

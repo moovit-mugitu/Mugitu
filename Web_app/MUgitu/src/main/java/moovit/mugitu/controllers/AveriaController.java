@@ -1,8 +1,8 @@
-package tmpPackage.controllers;
+package moovit.mugitu.controllers;
 
-import tmpPackage.entities.Averia;
-import tmpPackage.entities.Bici;
-import tmpPackage.entities.TipoAveria;
+import moovit.mugitu.entities.Averia;
+import moovit.mugitu.entities.Bici;
+import moovit.mugitu.entities.TipoAveria;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

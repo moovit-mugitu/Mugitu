@@ -29,10 +29,9 @@
         <td>
             <input class="form-check-input" type="checkbox" th:checked="${utilizacion.bici.electrica}" disabled>
         </td>
+        <td th:text="${utilizacion.user.correo + utilizacion.user.userId}" sec:authorize="hasAnyRole('ADMIN','WORKER')"/>
         <td th:text="${utilizacion.fechaInicio}"/>
         <td th:text="${utilizacion.fechaFin}"/>
-        <td th:text="${utilizacion.user.correo + utilizacion.user.userId}" sec:authorize="hasAnyRole('ADMIN','WORKER')"/>
-
         <td sec:authorize="hasAnyRole('ADMIN','WORKER')">
             <a th:href="@{/utilizacion/edit/} + ${utilizacion.utilizaId}" class="btn btn-warning"
                th:text="#{form.edit}"></a>
