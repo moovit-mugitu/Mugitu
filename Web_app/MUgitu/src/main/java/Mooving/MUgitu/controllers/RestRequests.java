@@ -63,12 +63,14 @@ public class RestRequests {
         }
         catch (HttpClientErrorException e){
             String responseString = RestRequests.manageException(e);
-            if(responseString.equals("login")){
+            if(Objects.equals(responseString, "login")){
                 throw new ResponseStatusException(
                         HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, "Login needed, refresh token expired", e);
             }else{
                 response = RestRequestWithHeaders(requestUrl,method,responseString,returnClass);
             }
+        }catch (RestClientException e){
+            e.printStackTrace();
         }
 
         return response;
@@ -109,7 +111,7 @@ public class RestRequests {
             JSONObject jsonObj;
             String accessToken ="", refreshToken = "";
             try {
-                jsonObj = new JSONObject(response.getBody());
+                jsonObj = new JSONObject(Objects.requireNonNull(response.getBody()));
                 accessToken = jsonObj.get(RestRequests.ACCESSTOKEN).toString();
                 refreshToken = jsonObj.get(RestRequests.REFRESHTOKEN).toString();
             } catch (JSONException eJson) {
