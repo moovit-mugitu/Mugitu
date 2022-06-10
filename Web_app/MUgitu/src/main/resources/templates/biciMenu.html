@@ -22,7 +22,7 @@
     <form th:action="@{/utilizar/create}" method="post">
         <label>Create Utilizacion</label>
         <input class="form-control w-auto" type="text" placeholder="Bici Id" name="biciId">
-        <input class="form-control w-auto" type="text" placeholder="User Id" th:value="${#authentication.getPrincipal().getUser().getUserId()}" name="userId" th:disabled="${#authentication.getPrincipal().getUser().getTipo_usuario().getDescripcion().equals('USER')}">
+        <input class="form-control w-auto" type="text" placeholder="User Id" name="userId" th:value="${#authentication.getPrincipal().getUser().getUserId()}" th:disabled="${#authentication.getPrincipal().getUser().getTipo_usuario().getDescripcion().equals('USER')}">
         <button type="submit">Create</button>
     </form>
     <form th:action="@{/estacionar/create}" method="post">

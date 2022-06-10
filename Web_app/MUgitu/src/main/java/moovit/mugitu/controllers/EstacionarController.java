@@ -1,8 +1,11 @@
 package moovit.mugitu.controllers;
 
 import moovit.mugitu.entities.Estacionar;
+import moovit.mugitu.security.MyUserDetails;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -64,10 +67,15 @@ public class EstacionarController {
 
     @PostMapping(path = "/create")
     @ResponseBody
-    public String createEstacionar(WebRequest request) {
+    public String createEstacionar(WebRequest request, Authentication authentication) {
         long biciId = Long.parseLong(Objects.requireNonNull(request.getParameter("biciId")));
         long estacionId = Long.parseLong(Objects.requireNonNull(request.getParameter("estacionId")));
-        long userId = Long.parseLong(Objects.requireNonNull(request.getParameter("userId")));
+        long userId;
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        if (userDetails.getUser().getTipo_usuario().getDescripcion().equals("USER")){
+            userId = userDetails.getUser().getUserId();
+        }
+        else userId = Long.parseLong(Objects.requireNonNull(request.getParameter("userId")));
 
         ResponseEntity<Estacionar> response = RestRequests.RestRequestWithHeaders("/estacionar/create/" + biciId + "/" + estacionId + "/" + userId,
                 HttpMethod.PUT, RestRequests.getToken(RestRequests.ACCESSTOKEN), Estacionar.class);
