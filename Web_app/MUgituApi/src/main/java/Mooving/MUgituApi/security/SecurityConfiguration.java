@@ -87,10 +87,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 //Logout control
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout");
+                .logoutSuccessUrl("/login?logout")
                 //Enable POST, PUT, DELETE from another service
-               // .and()
-                //.cors().and().csrf().disable();
+                .and()
+                .cors().and().csrf().disable();
     }
 
     @Bean
